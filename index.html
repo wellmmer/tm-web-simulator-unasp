@@ -1,72 +1,74 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<title>Turing Machine Emulator</title>
-<link rel="stylesheet" type="text/css" href="tabs.css">
-<link rel="stylesheet" type="text/css" href="interface.css">
+    <meta charset="utf-8">
+    <title>Simulador de Máquina de Turing</title>
+    <link rel="stylesheet" type="text/css" href="tabs.css">
+    <link rel="stylesheet" type="text/css" href="interface.css">
 </head>
 
 <body>
-<div id="menu" class="tabs">
-	<div class="tab">
-       <input type="radio" id="Menu" name="tab-group-2" checked>
-       <div class="content">
-       <textarea class="input machine" id="savedata" placeholder="Paste machine here, and click Load"></textarea>
-		   <button class="btn btn-blue" type="button" onclick="newButton()">New!</button> 
-		   <button class="btn btn-green" type="button" onclick="saveButton()">Save!</button> 
-		   <button class="btn btn-red" type="button" onclick="loadButton()">Load!</button> 
-       <a href="strcmp.txt"><button class="btn btn-orange">Sample TM File(strcmp)</button></a>
-       </div> 
-   </div> 
-</div>
+    <div id="menu" class="tabs">
+        <div class="tab">
+            <input type="radio" id="Menu" name="tab-group-2" checked>
+            <div class="content">
+                <textarea class="input machine" id="savedata" placeholder="Se já tiver as m-configurações da máquina prontas, cole aqui e clique em " Carregar "!"></textarea>
+                <button class="btn btn-blue" type="button" onclick="newButton()">New!</button>
+                <button class="btn btn-green" type="button" onclick="saveButton()">Save!</button>
+                <button class="btn btn-red" type="button" onclick="loadButton()">Load!</button>
+                <a href="strcmp.txt"><button class="btn btn-orange">Sample TM File(strcmp)</button></a>
+            </div>
+        </div>
+    </div>
 
 
-<div id="tm" class="tabs">
-   <div class="tab">
-       <input type="radio" id="tm-tab" name="tab-group-1" checked>
-       <label for="tm-tab">Turing Machine</label>
-       <div class="content" id="tm-content">
-       <div class="centered">
-         <button class="btn btn-turing btn-green" type="button" onclick="playButton()">Play</button>
-  		   <button class="btn btn-turing btn-red" type="button" onclick="stopButton()">Stop</button>
-  		   <button class="btn btn-turing btn-orange" type="button" onclick="stepButton()">Step</button>
-  		   <button class="btn btn-turing btn-blue" type="button" onclick="resetButton()">Reset</button>
-		   </div>
-       <br><br>
-		   
-		   <div id="input-holder">
+    <div id="tm" class="tabs">
+        <div class="tab">
+            <input type="radio" id="tm-tab" name="tab-group-1" checked>
+            <label for="tm-tab">Turing Machine</label>
+            <div class="content" id="tm-content">
+                <div class="centered">
+                    <button class="btn btn-turing btn-green" type="button" onclick="playButton()">Play</button>
+                    <button class="btn btn-turing btn-red" type="button" onclick="stopButton()">Stop</button>
+                    <button class="btn btn-turing btn-orange" type="button" onclick="stepButton()">Step</button>
+                    <button class="btn btn-turing btn-blue" type="button" onclick="resetButton()">Reset</button>
+                </div>
+                <br><br>
 
-        <table class="table centered">
-          <tr>
-            <th>START STATE</th>
-            <th>INPUT</th>
-          </tr>
-          <tr>
-            <td><textarea class="dataArea" id="statearea">0</textarea></td>
-            <td><textarea id="tape"></textarea></td>
-          </tr>
-        </table>
-		   </div>
-		   
-       <div id="machineAnim"></div>
-       
-       </div> 
-   </div>
-   <div class="tab">
-       <input type="radio" id="transition" name="tab-group-1">
-       <label for="transition">Transition Editor</label>
-	   
-       <div class="content" id="transition-content">
-           <div> <button type="button" class="btn btn-green btn-turing" id="addstate-button" onclick="addState(states);">Add State</button> <br><br><br> </div>
-		   <div id="stateboxes"></div>
-       </div> 
-   </div>
-</div>
+                <div id="input-holder">
 
-<script src="lib-hgentry.js"></script>
-<script src="interface.js"></script>
-<script src="turing.js"></script>
-<script src="init.js"></script>
+                    <table class="table centered">
+                        <tr>
+                            <th>START STATE</th>
+                            <th>INPUT</th>
+                        </tr>
+                        <tr>
+                            <td><textarea class="dataArea" id="statearea">0</textarea></td>
+                            <td><textarea id="tape"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="machineAnim"></div>
+
+            </div>
+        </div>
+        <div class="tab">
+            <input type="radio" id="transition" name="tab-group-1">
+            <label for="transition">Transition Editor</label>
+
+            <div class="content" id="transition-content">
+                <div> <button type="button" class="btn btn-green btn-turing" id="addstate-button" onclick="addState(states);">Add State</button> <br><br><br> </div>
+                <div id="stateboxes"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib-custom.js"></script>
+    <script src="interface.js"></script>
+    <script src="turing.js"></script>
+    <script src="init.js"></script>
 </body>
+
 </html>
