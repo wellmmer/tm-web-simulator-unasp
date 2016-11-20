@@ -1,17 +1,17 @@
 var states = 0;
 
 
-function addState(n)
+function addEstado(n)
 {
 	var div = document.createElement("div");
-	var statebox = document.createElement("div");
-	div.setAttribute('class','statebox');
-	statebox.setAttribute('id',"statebox-"+n+"-data");
-	div.setAttribute('id','statebox-'+n);
+	var estadoBox = document.createElement("div");
+	div.setAttribute('class','estadoBox');
+	estadoBox.setAttribute('id',"estadoBox-"+n+"-data");
+	div.setAttribute('id','estadoBox-'+n);
 
 	var transTable = document.createElement("table");
 	transTable.innerHTML = "<tr><td> Char </td> <td> -> </td> <td>Char</td> <td>State</td> <td>{L,R}</td></tr>";
-	statebox.appendChild(transTable);
+	estadoBox.appendChild(transTable);
 	transTable.setAttribute('id', 'transTable-' +n);
 	transTable.setAttribute('class', 'transTable');
 	
@@ -19,7 +19,7 @@ function addState(n)
 	var del = document.createElement("button");
 	del.setAttribute('class','delstate-button btn btn-red');
 	del.innerHTML = "Delete";
-	del.onclick=function(){removeState(n); deleteStateboxElement(div);};
+	del.onclick=function(){removeState(n); deleteestadoBoxElement(div);};
 	
 	var addTransitionButton = document.createElement("button");
 	addTransitionButton.setAttribute('class','addtransition-button btn btn-orange');
@@ -33,18 +33,18 @@ function addState(n)
 	
 	
 	
-	document.getElementById("stateboxes").appendChild(div);
+	document.getElementById("estadoBoxes").appendChild(div);
 	div.appendChild(del);
 	div.appendChild(addTransitionButtonTop);
 	
-	div.appendChild(statebox);
+	div.appendChild(estadoBox);
 	div.appendChild(addTransitionButton);
 	
 	addTransition(n);
 	
 	if(n == states) states += 1;
 	
-	return statebox;
+	return estadoBox;
 }
 
 function addTransition(n) {
@@ -110,8 +110,8 @@ function limitLength(textArea)
 function addRule(ta)
 {
 	var cells = ta.parentNode.parentNode.childNodes;
-	var statebox = ta.parentNode.parentNode.parentNode.parentNode.parentNode;
-	var state = statebox.getAttribute('id').substring(statebox.getAttribute('id').indexOf('-')+1);
+	var estadoBox = ta.parentNode.parentNode.parentNode.parentNode.parentNode;
+	var state = estadoBox.getAttribute('id').substring(estadoBox.getAttribute('id').indexOf('-')+1);
 	
 	
 	var charSeen = cells[0].childNodes[0].value;
@@ -129,8 +129,8 @@ function addRule(ta)
 function removeRule(ta)
 {
 	var cells = ta.parentNode.parentNode.childNodes;
-	var statebox = ta.parentNode.parentNode.parentNode.parentNode.parentNode;
-	var state = statebox.getAttribute('id').substring(statebox.getAttribute('id').indexOf('-')+1);
+	var estadoBox = ta.parentNode.parentNode.parentNode.parentNode.parentNode;
+	var state = estadoBox.getAttribute('id').substring(estadoBox.getAttribute('id').indexOf('-')+1);
 	
 	
 	var charSeen = cells[0].childNodes[0].value.substring(0,1);
@@ -155,32 +155,32 @@ function removeState(n)
 function playButton()
 {
 	play();
-	drawMachine();
+	desenharMaquina();
 }
 function stepButton()
 {
 	step();
-	drawMachine();
+	desenharMaquina();
 }
 
 function stopButton()
 {
 	stop();
-	drawMachine();
+	desenharMaquina();
 }
 
 function resetButton()
 {
 	reset();
-	drawMachine();
+	desenharMaquina();
 }
 
 function stateButton()
 {
-	state = document.getElementById("statearea").value;
+	state = document.getElementById("estadoArea").value;
 }
 
-function deleteStateboxElement(tr)
+function deleteestadoBoxElement(tr)
 {
 	tr.parentNode.removeChild(tr);
 }
@@ -190,29 +190,29 @@ function deleteTransitionElement(tr)
 	tr.parentNode.removeChild(tr);
 }
 
-function stateboxUpdate(x)
+function estadoBoxUpdate(x)
 {
-	currentState = document.getElementById("statearea").value;
+	currentState = document.getElementById("estadoArea").value;
 }
 
-function tapeboxUpdate(x)
+function fitaBoxUpdate(x)
 {
 	tape = document.getElementById("tape").value;
 }
 
-function clearStateboxes()
+function clearestadoBoxes()
 {
-	document.getElementById("stateboxes").innerHTML="";
+	document.getElementById("estadoBoxes").innerHTML="";
 	states = 0;
-	addState(0);
+	addEstado(0);
 }
 
 function newButton()
 {
 	clearRules();
-	clearStateboxes();
+	clearestadoBoxes();
 	reset();
-	drawMachine();
+	desenharMaquina();
 }
 
 function loadButton()
@@ -220,17 +220,17 @@ function loadButton()
 	newButton();
 	var str = document.getElementById("savedata").value;
 	readMachineCode(str);
-	//document.getElementById("statearea").value = currentState;
+	//document.getElementById("estadoArea").value = currentState;
 	//document.getElementById("tape").value = tape;
 	populateEditor();
-	drawMachine();
+	desenharMaquina();
 }
 
 function saveButton()
 {
 	reset();
 	document.getElementById("savedata").value = outputMachineCode();
-	drawMachine();
+	desenharMaquina();
 }
 
 function populateEditor()
@@ -247,8 +247,8 @@ function populateEditor()
 			addNextDir = ruleset[k][2];
 			
 			//If there isn't a box for this state yet, add one
-			statebox = document.getElementById("statebox-"+addToState);
-			if(statebox == null) statebox = addState(addToState);
+			estadoBox = document.getElementById("estadoBox-"+addToState);
+			if(estadoBox == null) estadoBox = addEstado(addToState);
 			
 			//TODO: doublecheck that a rule isn't a duplicate here
 			

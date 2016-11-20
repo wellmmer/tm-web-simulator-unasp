@@ -29,7 +29,7 @@ body {
   width:67%;
 }
 
-#stateboxes {
+#estadoBoxes {
 	display:table;
 	border-spacing:10px;
 }
@@ -39,7 +39,7 @@ button {
 	min-width:100px;
 }
 
-.statebox {
+.estadoBox {
   border: 0px solid #ccc;
   position: relative;
   display: table-cell;
@@ -78,7 +78,7 @@ button {
 	vertical-align:middle;
 }
 
-#addstate-button {
+#addEstado-button {
 	position:fixed;
 	margin:10px;
 }

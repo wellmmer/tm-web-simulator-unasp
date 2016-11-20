@@ -17,53 +17,53 @@
                 <button class="btn btn-blue" type="button" onclick="newButton()">Novas m-Configurações</button>
                 <button class="btn btn-green" type="button" onclick="saveButton()">Salvar m-Configurações</button>
                 <button class="btn btn-red" type="button" onclick="loadButton()">Carregar m-Configurações</button>
-                <a href="exemplo.txt "><button class="btn btn-orange">Download: TM - Comparação de Palavras</button></a>
+                <a href="exemplo.txt "><button class="btn btn-orange">Exemplo - Máquina de Comparação de Palavras</button></a>
             </div>
         </div>
     </div>
-
-    <div id="tm " class="tabs ">
-        <div class="tab ">
-            <input type="radio " id="tm-tab " name="tab-group-1 " checked>
-            <label for="tm-tab ">Turing Machine</label>
-            <div class="content " id="tm-content ">
-                <div class="centered ">
-                    <button class="btn btn-turing btn-green " type="button " onclick="playButton() ">Play</button>
-                    <button class="btn btn-turing btn-red " type="button " onclick="stopButton() ">Stop</button>
-                    <button class="btn btn-turing btn-orange " type="button " onclick="stepButton() ">Step</button>
-                    <button class="btn btn-turing btn-blue " type="button " onclick="resetButton() ">Reset</button>
-                </div>
-                <br><br>
-
-                <div id="input-holder ">
-
-                    <table class="table centered ">
+    <div id="tm" class="tabs">
+        <div class="tab">
+            <input type="radio" id="tm-tab" name="tab-group-1" checked>
+            <label for="tm-tab">Simulador da Máquina</label>
+            <div class="content" id="tm-content">
+                <div id="input-holder">
+                    <table class="table centered">
                         <tr>
-                            <th>START STATE</th>
-                            <th>INPUT</th>
+                            <th>Estado Inicial</th>
+                            <th>Entrada de Dados</th>
                         </tr>
                         <tr>
-                            <td><textarea class="dataArea " id="statearea ">0</textarea></td>
-                            <td><textarea id="tape "></textarea></td>
+                            <td>
+                                <input class="dataArea" id="estadoArea" value="0"></input>
+                            </td>
+                            <td>
+                                <input id="tape" value=""></input>
+                            </td>
                         </tr>
                     </table>
                 </div>
-
-                <div id="machineAnim "></div>
-
+                <br><br><br>
+                <div class="centered">
+                    <button class="btn btn-turing btn-green" type="button" onclick="playButton()">Iniciar</button>
+                    <button class="btn btn-turing btn-red" type="button" onclick="stopButton()">Parar</button>
+                    <button class="btn btn-turing btn-orange" type="button" onclick="stepButton()">Passo a Passo</button>
+                    <button class="btn btn-turing btn-blue" type="button" onclick="resetButton()">Reiniciar</button>
+                </div>
+                <div id="machineAnim"></div>
             </div>
         </div>
-        <div class="tab ">
-            <input type="radio " id="transition " name="tab-group-1 ">
-            <label for="transition ">Transition Editor</label>
-
-            <div class="content " id="transition-content ">
-                <div> <button type="button " class="btn btn-green btn-turing " id="addstate-button " onclick="addState(states); ">Add State</button> <br><br><br> </div>
-                <div id="stateboxes "></div>
+        <div class="tab">
+            <input type="radio" id="transition" name="tab-group-1">
+            <label for="transition">Transições da Máquina</label>
+            <div class="content" id="transition-content">
+                <div>
+                    <button type="button" class="btn btn-green btn-turing" id="addEstado-button" onclick="addEstado(states);">Adicionar Estado</button>
+                    <br><br><br>
+                </div>
+                <div id="estadoBoxes"></div>
             </div>
         </div>
     </div>
-
     <script src="lib-custom.js "></script>
     <script src="interface.js "></script>
     <script src="turing.js "></script>

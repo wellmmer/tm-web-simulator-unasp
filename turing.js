@@ -8,7 +8,7 @@ var head = 0;
 
 var going = null;
 
-function drawMachine() {
+function desenharMaquina() {
 	if(currentState == -1) {line0 = "ACCEPT"; stop();}
 	else if(currentState < -1) {line0 = "REJECT"; stop();}
 	else line0 = "STATE " + currentState +" HEAD " + head;
@@ -25,7 +25,7 @@ function drawMachine() {
 
 function play() {
 	stop();
-	going = setInterval(function(){step();drawMachine();}, 50);
+	going = setInterval(function(){step();desenharMaquina();}, 50);
 }
 
 function stop() {
@@ -64,7 +64,7 @@ function step() {
 
 function reset()
 {
-	currentState = document.getElementById("statearea").value;
+	currentState = document.getElementById("estadoArea").value;
 	tape = document.getElementById("tape").value;
 	head = 0;
 }
