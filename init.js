@@ -1,19 +1,19 @@
 window.onload = function() {
-    addEstado(0);
+addState(0);
 
-    estadoBox = document.getElementById("estadoArea");
-    estadoBox.onchange = estadoBoxUpdate(estadoBox);
-    estadoBox.addEventListener('input', function() {
-        estadoBoxUpdate(estadoBox);
-    });
 
-    fitaBox = document.getElementById("tape");
-    fitaBox.onchange = fitaBoxUpdate(estadoBox);
-    fitaBox.addEventListener('input', function() {
-        fitaBoxUpdate(fitaBox);
-    });
+statebox = document.getElementById("statearea");
+statebox.onchange=stateboxUpdate(statebox);
+statebox.addEventListener('input',function(){stateboxUpdate(statebox);});
 
-    estadoBoxUpdate(estadoBox);
-    fitaBoxUpdate(fitaBox);
-    desenharMaquina();
-};
+tapebox = document.getElementById("tape");
+tapebox.onchange=tapeboxUpdate(statebox);
+tapebox.addEventListener('input',function(){tapeboxUpdate(tapebox);});
+
+stateboxUpdate(statebox);
+tapeboxUpdate(tapebox);
+
+
+
+drawMachine();
+}
