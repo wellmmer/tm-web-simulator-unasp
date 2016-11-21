@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Simulador de Máquina de Turing</title>
+    <link rel="stylesheet" type="text/css" href="../css/tabs.css">
+    <link rel="stylesheet" type="text/css" href="../css/interface.css">
+</head>
+
+<body>
+    <div id="menuTabs" class="tabs">
+        <div class="tab">
+            <input id="painel" type="radio" name="tab-group-2" checked>
+            <label for="painel"><b>Painel</b></label>
+            <div class="content">
+                <textarea id="tmTextCode" class="input" placeholder="Cole as M-Configurações e Clique em Carregar!"></textarea>
+                <button class="btn btn-blue" type="button" onclick="newMachine()"><b>Novas M-Configurações</b></button>
+                <button class="btn btn-green" type="button" onclick="saveMachine()"><b>Salvar M-Configurações</b></button>
+                <button class="btn btn-red" type="button" onclick="loadMachine()"><b>Carregar M-Configurações</b></button>
+                <a href="exemplo.txt">
+                    <button class="btn btn-orange"><b>Exemplo</b></button>
+                </a>
+            </div>
+        </div>
+        <div class="tab">
+            <input id="about" type="radio" name="tab-group-2">
+            <label for="about"><b>Sobre</b></label>
+            <div class="content"></div>
+        </div>
+    </div>
+    <div id="tmTabs" class="tabs">
+        <div class="tab">
+            <input id="tm-tab" type="radio" name="tab-group-1" checked>
+            <label for="tm-tab"><b>Simulador</b></label>
+            <div id="tm-content" class="content">
+                <div id="tmInputData">
+                    <table class="table centered">
+                        <tr>
+                            <th>Estado Inicial</th>
+                            <th>Entrada de Dados</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <textarea id="stateArea" class="dataArea">0</textarea>
+                            </td>
+                            <td>
+                                <textarea id="tape"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tmControls" class="centered">
+                    <button class="btn btn-turing btn-green" type="button" onclick="playButton()"><b>Iniciar</b></button>
+                    <button class="btn btn-turing btn-red" type="button" onclick="stopButton()"><b>Parar</b></button>
+                    <button class="btn btn-turing btn-orange" type="button" onclick="stepByStepButton()"><b>Passo a Passo</b></button>
+                    <button class="btn btn-turing btn-blue" type="button" onclick="resetButton()"><b>Reiniciar</b></button>
+                </div>
+                <br><br><br>
+                <div id="tmAnimation"></div>
+            </div>
+        </div>
+        <div class="tab">
+            <input id="transition" type="radio" name="tab-group-1">
+            <label for="transition"><b>Editor de Transições</b></label>
+            <div id="transition-content" class="content">
+                <div>
+                    <button id="addStateButton" type="button" class="btn btn-green btn-turing" onclick="addState(states);"><b>Adicionar Estado</b></button>
+                </div>
+                <br><br><br>
+                <div id="stateBoxes"></div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/lib-tm-custom.js"></script>
+    <script src="../js/lib-tm-interface.js"></script>
+    <script src="../js/lib-tm-machine.js"></script>
+    <script src="../js/lib-tm-initialize.js"></script>
+</body>
+
+</html>
