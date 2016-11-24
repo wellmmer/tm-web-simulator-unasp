@@ -8,16 +8,16 @@ function addState(n) {
     div.setAttribute('id', 'stateBox-' + n);
 
     var transTable = document.createElement('table');
-    transTable.innerHTML = '<tr> <td><b>Valor</b></td> <td><b>></b></td> <td><b>Valor</b></td> <td><b>Estado</b></td> <td><b>{DIR,ESQ}</b></td></tr>';
+    transTable.innerHTML = '<tr><td><b>Atual</b></td><td><b>></b></td><td><b>Novo</b></td><td><b>q?</b></td><td><b>{< , >}</b></td></tr>';
     stateBox.appendChild(transTable);
     transTable.setAttribute('id', 'transTable-' + n);
     transTable.setAttribute('class', 'transTable');
 
-    div.innerHTML = '<b>State: </b>q' + n;
-    var removeState = document.createElement('button');
-    removeState.setAttribute('class', 'removeStateButton btn btn-red');
-    removeState.innerHTML = '<b>Remover Estado</b>';
-    removeState.onclick = function() {
+    div.innerHTML = '<b>Estado: </b>q' + n;
+    var removeStateButton = document.createElement('button');
+    removeStateButton.setAttribute('class', 'removeStateButton btn btn-red');
+    removeStateButton.innerHTML = '<b>Remover Estado</b>';
+    removeStateButton.onclick = function() {
         removeState(n);
         removeStateBoxElement(div);
     };
@@ -29,16 +29,8 @@ function addState(n) {
         addTransition(n);
     };
 
-    var addTransitionButtonTop = document.createElement('button');
-    addTransitionButtonTop.setAttribute('class', 'addTransitionButtonTop btn btn-blue');
-    addTransitionButtonTop.innerHTML = '<b>Adicionar Transição</b>';
-    addTransitionButtonTop.onclick = function() {
-        addTransition(n);
-    };
-
     document.getElementById('stateBoxes').appendChild(div);
-    div.appendChild(removeState);
-    div.appendChild(addTransitionButtonTop);
+    div.appendChild(removeStateButton);
     div.appendChild(stateBox);
     div.appendChild(addTransitionButton);
     addTransition(n);
@@ -54,7 +46,7 @@ function addTransition(n) {
     var transTable = document.getElementById('transTable-' + n);
     var tableRow = transTable.insertRow(-1);
 
-    var charSeen = document.createElement('textarea');
+    var charSeen = document.createElement('input');
     charSeen.setAttribute('class', 'dataArea');
     charSeen.onchange = limitLength(charSeen);
     charSeen.addEventListener('input', function() {
@@ -69,7 +61,7 @@ function addTransition(n) {
     tableRow.insertCell(0).appendChild(charSeen);
     tableRow.insertCell(1);
 
-    var charNext = document.createElement('textarea');
+    var charNext = document.createElement('input');
     charNext.onchange = limitLength(charNext);
     charNext.addEventListener('input', function() {
         limitLength(charNext);
@@ -78,12 +70,12 @@ function addTransition(n) {
     charNext.setAttribute('class', 'dataArea');
     tableRow.insertCell(2).appendChild(charNext);
 
-    var stateNext = document.createElement('textarea');
+    var stateNext = document.createElement('input');
     stateNext.setAttribute('class', 'dataArea');
     stateNext.addEventListener('input', function() { addRule(stateNext); });
     tableRow.insertCell(3).appendChild(stateNext);
 
-    var dirNext = document.createElement('textarea');
+    var dirNext = document.createElement('input');
     dirNext.setAttribute('class', 'dataArea');
     dirNext.onchange = limitLength(dirNext);
     dirNext.addEventListener('input', function() {
@@ -92,22 +84,22 @@ function addTransition(n) {
     });
     tableRow.insertCell(4).appendChild(dirNext);
 
-    var removeState = document.createElement('button');
-    removeState.setAttribute('class', 'removeStateButton btn btn-red');
-    removeState.innerHTML = '<b>Remover</b>';
-    removeState.onclick = function() {
-        removeRule(removeState);
+    var removeTransButton = document.createElement('button');
+    removeTransButton.setAttribute('class', 'removeTransButton btn btn-red');
+    removeTransButton.innerHTML = '<b>Remover</b>';
+    removeTransButton.onclick = function() {
+        removeRule(removeTransButton);
         removeTransitionElement(tableRow);
     };
-    tableRow.insertCell(5).appendChild(removeState);
+    tableRow.insertCell(5).appendChild(removeTransButton);
 
     transTable.appendChild(tableRow);
     return tableRow;
 };
 
-function limitLength(textArea) {
-    if (textArea.value.length > 1) {
-        textArea.value = textArea.value.substring(textArea.value.length - 1, textArea.value.length);
+function limitLength(element) {
+    if (element.value.length > 1) {
+        element.value = element.value.substring(element.value.length - 1, element.value.length);
     };
 };
 
@@ -238,8 +230,6 @@ function populateTransitionsEditor() {
             if (stateBox == null) {
                 stateBox = addState(addToState);
             };
-
-            //TODO: Seria bom haver uma checagem para se há transições duplicadas dentro do estado...
 
             // Criar uma linha para a m-configuração...
             tr = addTransition(addToState);

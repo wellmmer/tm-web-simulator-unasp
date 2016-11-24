@@ -4,80 +4,147 @@
 <head>
     <meta charset="utf-8">
     <title>Simulador de Máquina de Turing</title>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery.jcarousel.min.js"></script>
+    <script type="text/javascript" src="jcarousel.connected-carousels.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/tabs.css">
     <link rel="stylesheet" type="text/css" href="../css/interface.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/jcarousel.connected-carousels.css">
 </head>
 
 <body>
     <div id="menuTabs" class="tabs">
+        <!-- ACESSO RÁPIDO -->
         <div class="tab">
             <input id="painel" type="radio" name="tab-group-2" checked>
-            <label for="painel"><b>Painel</b></label>
-            <div class="content">
-                <textarea id="tmTextCode" class="input" placeholder="Cole as M-Configurações e Clique em Carregar!"></textarea>
-                <button class="btn btn-blue" type="button" onclick="newMachine()"><b>Novas M-Configurações</b></button>
-                <button class="btn btn-green" type="button" onclick="saveMachine()"><b>Salvar M-Configurações</b></button>
-                <button class="btn btn-red" type="button" onclick="loadMachine()"><b>Carregar M-Configurações</b></button>
-                <a href="../tms/exemplo.txt">
-                    <button class="btn btn-orange"><b>Exemplo</b></button>
+            <label for="painel">
+                <b>Acesso Rápido</b>
+            </label>
+            <div id="painel-content" class="content">
+                <!--<button class="btn btn-blue" type="button" onclick="newMachine()"><b>Novas M-Configurações</b></button>-->
+                <a href="../tms/exemplo.txt" target="_blank">
+                    <button class="btn btn-orange"><b>Exemplo de Pronto</b></button>
                 </a>
+                <br><br>
+                <div class="centered">
+                    <span>
+                        <b>M-CONFIGURAÇÕES</b>
+                    </span>
+                </div>
+                <textarea id="tmTextCode" placeholder="Copie, Cole e Carregue!"></textarea>
+                <button class="btn btn-red" type="button" onclick="loadMachine()">
+                    <b>Carregar M-Configurações</b>
+                </button>
+                <button class="btn btn-green" type="button" onclick="saveMachine()">
+                    <b>Exportar M-Configurações</b>
+                </button>
             </div>
-        </div>
-        <div class="tab">
-            <input id="about" type="radio" name="tab-group-2">
-            <label for="about"><b>Sobre</b></label>
-            <div class="content"></div>
         </div>
     </div>
     <div id="tmTabs" class="tabs">
+        <!-- TUTORIAL-->
         <div class="tab">
-            <input id="learn-tab" type="radio" name="tab-group-1">
-            <label for="learn-tab"><b>Aprenda</b></label>
+            <input id="learn-tab" type="radio" name="tab-group-1" checked>
+            <label for="learn-tab">
+                <b>1º Tutorial</b>
+            </label>
             <div id="learn-content" class="content">
-                <div>
-                    <span>Desenvolvendo um espaço de aprendizado sobre Alan Turing e a Máquina Universal.</span>
-                </div>
+                <img src="../img/alan_turing.png" width="700" height="500" alt="">
             </div>
         </div>
+        <!-- CONSTRUTOR -->
         <div class="tab">
-            <input id="tm-tab" type="radio" name="tab-group-1" checked>
-            <label for="tm-tab"><b>Simulador</b></label>
+            <input id="trans-tab" type="radio" name="tab-group-1">
+            <label for="trans-tab">
+                <b>2º Construtor</b>
+            </label>
+            <div id="transition-content" class="content">
+                <div>
+                    <button id="addStateButton" type="button" class="btn btn-green btn-turing" onclick="addState(states);">
+                        <b>Adicionar Estado</b>
+                    </button>
+                </div>
+                <br><br><br>
+                <div id="stateBoxes"></div>
+            </div>
+        </div>
+        <!-- SIMULADOR -->
+        <div class="tab">
+            <input id="tm-tab" type="radio" name="tab-group-1">
+            <label for="tm-tab">
+                <b>3º Simulador</b>
+            </label>
             <div id="tm-content" class="content">
                 <div id="tmInputData">
                     <table class="table centered">
                         <tr>
                             <th>Estado Inicial</th>
-                            <th>Entrada de Dados</th>
+                            <th>Fita da Máquina</th>
                         </tr>
                         <tr>
                             <td>
                                 <textarea id="stateArea" class="dataArea">0</textarea>
                             </td>
                             <td>
-                                <textarea id="tape"></textarea>
+                                <textarea id="tape" class="dataArea"></textarea>
                             </td>
                         </tr>
                     </table>
                 </div>
+                <br>
                 <div id="tmControls" class="centered">
-                    <button class="btn btn-turing btn-green" type="button" onclick="playButton()"><b>Iniciar</b></button>
-                    <button class="btn btn-turing btn-red" type="button" onclick="stopButton()"><b>Parar</b></button>
-                    <button class="btn btn-turing btn-orange" type="button" onclick="stepByStepButton()"><b>Passo a Passo</b></button>
-                    <button class="btn btn-turing btn-blue" type="button" onclick="resetButton()"><b>Reiniciar</b></button>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <button class="btn btn-turing btn-green" type="button" onclick="playButton()">
+                                    <b>Iniciar</b>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-turing btn-red" type="button" onclick="stopButton()">
+                                    <b>Parar</b>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-turing btn-orange" type="button" onclick="stepByStepButton()">
+                                    <b>Passo a Passo</b>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-turing btn-blue" type="button" onclick="resetButton()">
+                                    <b>Reiniciar</b>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <br><br><br>
+                <br>
                 <div id="tmAnimation"></div>
             </div>
         </div>
+        <!-- SOBRE -->
         <div class="tab">
-            <input id="trans-tab" type="radio" name="tab-group-1">
-            <label for="trans-tab"><b>Editor</b></label>
-            <div id="transition-content" class="content">
-                <div>
-                    <button id="addStateButton" type="button" class="btn btn-green btn-turing" onclick="addState(states);"><b>Adicionar Estado</b></button>
-                </div>
-                <br><br><br>
-                <div id="stateBoxes"></div>
+            <input id="about" type="radio" name="tab-group-1">
+            <label for="about">
+                <b>Sobre</b>
+            </label>
+            <div id="about-content" class="content">
+                <span>
+                    <p>
+                        <b>Trabalho de Conclusão de Curso - Ciência da Computação - 2016</b>
+                    <p>
+                </span>
+                <span>
+                    <p>
+                        <b>Orientador: </b>Profº Ms. Laercio Martins Carpes
+                    <p>
+                </span>
+                <span>
+                    <p>
+                        <b>Aluno: </b>Wellmmer Lucas de Oliveira Pinto
+                    <p>
+                </span>
             </div>
         </div>
     </div>

@@ -10,24 +10,24 @@ var timeSpeed = null;
 
 function drawTuringMachine() {
     if (currentState == -1) {
-        line0 = '<b>APROVADO!</b>';
+        line0 = '<b>Resultado: </b>' + '<font color="#008E21"><b>APROVADO!</b></font>';
         stopMachine();
     } else if (currentState < -1) {
-        line0 = '<b>REJEITADO!</b>';
+        line0 = '<b>Resultado: </b>' + '<font color="#FE0000"><b>REJEITADO!</b></font>';
         stopMachine();
-    } else line0 = '<b>ESTADO ATUAL: </b>q' + currentState + '  <b>LEITOR: </b>pos. ' + head;
+    } else line0 = '<b>Estado Atual: </b>q' + currentState + '  <b>Posição do Leitor: </b>' + head + 'º';
 
     i = 0;
     line1 = '';
     while (i < head) {
-        line1 += '&nbsp;';
+        line1 += '=';
         i += 1;
     }
     line1 += '@';
     line2 = tape;
 
     tmAnimation = document.getElementById('tmAnimation');
-    tmAnimation.innerHTML = line0 + '<br>' + line1 + '<br>' + line2 + '<br>';
+    tmAnimation.innerHTML = line0 + '<br><br>' + line1 + '<br>' + line2 + '<br>';
 };
 
 function playMachine() {
@@ -71,11 +71,11 @@ function stepByStep() {
     };
 
     // Atualiza a posição do leitor da máquina baseado na direção...
-    if (nextStep[2] == 'dir' || nextStep[2] == 'Dir' || nextStep[2] == 'DIR') {
+    if (nextStep[2] == '>') {
         head += 1;
     };
 
-    if (nextStep[2] == 'esq' || nextStep[2] == 'Esq' || nextStep[2] == 'ESQ') {
+    if (nextStep[2] == '<') {
         head -= 1;
     };
 };
