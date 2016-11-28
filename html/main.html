@@ -4,13 +4,15 @@
 <head>
     <meta charset="utf-8">
     <title>Simulador de Máquina de Turing</title>
-    <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/jquery.jcarousel.min.js"></script>
-    <script type="text/javascript" src="jcarousel.connected-carousels.js"></script>
+    <script src="../js/lib-tm-custom.js"></script>
+    <script src="../js/lib-tm-machine.js"></script>
+    <script src="../js/lib-tm-interface.js"></script>
+    <script src="../js/lib-tm-initialize.js"></script>
+    <script src="../js/jquery-3.1.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/tabs.css">
-    <link rel="stylesheet" type="text/css" href="../css/interface.css">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
-    <link rel="stylesheet" type="text/css" href="../css/jcarousel.connected-carousels.css">
+    <link rel="stylesheet" type="text/css" href="../css/interface.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
 </head>
 
 <body>
@@ -50,7 +52,20 @@
                 <b>1º Tutorial</b>
             </label>
             <div id="learn-content" class="content">
-                <img src="../img/alan_turing.png" width="700" height="500" alt="">
+                <ul class="slider">
+                    <li>
+                        <img src="../img/like.png" />
+                    </li>
+                    <li>
+                        <img src="../img/dislike.png" />
+                    </li>
+                    <li>
+                        <img src="../img/like.png" />
+                    </li>
+                    <li>
+                        <img src="../img/dislike.png" />
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- CONSTRUTOR -->
@@ -148,10 +163,6 @@
             </div>
         </div>
     </div>
-    <script src="../js/lib-tm-custom.js"></script>
-    <script src="../js/lib-tm-interface.js"></script>
-    <script src="../js/lib-tm-machine.js"></script>
-    <script src="../js/lib-tm-initialize.js"></script>
 </body>
 
 </html>

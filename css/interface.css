@@ -168,3 +168,18 @@ textarea {
 .input.machine {
     height: 200px;
 }
+
+.slider {
+    margin: 10px 0;
+    width: 700px;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider li {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
