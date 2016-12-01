@@ -28,23 +28,4 @@ $(document).ready(function() {
             // itemsTablet: false,
             // itemsMobile : false
     });
-
-    $('.masterTooltip').hover(function() {
-        /* Flutuar sobre o elemento */
-        var title = $(this).attr('title');
-        $(this).data('tipText', title).removeAttr('title');
-        $('<p class="tooltip"></p>')
-            .text(title)
-            .appendTo('body')
-            .fadeIn('slow');
-    }, function() {
-        /* Flutuar fora no elemento */
-        $(this).attr('title', $(this).data('tipText'));
-        $('.tooltip').remove();
-    }).mousemove(function(e) {
-        var mousex = e.pageX + 20; /* Obtém X coordinates */
-        var mousey = e.pageY + 10; /* Obtém Y coordinates */
-        $('.tooltip')
-            .css({ top: mousey, left: mousex })
-    });
 });

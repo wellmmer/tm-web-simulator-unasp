@@ -40,10 +40,11 @@
         <div class="tab-content">
             <!-- INICIO -->
             <div role="tabpanel" class="tab-pane fade in active" id="home">
-                <div class="control-group">
-                    <div class="controls-row">
-                        <h1>BEM VINDO AO SIMULADOR DE MÁQUINA</h1>
-                    </div>
+                <div class="col-md-12">
+                    <center>
+                        <div align="middle"><img src="../assets/common/img/unasp.png"></div>
+                        <h3><b>Bem-vindo ao Simulador de Máquina de Turing</b></h3>
+                    </center>
                 </div>
             </div>
             <!-- TUTORIAL -->
@@ -59,6 +60,9 @@
                     <div class="item"><img src="../assets/slides/img/edsmt-8.jpg"></div>
                     <div class="item"><img src="../assets/slides/img/edsmt-9.jpg"></div>
                     <div class="item"><img src="../assets/slides/img/edsmt-10.jpg"></div>
+                    <div class="item" align="center">
+                        <iframe width="1024" height="800" src="https://www.youtube.com/embed/-iLBxCBJlos" frameborder="0" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
             <!-- MÁQUINA DE TURING -->
@@ -91,7 +95,7 @@
                                         <hr>
                                         <textarea id="tmTextCode" placeholder="Copie, Cole e Carregue!"></textarea>
                                         <a href="../tms/exemplo.txt" target="_blank">
-                                            <button class="btn btn-attach btn-sm btn-warning">
+                                            <button class="btn btn-attach btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Exemplo de maquina configurada">
                                                 <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span><b> Exemplo</b>
                                             </button>
                                         </a>
@@ -105,17 +109,17 @@
                                     <div class="form-group">
                                         <div class="col-md-offset-2 col-md-12">
                                             <div class="col-md-4">
-                                                <button class="btn btn-machine btn-lg btn-primary" type="button" onclick="newMachine()">
+                                                <button class="btn btn-machine btn-lg btn-primary" type="button" data-toggle="tooltip" data-placement="top" title="Limpa todas as entradas do CONSTRUTOR e iniciar uma nova máquina." onclick="newMachine()">
                                                     <span class="glyphicon glyphicon-erase" aria-hidden="true"></span><b> Nova Máquina</b>
                                                 </button>
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-machine btn-lg btn-success" type="button" onclick="loadMachine()">
+                                                <button class="btn btn-machine btn-lg btn-success" type="button" data-toggle="tooltip" data-placement="top" title="Carrega as M-configurações anteriormente programadas no CONSTRUTOR" onclick="loadMachine()">
                                                     <span class="glyphicon glyphicon-import" aria-hidden="true"></span><b> Carregar Máquina</b>
                                                 </button>
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-machine btn-lg btn-danger" type="button" onclick="saveMachine()">
+                                                <button class="btn btn-machine btn-lg btn-danger" type="button" data-toggle="tooltip" data-placement="top" title="Salva as M-configurações" onclick="saveMachine()">
                                                     <span class="glyphicon glyphicon-export" aria-hidden="true"></span><b> Salvar Máquina</b>
                                                 </button>
                                             </div>
@@ -137,7 +141,7 @@
                                     <div class="form-inline">
                                         <div class="form-group">
                                             <div class="container-fluid">
-                                                <button id="addStateButton" type="button" class="btn btn-sm btn-success" onclick="addState(states);">
+                                                <button id="addStateButton" type="button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Adiciona um novo estado" onclick="addState(states);">
                                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span><b> Estado</b>
                                                 </button>
                                                 <div id="stateBoxes" class="row-fluid">
@@ -167,7 +171,7 @@
                                                     <center>
                                                         <h3>
                                                             <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
-                                                            <b> q? Inicial</b>
+                                                            <b data-toggle="tooltip" data-placement="top" title="Informe o estado inicial"> q? Inicial</b>
                                                         </h3>
                                                     </center>
                                                 </label>
@@ -249,7 +253,32 @@
             <div role="tabpanel" class="tab-pane fade" id="about">
                 <div class="control-group">
                     <div class="controls-row">
-                        <h1>Sobre o Trabalho</h1>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+                                <b> Sobre o Projeto</b>
+                            </div>
+                            <div class="panel-body">
+                                <div class="controls-row">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-5 col-md-12">
+                                                <center>
+                                                    <div align="middle"><img src="../assets/common/img/unasp.png"></div>
+                                                    <h3><b>Projeto e Trabalho de Conclusão de Curso - UNASP</b></h3>
+                                                    <h3><b>Ciência da Computação - 2016</b></h3>
+                                                    <br><br>
+                                                    <h4><b>Simulador de Máquina de Turing: Uma Aplicação Web Para o Ensino</b></h4>
+                                                    <h4><b>Orientador: </b>Prof. Laercio Martins Carpes</h4>
+                                                    <h4><b>Aluno: </b>Wellmmer Lucas de Oliveira Pinto</h4>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer"></div>
+                        </div>
                     </div>
                 </div>
             </div>

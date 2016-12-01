@@ -10,26 +10,29 @@ function addState(n) {
     var transTable = document.createElement('table');
     transTable.innerHTML = '<tr>' +
         '<td>' +
-        '<b>Atual</b>' +
+        '<b data-toggle="tooltip" data-placement="top" title="Símbolo atual">Atual</b>' +
         '</td>' +
         '<td>' +
-        '<b>Novo</b>' +
+        '<b data-toggle="tooltip" data-placement="top" title="Novo símbolo">Novo</b>' +
         '</td>' +
         '<td>' +
-        '<b>q?</b>' +
+        '<b data-toggle="tooltip" data-placement="top" title="Próximo estado">q?</b>' +
         '</td>' +
         '<td>' +
-        '<b>{< , >}</b>' +
+        '<b data-toggle="tooltip" data-placement="top" title="Direção do cabeçote de leitura">{< , >}</b>' +
         '</td>' +
         '</tr>';
     stateBox.appendChild(transTable);
     transTable.setAttribute('id', 'transTable-' + n);
     transTable.setAttribute('class', 'transTable');
 
-    div.innerHTML = '<b>Estado: </b>q' + n;
+    div.innerHTML = '<b data-toggle="tooltip" data-placement="top" title="Estado atual">Estado: </b>q' + n;
     var removeStateButton = document.createElement('button');
     removeStateButton.setAttribute('class', 'removeStateButton btn btn-sm btn-danger');
     removeStateButton.setAttribute('style', 'margin-bottom: 10px; float:right;');
+    removeStateButton.setAttribute('data-toggle', 'tooltip');
+    removeStateButton.setAttribute('data-placement', 'top');
+    removeStateButton.setAttribute('title', 'Remover estado');
     removeStateButton.innerHTML = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <b>Remover q' + n + '</b>';
     removeStateButton.onclick = function() {
         removeState(n);
@@ -38,6 +41,9 @@ function addState(n) {
 
     var addTransitionButton = document.createElement('button');
     addTransitionButton.setAttribute('class', 'addTransitionButton btn btn-sm btn-primary');
+    addTransitionButton.setAttribute('data-toggle', 'tooltip');
+    addTransitionButton.setAttribute('data-placement', 'top');
+    addTransitionButton.setAttribute('title', 'Adicionar transição');
     addTransitionButton.innerHTML = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span><b> Transição</b>';
     addTransitionButton.onclick = function() {
         addTransition(n);
@@ -105,6 +111,9 @@ function addTransition(n) {
 
     var removeTransButton = document.createElement('button');
     removeTransButton.setAttribute('class', 'removeTransButton btn btn-sm btn-danger');
+    removeTransButton.setAttribute('data-toggle', 'tooltip');
+    removeTransButton.setAttribute('data-placement', 'top');
+    removeTransButton.setAttribute('title', 'Remover transição');
     removeTransButton.innerHTML = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
     removeTransButton.onclick = function() {
         removeRule(removeTransButton);
