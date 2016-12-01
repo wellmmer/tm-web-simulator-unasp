@@ -10,24 +10,39 @@ var timeSpeed = null;
 
 function drawTuringMachine() {
     if (currentState == -1) {
-        line0 = '<b>Resultado: </b>' + '<font color="#008E21"><b>APROVADO!</b></font>';
+        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>qA' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição do Leitor: </b>' + head + 'º';
+    } else if (currentState == -2) {
+        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>qR' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição do Leitor: </b>' + head + 'º';
+    } else {
+        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>q' + currentState + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição do Leitor: </b>' + head + 'º';
+    };
+
+    if (currentState == -1) {
+        line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span><font color="#449d44"><b> APROVADO!</b></font>';
         stopMachine();
     } else if (currentState < -1) {
-        line0 = '<b>Resultado: </b>' + '<font color="#FE0000"><b>REJEITADO!</b></font>';
+        line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span><font color="#c9302c"><b> REJEITADO!</b></font>';
         stopMachine();
-    } else line0 = '<b>Estado Atual: </b>q' + currentState + '  <b>Posição do Leitor: </b>' + head + 'º';
+    } else {
+        if ((tape != '' || tape != null) && head != 0) {
+            line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-search" aria-hidden="true"></span><font color="#286090"><b> ANALISANDO...</b></font>';
+        } else {
+            line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span><font color="#286090"><b> ...</b></font>';
+        };
+    };
 
     i = 0;
-    line1 = '';
+    line2 = '';
     while (i < head) {
-        line1 += '=';
+        line2 += '&nbsp;';
         i += 1;
-    }
-    line1 += '@';
-    line2 = tape;
+    };
+    line2 += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>';
+
+    line3 = '<span class="glyphicon glyphicon-barcode" aria-hidden="true"></span><b> Fita</b>: ' + tape;
 
     tmAnimation = document.getElementById('tmAnimation');
-    tmAnimation.innerHTML = line0 + '<br><br>' + line1 + '<br>' + line2 + '<br>';
+    tmAnimation.innerHTML = line0 + '<br><br>' + line1 + '<br><br>' + line2 + '<br>' + line3;
 };
 
 function playMachine() {

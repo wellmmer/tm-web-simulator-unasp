@@ -228,7 +228,7 @@ function newMachine() {
     drawTuringMachine();
 };
 
-function exportMachine() {
+function saveMachine() {
     resetMachine();
     document.getElementById('tmTextCode').value = outputMachineCoding();
     drawTuringMachine();

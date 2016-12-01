@@ -1,3 +1,9 @@
+/*@import url('https://fonts.googleapis.com/css?family=Roboto');
+body {
+    background-color: #DBDBDB;
+    font-family: 'Roboto', Helvetica, sans-serif;
+}*/
+
 #tmTextCode {
     min-width: 1107px;
     max-width: 1107px;
@@ -9,7 +15,9 @@
 
 #tmAnimation {
     font-family: monospace, sans-serif;
-    font-size: 150%;
+    font-size: xx-large;
+    min-width: 1107px;
+    max-width: 1107px;
     padding: 10px;
     border-radius: 5px;
     border: 2px solid rgba(0, 0, 0, .3);
@@ -78,4 +86,13 @@
 
 .btn-turing {
     width: 150px;
+}
+
+.btn-machine {
+    width: 225px;
+    margin: 5px;
+}
+
+.btn-attach {
+    float: right;
 }

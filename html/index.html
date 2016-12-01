@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags always come first -->
+    <!-- Tags para responsividade do HTML5 -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,8 +12,6 @@
     <!-- CSS: Bootstrap 3-->
     <link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
     <!-- CSS: Customizado -->
-    <!--<link rel="stylesheet" type="text/css" href="../css/custom/tabs.css">
-    <link rel="stylesheet" type="text/css" href="../css/custom/interface.css">-->
     <link rel="stylesheet" type="text/css" href="../css/custom/style.css">
     <!-- CSS: Owl-Carousel -->
     <link rel="stylesheet" href="../css/owl-carousel/owl.carousel.css">
@@ -42,15 +40,25 @@
         <div class="tab-content">
             <!-- INICIO -->
             <div role="tabpanel" class="tab-pane fade in active" id="home">
-                <h1>BEM VINDO AO SIMULADOR DE MÁQUINA</h1>
+                <div class="control-group">
+                    <div class="controls-row">
+                        <h1>BEM VINDO AO SIMULADOR DE MÁQUINA</h1>
+                    </div>
+                </div>
             </div>
             <!-- TUTORIAL -->
             <div role="tabpanel" class="tab-pane fade" id="tutorial">
                 <div id="owl-demo" class="owl-carousel owl-theme">
-                    <div class="item"><img src="../img/teste1.jpg"></div>
-                    <div class="item"><img src="../img/teste2.jpg"></div>
-                    <div class="item"><img src="../img/teste3.jpg"></div>
-                    <div class="item"><img src="../img/teste4.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-1.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-2.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-3.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-4.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-5.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-6.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-7.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-8.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-9.jpg"></div>
+                    <div class="item"><img src="../assets/slides/img/edsmt-10.jpg"></div>
                 </div>
             </div>
             <!-- MÁQUINA DE TURING -->
@@ -68,14 +76,25 @@
                 <div class="tab-content">
                     <!-- ACESSO RÁPIDO -->
                     <div class="panel panel-default">
-                        <div class="panel-heading"><b>Acesso Rápido</b></div>
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+                            <b> Acesso Rápido</b>
+                        </div>
                         <div class="panel-body">
                             <div class="controls-row">
                                 <div class="form-inline">
                                     <div class="form-group">
-                                        <h3>M-Configurações</h3>
+                                        <h3>
+                                            <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                                            <b> M-configurações</b>
+                                        </h3>
                                         <hr>
                                         <textarea id="tmTextCode" placeholder="Copie, Cole e Carregue!"></textarea>
+                                        <a href="../tms/exemplo.txt" target="_blank">
+                                            <button class="btn btn-attach btn-sm btn-warning">
+                                                <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span><b> Exemplo</b>
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -84,18 +103,23 @@
                             <div class="controls-row">
                                 <div class="form-inline">
                                     <div class="form-group">
-                                        <button class="btn btn-primary" type="button" onclick="newMachine()">
-                                            <b>Limpar Máquina</b>
-                                        </button>
-                                        <button class="btn btn-success" type="button" onclick="loadMachine()">
-                                            <b>Carregar Máquina</b>
-                                        </button>
-                                        <button class="btn btn-danger" type="button" onclick="exportMachine()">
-                                            <b>Exportar Máquina</b>
-                                        </button>
-                                        <a href="../tms/exemplo.txt" target="_blank">
-                                            <button class="btn btn-warning"><b>Exemplo de Pronto</b></button>
-                                        </a>
+                                        <div class="col-md-offset-2 col-md-12">
+                                            <div class="col-md-4">
+                                                <button class="btn btn-machine btn-lg btn-primary" type="button" onclick="newMachine()">
+                                                    <span class="glyphicon glyphicon-erase" aria-hidden="true"></span><b> Nova Máquina</b>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-machine btn-lg btn-success" type="button" onclick="loadMachine()">
+                                                    <span class="glyphicon glyphicon-import" aria-hidden="true"></span><b> Carregar Máquina</b>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-machine btn-lg btn-danger" type="button" onclick="saveMachine()">
+                                                    <span class="glyphicon glyphicon-export" aria-hidden="true"></span><b> Salvar Máquina</b>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -104,14 +128,17 @@
                     <!-- CONSTRUTOR -->
                     <div role="tabpanel" class="tab-pane fade in active" id="constructor">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><b>Construtor de Estados & Transições</b></div>
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                                <b> Construtor de Estados & Transições</b>
+                            </div>
                             <div class="panel-body">
                                 <div class="controls-row">
                                     <div class="form-inline">
                                         <div class="form-group">
                                             <div class="container-fluid">
                                                 <button id="addStateButton" type="button" class="btn btn-sm btn-success" onclick="addState(states);">
-                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <b>Estado</b>
+                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span><b> Estado</b>
                                                 </button>
                                                 <div id="stateBoxes" class="row-fluid">
                                                     <!-- Aqui serão criados os estados e suas transições -->
@@ -127,7 +154,10 @@
                     <!-- SIMULADOR -->
                     <div role="tabpanel" class="tab-pane fade" id="simulator">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><b>Entrada de Dados</b></div>
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
+                                <b> Entrada de Dados</b>
+                            </div>
                             <div class="panel-body">
                                 <div class="controls-row">
                                     <div class="form-inline">
@@ -161,7 +191,10 @@
                             </div>
                         </div>
                         <div class="panel panel-default">
-                            <div class="panel-heading"><b>Painel de Controle</b></div>
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span>
+                                <b> Painel de Controle</b>
+                            </div>
                             <div class="panel-footer">
                                 <div class="controls-row">
                                     <div class="form-inline">
@@ -193,13 +226,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="tmAnimation"></div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+                                <b> Visualização dos Processos da Máquina</b>
+                            </div>
+                            <div class="panel-body">
+                                <div class="controls-row">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <div id="tmAnimation"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer"></div>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- SOBRE -->
             <div role="tabpanel" class="tab-pane fade" id="about">
-                <h1>SOBRE O TRABALHO</h1>
+                <div class="control-group">
+                    <div class="controls-row">
+                        <h1>Sobre o Trabalho</h1>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
