@@ -1,19 +1,15 @@
 window.onload = function() {
-
     addState(0);
-
-    stateBox = document.getElementById('stateArea');
+    stateBox = document.getElementById('initialState');
     stateBox.onchange = stateBoxUpdate(stateBox);
     stateBox.addEventListener('input', function() {
         stateBoxUpdate(stateBox);
     });
-
     tapeBox = document.getElementById('tape');
     tapeBox.onchange = tapeBoxUpdate(stateBox);
     tapeBox.addEventListener('input', function() {
         tapeBoxUpdate(tapeBox);
     });
-
     stateBoxUpdate(stateBox);
     tapeBoxUpdate(tapeBox);
     drawTuringMachine();
@@ -33,9 +29,6 @@ $(document).ready(function() {
             // itemsMobile : false
     });
 
-    /* Alessio Atzeni - Simple Tooltip w/ jQuery Only Text */
-
-    /* Fonte: http://www.alessioatzeni.com/blog/simple-tooltip-with-jquery-only-text/ */
     $('.masterTooltip').hover(function() {
         /* Flutuar sobre o elemento */
         var title = $(this).attr('title');

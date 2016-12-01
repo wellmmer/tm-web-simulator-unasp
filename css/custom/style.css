@@ -1,0 +1,81 @@
+#tmTextCode {
+    min-width: 1107px;
+    max-width: 1107px;
+    min-height: 150px;
+    max-height: 150px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .3);
+}
+
+#tmAnimation {
+    font-family: monospace, sans-serif;
+    font-size: 150%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, .3);
+    background-color: rgba(245, 245, 245, 1);
+}
+
+#stateBoxes {
+    display: table;
+    border-spacing: 10px;
+}
+
+#addStateButton {
+    margin: 10px;
+}
+
+#tape {
+    margin: 5px;
+    font-size: xx-large;
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .3);
+}
+
+#initialState {
+    margin: 5px;
+    font-size: xx-large;
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .3);
+}
+
+#owl-demo .item img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.dataArea {
+    margin: 5px;
+    height: 30px;
+    width: 50px;
+    text-align: center;
+    font-size: large;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .3);
+}
+
+.stateBox {
+    display: table-cell;
+    position: relative;
+    padding: 10px;
+    width: 298px;
+    border: 2px solid rgba(0, 0, 0, .3);
+    background: rgba(245, 245, 245, 1);
+}
+
+.transTable {
+    text-align: center;
+}
+
+.removeStateButton,
+.addTransitionButton {
+    margin-bottom: 10px;
+    float: right;
+}
+
+.btn-turing {
+    width: 150px;
+}

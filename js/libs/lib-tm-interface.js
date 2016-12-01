@@ -2,29 +2,43 @@ var states = 0;
 
 function addState(n) {
     var div = document.createElement('div');
-    var stateBox = document.createElement('div');
-    div.setAttribute('class', 'stateBox');
-    stateBox.setAttribute('id', 'stateBox-' + n + '-data');
     div.setAttribute('id', 'stateBox-' + n);
+    div.setAttribute('class', 'col-xs-6 col-sm-4 stateBox');
+    var stateBox = document.createElement('div');
+    stateBox.setAttribute('id', 'stateBox-' + n + '-data');
 
     var transTable = document.createElement('table');
-    transTable.innerHTML = '<tr><td><b>Atual</b></td><td><b>></b></td><td><b>Novo</b></td><td><b>q?</b></td><td><b>{< , >}</b></td></tr>';
+    transTable.innerHTML = '<tr>' +
+        '<td>' +
+        '<b>Atual</b>' +
+        '</td>' +
+        '<td>' +
+        '<b>Novo</b>' +
+        '</td>' +
+        '<td>' +
+        '<b>q?</b>' +
+        '</td>' +
+        '<td>' +
+        '<b>{< , >}</b>' +
+        '</td>' +
+        '</tr>';
     stateBox.appendChild(transTable);
     transTable.setAttribute('id', 'transTable-' + n);
     transTable.setAttribute('class', 'transTable');
 
     div.innerHTML = '<b>Estado: </b>q' + n;
     var removeStateButton = document.createElement('button');
-    removeStateButton.setAttribute('class', 'removeStateButton btn btn-red');
-    removeStateButton.innerHTML = '<b>Remover Estado</b>';
+    removeStateButton.setAttribute('class', 'removeStateButton btn btn-sm btn-danger');
+    removeStateButton.setAttribute('style', 'margin-bottom: 10px; float:right;');
+    removeStateButton.innerHTML = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> <b>Remover q' + n + '</b>';
     removeStateButton.onclick = function() {
         removeState(n);
         removeStateBoxElement(div);
     };
 
     var addTransitionButton = document.createElement('button');
-    addTransitionButton.setAttribute('class', 'addTransitionButton btn btn-orange');
-    addTransitionButton.innerHTML = '<b>Adicionar Transição</b>';
+    addTransitionButton.setAttribute('class', 'addTransitionButton btn btn-sm btn-primary');
+    addTransitionButton.innerHTML = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span><b> Transição</b>';
     addTransitionButton.onclick = function() {
         addTransition(n);
     };
@@ -48,6 +62,7 @@ function addTransition(n) {
 
     var charSeen = document.createElement('input');
     charSeen.setAttribute('class', 'dataArea');
+    charSeen.setAttribute('maxlength', '1');
     charSeen.onchange = limitLength(charSeen);
     charSeen.addEventListener('input', function() {
         if (!((n + '_' + charSeen.value) in ruleSet)) {
@@ -59,7 +74,6 @@ function addTransition(n) {
         };
     });
     tableRow.insertCell(0).appendChild(charSeen);
-    tableRow.insertCell(1);
 
     var charNext = document.createElement('input');
     charNext.onchange = limitLength(charNext);
@@ -68,32 +82,37 @@ function addTransition(n) {
         addRule(charNext);
     });
     charNext.setAttribute('class', 'dataArea');
-    tableRow.insertCell(2).appendChild(charNext);
+    charNext.setAttribute('maxlength', '1');
+    tableRow.insertCell(1).appendChild(charNext);
 
     var stateNext = document.createElement('input');
     stateNext.setAttribute('class', 'dataArea');
-    stateNext.addEventListener('input', function() { addRule(stateNext); });
-    tableRow.insertCell(3).appendChild(stateNext);
+    stateNext.setAttribute('maxlength', '1');
+    stateNext.addEventListener('input', function() {
+        addRule(stateNext);
+    });
+    tableRow.insertCell(2).appendChild(stateNext);
 
     var dirNext = document.createElement('input');
     dirNext.setAttribute('class', 'dataArea');
+    dirNext.setAttribute('maxlength', '1');
     dirNext.onchange = limitLength(dirNext);
     dirNext.addEventListener('input', function() {
         limitLength(dirNext);
         addRule(dirNext);
     });
-    tableRow.insertCell(4).appendChild(dirNext);
+    tableRow.insertCell(3).appendChild(dirNext);
 
     var removeTransButton = document.createElement('button');
-    removeTransButton.setAttribute('class', 'removeTransButton btn btn-red');
-    removeTransButton.innerHTML = '<b>Remover</b>';
+    removeTransButton.setAttribute('class', 'removeTransButton btn btn-sm btn-danger');
+    removeTransButton.innerHTML = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
     removeTransButton.onclick = function() {
         removeRule(removeTransButton);
         removeTransitionElement(tableRow);
     };
-    tableRow.insertCell(5).appendChild(removeTransButton);
-
+    tableRow.insertCell(4).appendChild(removeTransButton);
     transTable.appendChild(tableRow);
+
     return tableRow;
 };
 
@@ -130,18 +149,30 @@ function removeRule(ta) {
     var stateBox = ta.parentNode.parentNode.parentNode.parentNode.parentNode;
     var state = stateBox.getAttribute('id').substring(stateBox.getAttribute('id').indexOf('-') + 1);
     var charSeen = cells[0].childNodes[0].value.substring(0, 1);
-
-    ruleSet.removeItem(state + '_' + charSeen);
+    var k = state + '_' + charSeen;
+    deleteItem(ruleSet, k);
     console.log(ruleSet);
 };
 
 function removeState(n) {
     for (var k in ruleSet) {
         if (k.substring(0, k.indexOf('_')) == n + '') {
-            ruleSet.removeItem(k);
+            deleteItem(ruleSet, k);
         };
     };
     console.log(ruleSet);
+};
+
+function deleteItem(obj, k) {
+    if (!obj.hasOwnProperty(k)) {
+        return;
+    };
+
+    if (isNaN(parseInt(k)) || !(obj instanceof Array)) {
+        delete obj[k];
+    } else {
+        obj.splice(k, 1);
+    };
 };
 
 function playButton() {
@@ -165,7 +196,7 @@ function resetButton() {
 };
 
 function stateMachine() {
-    state = document.getElementById('stateArea').value;
+    state = document.getElementById('initialState').value;
 };
 
 function removeStateBoxElement(tableRow) {
@@ -177,7 +208,7 @@ function removeTransitionElement(tableRow) {
 };
 
 function stateBoxUpdate(x) {
-    currentState = document.getElementById('stateArea').value;
+    currentState = document.getElementById('initialState').value;
 };
 
 function tapeBoxUpdate(x) {
@@ -197,28 +228,30 @@ function newMachine() {
     drawTuringMachine();
 };
 
-function loadMachine() {
-    newMachine();
-    var stateInitial = document.getElementById('tmTextCode').value;
-    readMachineCoding(stateInitial);
-
-    document.getElementById('stateArea').value = currentState;
-    document.getElementById('tape').value = tape;
-
-    populateTransitionsEditor();
-    drawTuringMachine();
-};
-
-function saveMachine() {
+function exportMachine() {
     resetMachine();
     document.getElementById('tmTextCode').value = outputMachineCoding();
     drawTuringMachine();
 };
 
-function populateTransitionsEditor() {
+function loadMachine() {
+    newMachine();
+    var stateInitial = document.getElementById('tmTextCode').value;
+    readMachineCoding(stateInitial);
+    document.getElementById('initialState').value = currentState;
+    document.getElementById('tape').value = tape;
+    drawTuringConstructor();
+    drawTuringMachine();
+};
+
+function drawTuringConstructor() {
     for (var k in ruleSet) {
         if (k.indexOf('_') > 0) {
-            // Montando a tupla {Estado Atual, Símbolo Lido, Próximo Símbolo, Próximo Estado, Próximo Direção}
+            /* 
+                Montando a Tupla de Transição: {
+                    Estado Atual, Símbolo Lido, Próximo Símbolo, Próximo Estado, Próximo Direção
+                }
+            */
             addToState = k.substring(0, k.indexOf('_'));
             addCharSeen = k.substring(k.indexOf('_') + 1);
             addNextChar = ruleSet[k][0];

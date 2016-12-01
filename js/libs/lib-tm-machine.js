@@ -81,7 +81,7 @@ function stepByStep() {
 };
 
 function resetMachine() {
-    currentState = document.getElementById('stateArea').value;
+    currentState = document.getElementById('initialState').value;
     tape = document.getElementById('tape').value;
     head = 0;
 };
