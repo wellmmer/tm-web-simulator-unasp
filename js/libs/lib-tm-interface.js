@@ -68,7 +68,7 @@ function addTransition(n) {
 
     var charSeen = document.createElement('input');
     charSeen.setAttribute('class', 'dataArea');
-    charSeen.setAttribute('maxlength', '1');
+    // charSeen.setAttribute('maxlength', '1');
     charSeen.onchange = limitLength(charSeen);
     charSeen.addEventListener('input', function() {
         if (!((n + '_' + charSeen.value) in ruleSet)) {
@@ -88,12 +88,12 @@ function addTransition(n) {
         addRule(charNext);
     });
     charNext.setAttribute('class', 'dataArea');
-    charNext.setAttribute('maxlength', '1');
+    // charNext.setAttribute('maxlength', '1');
     tableRow.insertCell(1).appendChild(charNext);
 
     var stateNext = document.createElement('input');
     stateNext.setAttribute('class', 'dataArea');
-    stateNext.setAttribute('maxlength', '1');
+    // stateNext.setAttribute('maxlength', '1');
     stateNext.addEventListener('input', function() {
         addRule(stateNext);
     });
@@ -101,7 +101,7 @@ function addTransition(n) {
 
     var dirNext = document.createElement('input');
     dirNext.setAttribute('class', 'dataArea');
-    dirNext.setAttribute('maxlength', '1');
+    // dirNext.setAttribute('maxlength', '1');
     dirNext.onchange = limitLength(dirNext);
     dirNext.addEventListener('input', function() {
         limitLength(dirNext);
@@ -136,8 +136,8 @@ function addRule(ta) {
     var stateBox = ta.parentNode.parentNode.parentNode.parentNode.parentNode;
     var state = stateBox.getAttribute('id').substring(stateBox.getAttribute('id').indexOf('-') + 1);
     var charSeen = cells[0].childNodes[0].value;
-    var charNext = cells[2].childNodes[0].value;
-    var stateNext = cells[3].childNodes[0].value;
+    var charNext = cells[1].childNodes[0].value;
+    var stateNext = cells[2].childNodes[0].value;
 
     if (stateNext == 'A' || stateNext == 'a') {
         stateNext = -1;
@@ -147,7 +147,7 @@ function addRule(ta) {
         stateNext = -2;
     };
 
-    var dirNext = cells[4].childNodes[0].value;
+    var dirNext = cells[3].childNodes[0].value;
 
     ruleSet[state + "_" + charSeen] = [charNext, stateNext, dirNext];
     console.log(ruleSet);
