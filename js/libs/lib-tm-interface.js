@@ -276,9 +276,9 @@ function drawTuringConstructor() {
             // Criar uma linha para a m-configuração...
             tr = addTransition(addToState);
             tr.cells[0].childNodes[0].value = addCharSeen;
-            tr.cells[2].childNodes[0].value = addNextChar;
-            tr.cells[3].childNodes[0].value = addNextState;
-            tr.cells[4].childNodes[0].value = addNextDir;
+            tr.cells[1].childNodes[0].value = addNextChar;
+            tr.cells[2].childNodes[0].value = addNextState;
+            tr.cells[3].childNodes[0].value = addNextDir;
         };
     };
 };

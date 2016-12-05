@@ -18,10 +18,10 @@ function drawTuringMachine() {
     };
 
     if (currentState == -1) {
-        line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span><font color="#449d44"><b> APROVADO!</b></font>';
+        line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span><font color="#449d44"><b> ACEITA</b></font>';
         stopMachine();
     } else if (currentState < -1) {
-        line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span><font color="#c9302c"><b> REJEITADO!</b></font>';
+        line1 = '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span><b> Resultado: </b>' + '<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span><font color="#c9302c"><b> REJEITA</b></font>';
         stopMachine();
     } else {
         if ((tape != '' || tape != null) && head != 0) {
@@ -50,7 +50,7 @@ function playMachine() {
     timeSpeed = setInterval(function() {
         stepByStep();
         drawTuringMachine();
-    }, 50);
+    }, 500);
 };
 
 function stopMachine() {
