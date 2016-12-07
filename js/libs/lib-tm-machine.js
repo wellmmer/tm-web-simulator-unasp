@@ -10,11 +10,11 @@ var timeSpeed = null;
 
 function drawTuringMachine() {
     if (currentState == -1) {
-        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>qA' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição do Leitor: </b>' + head + 'º';
+        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>qA' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição da Cabeça: </b>' + head + 'º';
     } else if (currentState == -2) {
-        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>qR' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição do Leitor: </b>' + head + 'º';
+        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>qR' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição da Cabeça: </b>' + head + 'º';
     } else {
-        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>q' + currentState + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição do Leitor: </b>' + head + 'º';
+        line0 = '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><b> Estado Atual: </b>q' + currentState + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><b> Posição da Cabeça: </b>' + head + 'º';
     };
 
     if (currentState == -1) {
@@ -72,7 +72,7 @@ function stepByStep() {
         return;
     };
 
-    // Atualiza o valor da célula atual lida pelo leitor da máquina...
+    // Atualiza o valor da célula atual lida pela cabeça da máquina...
     tape = tape.substring(0, head) + nextStep[0] + tape.substring(head + 1);
 
     // Usa a regra guardada para atualizar o estado atual...
@@ -85,7 +85,7 @@ function stepByStep() {
         currentState = nextStep[1];
     };
 
-    // Atualiza a posição do leitor da máquina baseado na direção...
+    // Atualiza a posição do cabeça da máquina baseado na direção...
     if (nextStep[2] == '>') {
         head += 1;
     };
