@@ -59,6 +59,19 @@
       "badLink": "This link does not hold a Computable machine. The simulator opened your last machine instead.",
       "leftEdge": "The head tried to move left of cell 0, the left end of this tape. It stays on cell 0 instead, as in Sipser's book.",
       "gotIt": "Got it"
+    },
+    "table": {
+      "title": "Rules",
+      "hint": "Each row is one rule. The machine finds the row for its state and the symbol under the head.",
+      "state": "If in state",
+      "read": "and reading",
+      "write": "write",
+      "move": "move",
+      "ops": "operations",
+      "next": "then go to",
+      "any": "any symbol",
+      "blank": "blank",
+      "empty": "Your machine has no rules yet."
     }
   }
 }
