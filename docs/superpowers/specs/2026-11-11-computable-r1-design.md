@@ -95,7 +95,7 @@ and "? Tour".
   "In q1 reading 1: write 0, move left, go to q1."
 - **Controls:** Reset, Step back, Run/Pause, Step, and a speed control. Each button has an icon,
   a text label and its keyboard key.
-- **The result line:** "Accepted after 9 steps. The tape now reads 1100."
+- **The result line:** "Accepted after 8 steps. The tape now reads 1100."
 - **Below, side by side:** the rule table (left) and the state diagram (right). On phones they
   stack. The current rule lights up red in the table row, the diagram arrow and the head at the
   same time.

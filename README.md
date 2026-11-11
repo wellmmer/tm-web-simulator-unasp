@@ -67,7 +67,7 @@ A machine is a small JSON file. This one adds 1 to a binary number:
 {
   "format": "computable/machine@1",
   "name": "Binary +1",
-  "tape": "one-sided",
+  "tape": "two-way",
   "blank": "_",
   "start": "q0",
   "accept": ["qA"],
