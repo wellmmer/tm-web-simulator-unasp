@@ -1,0 +1,30 @@
+{
+  "format": "computable/machine@1",
+  "name": "Palindrome checker",
+  "tape": "one-sided",
+  "blank": "_",
+  "start": "q0",
+  "accept": ["qA"],
+  "reject": ["qR"],
+  "input": "0110",
+  "rules": [
+    { "state": "q0", "read": "0", "write": "_", "move": "R", "next": "q1" },
+    { "state": "q0", "read": "1", "write": "_", "move": "R", "next": "q2" },
+    { "state": "q0", "read": "_", "write": "_", "move": "S", "next": "qA" },
+    { "state": "q1", "read": "0", "write": "0", "move": "R", "next": "q1" },
+    { "state": "q1", "read": "1", "write": "1", "move": "R", "next": "q1" },
+    { "state": "q1", "read": "_", "write": "_", "move": "L", "next": "q3" },
+    { "state": "q2", "read": "0", "write": "0", "move": "R", "next": "q2" },
+    { "state": "q2", "read": "1", "write": "1", "move": "R", "next": "q2" },
+    { "state": "q2", "read": "_", "write": "_", "move": "L", "next": "q4" },
+    { "state": "q3", "read": "0", "write": "_", "move": "L", "next": "q5" },
+    { "state": "q3", "read": "1", "write": "1", "move": "S", "next": "qR" },
+    { "state": "q3", "read": "_", "write": "_", "move": "S", "next": "qA" },
+    { "state": "q4", "read": "1", "write": "_", "move": "L", "next": "q5" },
+    { "state": "q4", "read": "0", "write": "0", "move": "S", "next": "qR" },
+    { "state": "q4", "read": "_", "write": "_", "move": "S", "next": "qA" },
+    { "state": "q5", "read": "0", "write": "0", "move": "L", "next": "q5" },
+    { "state": "q5", "read": "1", "write": "1", "move": "L", "next": "q5" },
+    { "state": "q5", "read": "_", "write": "_", "move": "R", "next": "q0" }
+  ]
+}

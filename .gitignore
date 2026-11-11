@@ -1,0 +1,30 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+/.vitest/
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+
+# env files
+.env*
+
+# vercel
+.vercel
+
+# design work (local only)
+.superpowers/
+.taste-skill/

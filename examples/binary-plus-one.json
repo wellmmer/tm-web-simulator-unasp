@@ -1,0 +1,18 @@
+{
+  "format": "computable/machine@1",
+  "name": "Binary +1",
+  "tape": "two-way",
+  "blank": "_",
+  "start": "q0",
+  "accept": ["qA"],
+  "reject": ["qR"],
+  "input": "1011",
+  "rules": [
+    { "state": "q0", "read": "0", "write": "0", "move": "R", "next": "q0" },
+    { "state": "q0", "read": "1", "write": "1", "move": "R", "next": "q0" },
+    { "state": "q0", "read": "_", "write": "_", "move": "L", "next": "q1" },
+    { "state": "q1", "read": "1", "write": "0", "move": "L", "next": "q1" },
+    { "state": "q1", "read": "0", "write": "1", "move": "S", "next": "qA" },
+    { "state": "q1", "read": "_", "write": "1", "move": "S", "next": "qA" }
+  ]
+}
