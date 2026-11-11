@@ -1,26 +1,80 @@
 @import "tailwindcss";
 
+/*
+ * Squared paper (spec section 6). Night paper follows the system setting below; the theme
+ * switch in plan R1c sets data-theme on <html>. src/app/tokens.test.ts checks every text pair
+ * for WCAG AA contrast.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --paper: #f4f7fb;
+  --grid: rgba(40, 80, 160, 0.12);
+  --ink: #1c2b4a;
+  --pencil: #b3261e;
+  --on-pencil: #ffffff;
+  --cell: #ffffff;
+  --soft: #e6ebf3;
+  --muted: #4a5570;
+  --blank-ink: #848fa5;
+  --row-now: #fbe3e0;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --paper: #121a2c;
+    --grid: rgba(140, 170, 230, 0.1);
+    --ink: #e3e9f5;
+    --pencil: #f2685c;
+    --on-pencil: #121a2c;
+    --cell: #1b2640;
+    --soft: #24304d;
+    --muted: #9aa6bf;
+    --blank-ink: #6b7894;
+    --row-now: #3a2233;
+    color-scheme: dark;
   }
 }
 
+:root[data-theme="dark"] {
+  --paper: #121a2c;
+  --grid: rgba(140, 170, 230, 0.1);
+  --ink: #e3e9f5;
+  --pencil: #f2685c;
+  --on-pencil: #121a2c;
+  --cell: #1b2640;
+  --soft: #24304d;
+  --muted: #9aa6bf;
+  --blank-ink: #6b7894;
+  --row-now: #3a2233;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-pencil: var(--pencil);
+  --color-on-pencil: var(--on-pencil);
+  --color-cell: var(--cell);
+  --color-soft: var(--soft);
+  --color-muted: var(--muted);
+  --color-blank-ink: var(--blank-ink);
+  --color-row-now: var(--row-now);
+  /* --font-math draws Turing's Fraktur state letters (𝔟, 𝔠, 𝔢, 𝔨) in every text style. */
+  --font-display: var(--font-spectral), var(--font-math), Georgia, serif;
+  --font-sans: var(--font-plex-sans), var(--font-math), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), var(--font-math), ui-monospace, monospace;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 18px 18px;
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--pencil);
+  outline-offset: 2px;
 }
