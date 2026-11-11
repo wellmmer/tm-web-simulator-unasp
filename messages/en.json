@@ -52,7 +52,17 @@
       "summary": "Head on cell {cell}, in state {state}, reading {symbol}."
     },
     "controls": {
-      "continue": "Continue"
+      "continue": "Continue",
+      "reset": "Reset",
+      "stepBack": "Step back",
+      "run": "Run",
+      "pause": "Pause",
+      "step": "Step",
+      "spaceKey": "Space",
+      "speed": "Speed",
+      "slower": "Slower",
+      "faster": "Faster",
+      "speedValue": "{level} of 5"
     },
     "notes": {
       "storageBlocked": "This browser won't keep your machine after you close it.",
@@ -72,6 +82,19 @@
       "any": "any symbol",
       "blank": "blank",
       "empty": "Your machine has no rules yet."
+    },
+    "shortcuts": {
+      "open": "Keyboard shortcuts",
+      "title": "Keyboard shortcuts",
+      "close": "Close",
+      "toggleRun": "Run or pause",
+      "stepForward": "Step",
+      "stepBack": "Step back",
+      "reset": "Reset",
+      "faster": "Faster",
+      "slower": "Slower",
+      "help": "Show this list",
+      "off": "Shortcuts are off while you type in a text field."
     }
   }
 }
