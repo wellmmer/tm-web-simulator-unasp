@@ -36,6 +36,27 @@ describe('parseMachine', () => {
     expect(parseMachine(text)).toEqual({ ok: false, error: { code: 'missing-field', field: 'rules.0.move' } });
   });
 
+  it('names an unknown field, so a typo is not ignored', () => {
+    const text = JSON.stringify({ ...machine([]), leftedge: 'reject' });
+    expect(parseMachine(text)).toEqual({ ok: false, error: { code: 'bad-field', field: 'leftedge' } });
+  });
+
+  it('names a modern field inside a 1936 rule, so no field is lost', () => {
+    const text = JSON.stringify(machine([{ state: 'b', read: '0', ops: ['P0'], next: 'b' }])).replace(
+      '"ops":["P0"]',
+      '"ops":["P0"],"write":"1"',
+    );
+    expect(parseMachine(text)).toEqual({ ok: false, error: { code: 'bad-field', field: 'rules.0.write' } });
+  });
+
+  it('names an unknown field inside a read matcher', () => {
+    const text = JSON.stringify(machine([{ state: 'b', read: { match: 'blank' }, ops: ['P0'], next: 'b' }])).replace(
+      '{"match":"blank"}',
+      '{"match":"blank","x":1}',
+    );
+    expect(parseMachine(text)).toEqual({ ok: false, error: { code: 'bad-field', field: 'rules.0.read.x' } });
+  });
+
   it('names a wrong field inside a 1936 rule', () => {
     const bad = machine([{ state: 'b', read: { match: 'blank' }, ops: ['P0'], next: 'b' }]);
     const text = JSON.stringify(bad).replace('"ops":["P0"]', '"ops":"P0"');

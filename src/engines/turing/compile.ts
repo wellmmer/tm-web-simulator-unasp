@@ -4,6 +4,7 @@ import { isTuringRule, type Machine, type Op, type Rule } from './types';
 export type MachineIssue =
   | { code: 'bad-blank' }
   | { code: 'empty-start' }
+  | { code: 'accept-and-reject'; state: string }
   | { code: 'empty-state'; ruleIndex: number; field: 'state' | 'next' }
   | { code: 'bad-symbol'; ruleIndex: number; field: 'read' | 'write' }
   | { code: 'bad-op'; ruleIndex: number; op: string }
@@ -67,6 +68,9 @@ export function compileMachine(machine: Machine): CompileResult {
   const issues: MachineIssue[] = [];
   if (!isSingleSymbol(machine.blank)) issues.push({ code: 'bad-blank' });
   if (machine.start.trim() === '') issues.push({ code: 'empty-start' });
+  for (const state of new Set(machine.accept)) {
+    if (machine.reject.includes(state)) issues.push({ code: 'accept-and-reject', state });
+  }
 
   const byKey = new Map<string, CompiledRule>();
   machine.rules.forEach((rule, ruleIndex) => {

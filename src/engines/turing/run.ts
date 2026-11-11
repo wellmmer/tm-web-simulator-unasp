@@ -94,6 +94,8 @@ export function step(run: Run): StepOutcome | null {
     } else if (op.move === 'L') {
       if (tapeKind === 'one-sided' && run.head === 0) {
         hitLeftEdge = true;
+        // The 2016 rule stops the machine here, so the rest of a 1936 rule must not run.
+        if (leftEdge === 'reject') break;
       } else {
         run.head -= 1;
       }

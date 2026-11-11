@@ -75,6 +75,11 @@ describe('compileMachine', () => {
     );
   });
 
+  it('reports a state that is both an accept state and a reject state', () => {
+    const result = compileMachine(machine([], { accept: ['qA', 'qH'], reject: ['qR', 'qH'] }));
+    expect(result).toMatchObject({ ok: false, issues: [{ code: 'accept-and-reject', state: 'qH' }] });
+  });
+
   it('warns about a next state that has no rules and does not halt', () => {
     const result = compileMachine(machine([{ state: 'q0', read: '1', write: '1', move: 'R', next: 'q5' }]));
     expect(result.warnings).toEqual([{ code: 'state-without-rules', state: 'q5' }]);
