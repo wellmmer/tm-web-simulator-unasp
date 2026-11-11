@@ -64,6 +64,23 @@ describe('the simulator store', () => {
     expect(store.getState().loop).toBe('idle');
   });
 
+  it('uses a new speed for the next step at once, without waiting out the old delay', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().setSpeed(1);
+    store.getState().toggleRun();
+    vi.advanceTimersByTime(100);
+    store.getState().faster();
+    store.getState().setSpeed(4);
+    vi.advanceTimersByTime(150);
+    expect(store.getState().run?.steps).toBe(2);
+    store.getState().slower();
+    vi.advanceTimersByTime(699);
+    expect(store.getState().run?.steps).toBe(2);
+    vi.advanceTimersByTime(1);
+    expect(store.getState().run?.steps).toBe(3);
+    store.getState().pause();
+  });
+
   it('pauses and resumes with the same action', () => {
     const store = createSimulatorStore({ storage });
     store.getState().toggleRun();

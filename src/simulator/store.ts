@@ -148,6 +148,15 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
       if (loop === 'running') timer = setTimeout(tick, SPEEDS[get().speed].delayMs);
     };
 
+    /** Sets the speed. While running, the next step comes after the new delay, not the old one. */
+    const changeSpeed = (speed: SpeedLevel) => {
+      if (speed === get().speed) return;
+      set({ speed });
+      if (timer === null) return;
+      clearTimeout(timer);
+      timer = setTimeout(tick, SPEEDS[speed].delayMs);
+    };
+
     const startLoop = () => {
       stopTimer();
       stepsThisPress = 0;
@@ -261,15 +270,15 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
       },
 
       setSpeed(speed) {
-        set({ speed });
+        changeSpeed(speed);
       },
 
       faster() {
-        set((state) => ({ speed: faster(state.speed) }));
+        changeSpeed(faster(get().speed));
       },
 
       slower() {
-        set((state) => ({ speed: slower(state.speed) }));
+        changeSpeed(slower(get().speed));
       },
 
       dismissLeftEdgeNote() {
