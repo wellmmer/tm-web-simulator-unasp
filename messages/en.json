@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "title": "Computable",
+    "titleTemplate": "%s · Computable",
+    "description": "Learn the Turing machine by running one."
+  },
+  "home": {
+    "title": "Computable",
+    "lead": "Turing's 1936 machine, running live in your browser. The new app is being built.",
+    "openSimulator": "Open the simulator"
+  }
+}
