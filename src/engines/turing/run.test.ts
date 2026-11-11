@@ -62,6 +62,24 @@ describe('step', () => {
     expect(run).toMatchObject({ head: 0, state: 'qA', status: 'accepted' });
   });
 
+  it('runs no more operations of a 1936 rule after it rejects at the left edge', () => {
+    const run = createRun(
+      compiled(machine([{ state: 'b', read: { match: 'blank' }, ops: ['L', 'P1', 'R'], next: 'b' }], { start: 'b', leftEdge: 'reject' })),
+    );
+    expect(step(run)?.hitLeftEdge).toBe(true);
+    expect(run).toMatchObject({ head: 0, status: 'rejected', reason: { kind: 'left-edge', state: 'b' } });
+    expect(run.tape.toString()).toBe('');
+  });
+
+  it('still enters the accept state of a 1936 rule that hits the left edge with the 2016 rule', () => {
+    const run = createRun(
+      compiled(machine([{ state: 'b', read: { match: 'blank' }, ops: ['L', 'P1'], next: 'qA' }], { start: 'b', leftEdge: 'reject' })),
+    );
+    step(run);
+    expect(run).toMatchObject({ head: 0, state: 'qA', status: 'accepted' });
+    expect(run.tape.toString()).toBe('');
+  });
+
   it('moves to negative cells on a two-way tape', () => {
     const run = createRun(compiled(machine([{ state: 'q0', read: '_', write: 'x', move: 'L', next: 'q0' }], { tape: 'two-way' })));
     step(run);
