@@ -1,0 +1,17 @@
+{
+  "format": "computable/machine@1",
+  "name": "Turing's first machine (1936)",
+  "notation": "turing1936",
+  "tape": "one-sided",
+  "blank": "_",
+  "start": "𝔟",
+  "accept": [],
+  "reject": [],
+  "input": "",
+  "rules": [
+    { "state": "𝔟", "read": { "match": "blank" }, "ops": ["P0", "R"], "next": "𝔠" },
+    { "state": "𝔠", "read": { "match": "blank" }, "ops": ["R"], "next": "𝔢" },
+    { "state": "𝔢", "read": { "match": "blank" }, "ops": ["P1", "R"], "next": "𝔨" },
+    { "state": "𝔨", "read": { "match": "blank" }, "ops": ["R"], "next": "𝔟" }
+  ]
+}
