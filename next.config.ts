@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },
+      // `import text from "./file.txt?raw"` gives the file's text (the 2016 example machine).
+      "*.txt": {
+        condition: { query: "?raw" },
+        type: "raw",
+      },
     },
   },
 };
