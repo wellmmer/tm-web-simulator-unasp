@@ -252,6 +252,9 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
       toggleRun() {
         if (get().loop === 'running') {
           get().pause();
+          // The live region may be up to a second behind while running, so speak the step the machine stopped on.
+          const { run, event } = get();
+          if (run !== null) set(announce(event, run, false, false));
           return;
         }
         const { run } = get();

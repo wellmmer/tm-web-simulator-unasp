@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { machine } from '@/engines/turing/test-helpers';
 import { shareUrl } from '@/share/share-link';
 import { createMemoryStorage, type MachineStorage } from '@/storage/machine-storage';
+import { describeStep } from './describe';
 import { examples } from './examples';
 import { createSimulatorStore, currentRuleIndex } from './store';
 
@@ -124,6 +125,21 @@ describe('the simulator store', () => {
     // Spoken at 0 s, 1.05 s and 2.1 s while running, then the result at 3.15 s: 4 times for 22 steps.
     expect(ids.size).toBe(4);
     expect(store.getState().announcement?.messages.at(-1)?.key).toBe('result.accepted');
+  });
+
+  it('announces the current step at once after Pause, even inside the one-second gap', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().setSpeed(4);
+    store.getState().toggleRun();
+    vi.advanceTimersByTime(150);
+    const before = store.getState().announcement;
+    // Step 1 read 1 and was spoken; step 2 read 0 and was held back by the one-second gap.
+    expect(store.getState().run?.steps).toBe(2);
+    store.getState().toggleRun();
+    const { announcement, machine: current, event } = store.getState();
+    expect(announcement?.id).not.toBe(before?.id);
+    expect(announcement?.messages).toEqual([describeStep(current, event)]);
+    expect(announcement?.messages).not.toEqual(before?.messages);
   });
 
   it('shows the left-edge note the first time only, in this browser', () => {
