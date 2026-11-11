@@ -149,6 +149,26 @@ describe('the simulator store', () => {
     expect(store.getState()).toMatchObject({ exampleId: 'palindrome', badLink: true });
   });
 
+  it('keeps the bad-link note when boot runs again without a hash, as in a second effect run', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().boot('#m=broken');
+    store.getState().boot('');
+    expect(store.getState().badLink).toBe(true);
+  });
+
+  it('opens a share link in a tab that is already open, and ignores a hash without a link', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().boot('');
+    store.getState().openLink('#rules');
+    expect(store.getState().exampleId).toBe('binary-plus-one');
+    const link = shareUrl('https://x.example/en/simulator', examples.palindrome.machine);
+    if (!link.ok) throw new Error('expected a link');
+    store.getState().openLink(new URL(link.url).hash);
+    expect(store.getState()).toMatchObject({ exampleId: 'palindrome', badLink: false });
+    store.getState().openLink('#m=broken');
+    expect(store.getState()).toMatchObject({ exampleId: 'palindrome', badLink: true });
+  });
+
   it('says when the browser will not keep the machine', () => {
     const store = createSimulatorStore({ storage });
     store.getState().boot('');

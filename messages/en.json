@@ -28,7 +28,8 @@
       "copy": "Copy share link",
       "copied": "Link copied.",
       "tooLong": "This machine is too big for a link. Download it as a file instead.",
-      "copyFailed": "Your browser did not allow copying. The link is now in the address bar."
+      "copyFailed": "Your browser did not allow copying. Copy the link from the field below.",
+      "link": "Share link"
     },
     "step": {
       "ready": "Ready. The head starts on cell {cell} in state <b>{state}</b>.",
