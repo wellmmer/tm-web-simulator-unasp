@@ -8,5 +8,44 @@
     "title": "Computable",
     "lead": "Turing's 1936 machine, running live in your browser. The new app is being built.",
     "openSimulator": "Open the simulator"
+  },
+  "simulator": {
+    "step": {
+      "ready": "Ready. The head starts on cell {cell} in state <b>{state}</b>.",
+      "write": "In <b>{state}</b> reading <b>{symbol}</b>: write <b>{write}</b>, {move, select, L {move left} R {move right} other {stay}}, go to <b>{next}</b>.",
+      "ops": "In <b>{state}</b> reading <b>{symbol}</b>: {ops}, go to <b>{next}</b>.",
+      "noOps": "In <b>{state}</b> reading <b>{symbol}</b>: go to <b>{next}</b>.",
+      "noRule": "In <b>{state}</b> reading <b>{symbol}</b>: no rule matches, so the machine stops.",
+      "back": "Stepped back. State <b>{state}</b>, head on cell {cell}."
+    },
+    "op": {
+      "print": "print {symbol}",
+      "erase": "erase",
+      "left": "move left",
+      "right": "move right",
+      "stay": "stay",
+      "separator": ", "
+    },
+    "result": {
+      "accepted": "Accepted after {steps, plural, one {# step} other {# steps}}. The tape now reads {tape}.",
+      "acceptedBlank": "Accepted after {steps, plural, one {# step} other {# steps}}. The tape is now blank.",
+      "rejectState": "Rejected: the machine reached {state} after {steps, plural, one {# step} other {# steps}}.",
+      "noRule": "Rejected: no rule for {state} reading {symbol}.",
+      "leftEdge": "Rejected: the head tried to move left of cell 0 in {state}.",
+      "limit": "Paused after {limit, number} steps. This machine may never halt. Continue?"
+    },
+    "issue": {
+      "badBlank": "The blank must be exactly one symbol.",
+      "emptyStart": "The start state is empty.",
+      "acceptAndReject": "{state} is both an accept state and a reject state. A state can only be one.",
+      "emptyState": "Rule {rule}: {field, select, state {the state} other {the next state}} is empty.",
+      "badSymbol": "Rule {rule}: {field, select, read {the symbol it reads} other {the symbol it writes}} must be exactly one symbol.",
+      "badOp": "Rule {rule}: “{op}” is not an operation. Use P and a symbol, E, L or R.",
+      "duplicateRule": "Rules {first} and {rule}: two rules for {state} reading {symbol}. A Turing machine needs exactly one."
+    },
+    "warning": {
+      "stateWithoutRules": "{state} has no rules yet. The machine will stop there and reject.",
+      "legacyDuplicateRow": "Lines {row} and {keptRow} both give a rule for {state} reading {symbol}. The machine uses line {keptRow}, as the 2016 app did."
+    }
   }
 }
