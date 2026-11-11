@@ -10,10 +10,24 @@ export const LEGACY_BLANK = '␣';
 export type LegacyError = { code: 'legacy-too-short' } | { code: 'legacy-bad-row'; row: number };
 export type LegacyResult = { ok: true; machine: Machine } | { ok: false; error: LegacyError };
 
+/** The accept and reject states of an imported 2016 machine. */
+export const LEGACY_ACCEPT = 'qA';
+export const LEGACY_REJECT = 'qR';
+
+/**
+ * A state outside the `next` column. In 2016, `A` and `R` halted only in the `next` column, so a
+ * state named `A` or `R` is an ordinary state. It gets a prime (`qA′`), so it cannot become qA or qR.
+ */
 function legacyState(value: string): string {
-  if (value === 'A' || value === 'a') return 'qA';
-  if (value === 'R' || value === 'r') return 'qR';
-  return `q${value}`;
+  const name = `q${value}`;
+  return name === LEGACY_ACCEPT || name === LEGACY_REJECT ? `${name}′` : name;
+}
+
+/** A state in the `next` column: `A` accepts and `R` rejects, in either case. */
+function legacyNext(value: string): string {
+  if (value === 'A' || value === 'a') return LEGACY_ACCEPT;
+  if (value === 'R' || value === 'r') return LEGACY_REJECT;
+  return legacyState(value);
 }
 
 function legacySymbol(value: string): string {
@@ -46,7 +60,7 @@ export function parseLegacy(text: string, name: string): LegacyResult {
       state: legacyState(parts[0]),
       read: legacySymbol(parts[1]),
       write: legacySymbol(parts[2]),
-      next: legacyState(parts[3]),
+      next: legacyNext(parts[3]),
       move: legacyMove(parts[4]),
     });
   }
@@ -60,8 +74,8 @@ export function parseLegacy(text: string, name: string): LegacyResult {
       leftEdge: 'reject',
       blank: LEGACY_BLANK,
       start: legacyState(lines[0].trim()),
-      accept: ['qA'],
-      reject: ['qR'],
+      accept: [LEGACY_ACCEPT],
+      reject: [LEGACY_REJECT],
       input: [...lines[1]].map(legacySymbol).join(''),
       rules,
     },

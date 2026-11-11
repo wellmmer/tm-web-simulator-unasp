@@ -41,6 +41,25 @@ describe('parseLegacy', () => {
   it('rejects a file without a start state', () => {
     expect(parseLegacy('', 'Old')).toEqual({ ok: false, error: { code: 'legacy-too-short' } });
   });
+
+  it('treats A and R as halting states only in the next column', () => {
+    const result = parseLegacy('A\n1\nA,1,1,R,>,\nR,1,1,A,>,\n', 'Old');
+    if (!result.ok) throw new Error('expected ok');
+    expect(result.machine.start).toBe('qA′');
+    expect(result.machine.rules).toEqual([
+      { state: 'qA′', read: '1', write: '1', next: 'qR', move: 'R' },
+      { state: 'qR′', read: '1', write: '1', next: 'qA', move: 'R' },
+    ]);
+  });
+
+  it('does not accept at step 0 when the start state is A', () => {
+    const result = parseLegacy('A\n1\nA,1,1,R,>,\n', 'Old');
+    if (!result.ok) throw new Error('expected ok');
+    const run = createRun(compiled(result.machine));
+    expect(run.status).toBe('running');
+    expect(runUntilHalt(run)).toBe('halted');
+    expect(run).toMatchObject({ status: 'rejected', steps: 1 });
+  });
 });
 
 /**
