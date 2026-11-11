@@ -16,10 +16,19 @@ export function shareUrl(pageUrl: string, machine: Machine): ShareUrlResult {
 
 export type HashMachine = { kind: 'none' } | { kind: 'machine'; machine: Machine } | { kind: 'bad' };
 
-/** Reads the machine from a location hash such as "#m=N4Ig…". */
+/** Reads the machine from a location hash such as "#m=N4Ig…". A damaged or too long link is bad, never an error. */
 export function machineFromHash(hash: string): HashMachine {
   if (!hash.startsWith(HASH_PREFIX)) return { kind: 'none' };
-  const text = decompressFromEncodedURIComponent(hash.slice(HASH_PREFIX.length));
+  // A link we would refuse to make is bad too; a long one can expand to millions of characters.
+  if (hash.length > SHARE_URL_LIMIT) return { kind: 'bad' };
+  let text: string | null;
+  try {
+    // Some chat apps escape "+" as "%2B", so undo URL escapes before lz-string reads the link.
+    text = decompressFromEncodedURIComponent(decodeURIComponent(hash.slice(HASH_PREFIX.length)));
+  } catch {
+    // decodeURIComponent throws on a broken "%" escape; lz-string throws on some damaged links.
+    return { kind: 'bad' };
+  }
   if (!text) return { kind: 'bad' };
   const result = parseMachine(text);
   return result.ok ? { kind: 'machine', machine: result.machine } : { kind: 'bad' };
