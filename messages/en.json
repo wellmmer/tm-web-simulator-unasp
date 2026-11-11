@@ -50,6 +50,15 @@
     "tape": {
       "label": "Tape",
       "summary": "Head on cell {cell}, in state {state}, reading {symbol}."
+    },
+    "controls": {
+      "continue": "Continue"
+    },
+    "notes": {
+      "storageBlocked": "This browser won't keep your machine after you close it.",
+      "badLink": "This link does not hold a Computable machine. The simulator opened your last machine instead.",
+      "leftEdge": "The head tried to move left of cell 0, the left end of this tape. It stays on cell 0 instead, as in Sipser's book.",
+      "gotIt": "Got it"
     }
   }
 }
