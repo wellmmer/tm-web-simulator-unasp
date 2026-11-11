@@ -4,9 +4,10 @@ import type { Machine, Rule } from './types';
 export const MACHINE_FORMAT = 'computable/machine@1';
 
 const moveSchema = z.enum(['L', 'R', 'S']);
-const readMatcherSchema = z.union([z.object({ match: z.literal('any') }), z.object({ match: z.literal('blank') })]);
+// Strict objects: an unknown key is an error, so a typo such as "leftedge" is never ignored.
+const readMatcherSchema = z.union([z.strictObject({ match: z.literal('any') }), z.strictObject({ match: z.literal('blank') })]);
 
-const modernRuleSchema = z.object({
+const modernRuleSchema = z.strictObject({
   state: z.string(),
   read: z.string(),
   write: z.string(),
@@ -14,14 +15,14 @@ const modernRuleSchema = z.object({
   next: z.string(),
 });
 
-const turingRuleSchema = z.object({
+const turingRuleSchema = z.strictObject({
   state: z.string(),
   read: z.union([z.string(), readMatcherSchema]),
   ops: z.array(z.string()),
   next: z.string(),
 });
 
-const machineSchema = z.object({
+const machineSchema = z.strictObject({
   format: z.literal(MACHINE_FORMAT),
   name: z.string(),
   notation: z.enum(['modern', 'turing1936']).optional(),
@@ -71,8 +72,10 @@ export function parseMachine(text: string): ParseResult {
 }
 
 /** A field is missing when nothing is at its path. Zod's issue code cannot tell: a missing enum gives "invalid_value". */
-function toFormatError(issue: { path: PropertyKey[] }, data: unknown, prefix: PropertyKey[]): FormatError {
-  const path = [...prefix, ...issue.path];
+function toFormatError(issue: z.core.$ZodIssue, data: unknown, prefix: PropertyKey[]): FormatError {
+  // An unknown key has the path of its object; add the key, so the error names "rules.0.write".
+  const unknownKey = issue.code === 'unrecognized_keys' ? [issue.keys[0]] : [];
+  const path = [...prefix, ...issue.path, ...unknownKey];
   const field = path.map(String).join('.');
   const missing = getAt(data, path) === undefined;
   return missing ? { code: 'missing-field', field } : { code: 'bad-field', field };
