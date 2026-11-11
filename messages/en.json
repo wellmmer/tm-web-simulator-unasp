@@ -10,6 +10,26 @@
     "openSimulator": "Open the simulator"
   },
   "simulator": {
+    "page": {
+      "title": "Simulator"
+    },
+    "header": {
+      "example": "Example",
+      "yourMachine": "Your machine",
+      "input": "Input"
+    },
+    "examples": {
+      "binary-plus-one": "Binary +1",
+      "palindrome": "Palindrome checker",
+      "turing-1936": "Turing 1936: 0 1 0 1…",
+      "tcc-2016": "TCC machine (2016)"
+    },
+    "share": {
+      "copy": "Copy share link",
+      "copied": "Link copied.",
+      "tooLong": "This machine is too big for a link. Download it as a file instead.",
+      "copyFailed": "Your browser did not allow copying. The link is now in the address bar."
+    },
     "step": {
       "ready": "Ready. The head starts on cell {cell} in state <b>{state}</b>.",
       "write": "In <b>{state}</b> reading <b>{symbol}</b>: write <b>{write}</b>, {move, select, L {move left} R {move right} other {stay}}, go to <b>{next}</b>.",
@@ -52,7 +72,6 @@
       "summary": "Head on cell {cell}, in state {state}, reading {symbol}."
     },
     "controls": {
-      "continue": "Continue",
       "reset": "Reset",
       "stepBack": "Step back",
       "run": "Run",
@@ -62,7 +81,8 @@
       "speed": "Speed",
       "slower": "Slower",
       "faster": "Faster",
-      "speedValue": "{level} of 5"
+      "speedValue": "{level} of 5",
+      "continue": "Continue"
     },
     "notes": {
       "storageBlocked": "This browser won't keep your machine after you close it.",
