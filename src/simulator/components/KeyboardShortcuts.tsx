@@ -32,6 +32,9 @@ const LIST = [
   ['?', 'help'],
 ] as const;
 
+/** Holding these keys must not repeat them: a held Space would run and pause many times a second. */
+const NO_REPEAT: ReadonlySet<Action> = new Set(['toggleRun', 'reset', 'help']);
+
 /** True for fields where keys type text or change a value: shortcuts stay off there. */
 function isField(target: EventTarget | null): boolean {
   return target instanceof HTMLElement && (target.isContentEditable || target.matches('input, textarea, select'));
@@ -59,6 +62,7 @@ export function KeyboardShortcuts() {
       const action = KEYS[event.key];
       if (action === undefined || (event.key === ' ' && isPressable(event.target))) return;
       event.preventDefault();
+      if (event.repeat && NO_REPEAT.has(action)) return;
       if (action === 'help') dialog.current?.showModal();
       else runAction(store.getState(), action);
     };

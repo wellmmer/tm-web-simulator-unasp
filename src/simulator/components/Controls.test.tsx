@@ -82,6 +82,24 @@ describe('KeyboardShortcuts', () => {
     expect(store.getState().loop).toBe('idle');
   });
 
+  it('ignores key repeat for Space, R and ?, but keeps it for the arrow keys', () => {
+    const { store } = renderSimulator(<KeyboardShortcuts />);
+    const hold = (key: string) => act(() => fireEvent.keyDown(document.body, { key, repeat: true }));
+    hold('ArrowRight');
+    hold('ArrowRight');
+    expect(store.getState().run?.steps).toBe(2);
+    hold('r');
+    hold('R');
+    expect(store.getState().run?.steps).toBe(2);
+    press(' ');
+    hold(' ');
+    hold(' ');
+    expect(store.getState().loop).toBe('running');
+    act(() => store.getState().pause());
+    hold('?');
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
   it('is off while focus is in a text field', () => {
     const { store } = renderSimulator(
       <>
