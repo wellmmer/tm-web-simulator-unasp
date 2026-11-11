@@ -46,6 +46,10 @@
     "warning": {
       "stateWithoutRules": "{state} has no rules yet. The machine will stop there and reject.",
       "legacyDuplicateRow": "Lines {row} and {keptRow} both give a rule for {state} reading {symbol}. The machine uses line {keptRow}, as the 2016 app did."
+    },
+    "tape": {
+      "label": "Tape",
+      "summary": "Head on cell {cell}, in state {state}, reading {symbol}."
     }
   }
 }
