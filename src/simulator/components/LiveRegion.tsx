@@ -9,7 +9,8 @@ export function LiveRegion() {
   const { plain } = useSimText();
   return (
     <div role="status" aria-live="polite" className="sr-only">
-      {announcement?.messages.map(plain).join(' ')}
+      {/* The key replaces the text node on every announcement, so a screen reader speaks the same words again. */}
+      {announcement !== null && <span key={announcement.id}>{announcement.messages.map(plain).join(' ')}</span>}
     </div>
   );
 }
