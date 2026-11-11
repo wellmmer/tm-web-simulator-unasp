@@ -27,6 +27,7 @@ describe('parseLegacy', () => {
           { state: 'q0', read: LEGACY_BLANK, write: '1', next: 'qR', move: 'L' },
         ],
       },
+      warnings: [],
     });
   });
 
@@ -50,6 +51,17 @@ describe('parseLegacy', () => {
       { state: 'qA′', read: '1', write: '1', next: 'qR', move: 'R' },
       { state: 'qR′', read: '1', write: '1', next: 'qA', move: 'R' },
     ]);
+  });
+
+  it('keeps the last of two rows for the same state and symbol, as the 2016 app did', () => {
+    const result = parseLegacy('0\n1\n0,1,0,A,>,\n0,0,0,R,>,\n0,1,1,R,<,\n', 'Old');
+    if (!result.ok) throw new Error('expected ok');
+    expect(result.machine.rules).toEqual([
+      { state: 'q0', read: '1', write: '1', next: 'qR', move: 'L' },
+      { state: 'q0', read: '0', write: '0', next: 'qR', move: 'R' },
+    ]);
+    expect(result.warnings).toEqual([{ code: 'legacy-duplicate-row', row: 3, keptRow: 5, state: 'q0', read: '1' }]);
+    expect(compiled(result.machine).find('q0', '1')?.next).toBe('qR');
   });
 
   it('does not accept at step 0 when the start state is A', () => {
