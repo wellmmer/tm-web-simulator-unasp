@@ -26,8 +26,14 @@ export class Tape {
   /** The lowest and highest non-blank cell, or null when the whole tape is blank. */
   bounds(): { min: number; max: number } | null {
     if (this.cells.size === 0) return null;
-    const keys = [...this.cells.keys()];
-    return { min: Math.min(...keys), max: Math.max(...keys) };
+    // A loop, not Math.min(...keys): spreading 100,000+ keys overflows the call stack.
+    let min = Infinity;
+    let max = -Infinity;
+    for (const cell of this.cells.keys()) {
+      if (cell < min) min = cell;
+      if (cell > max) max = cell;
+    }
+    return { min, max };
   }
 
   /** The symbols from the lowest to the highest non-blank cell. A blank tape gives "". */

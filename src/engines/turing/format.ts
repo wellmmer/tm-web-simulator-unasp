@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Machine } from './types';
+import type { Machine, Rule } from './types';
 
 export const MACHINE_FORMAT = 'computable/machine@1';
 
@@ -32,7 +32,9 @@ const machineSchema = z.object({
   accept: z.array(z.string()),
   reject: z.array(z.string()),
   input: z.string(),
-  rules: z.array(z.union([turingRuleSchema, modernRuleSchema])),
+  // Each rule is checked on its own below, so an error names the exact field ("rules.2.move").
+  // A z.union here would only report "rules.2".
+  rules: z.array(z.unknown()),
 });
 
 /** Why a file could not be read. `field` is a path such as "rules.2.move". */
@@ -56,11 +58,24 @@ export function parseMachine(text: string): ParseResult {
     return { ok: false, error: { code: 'not-a-machine' } };
   }
   const result = machineSchema.safeParse(data);
-  if (result.success) return { ok: true, machine: result.data };
-  const issue = result.error.issues[0];
-  const field = issue.path.join('.');
-  const missing = issue.code === 'invalid_type' && getAt(data, issue.path) === undefined;
-  return { ok: false, error: missing ? { code: 'missing-field', field } : { code: 'bad-field', field } };
+  if (!result.success) return { ok: false, error: toFormatError(result.error.issues[0], data, []) };
+
+  const rules: Rule[] = [];
+  for (const [index, raw] of result.data.rules.entries()) {
+    const isTuringRule = typeof raw === 'object' && raw !== null && 'ops' in raw;
+    const rule = (isTuringRule ? turingRuleSchema : modernRuleSchema).safeParse(raw);
+    if (!rule.success) return { ok: false, error: toFormatError(rule.error.issues[0], data, ['rules', index]) };
+    rules.push(rule.data);
+  }
+  return { ok: true, machine: { ...result.data, rules } };
+}
+
+/** A field is missing when nothing is at its path. Zod's issue code cannot tell: a missing enum gives "invalid_value". */
+function toFormatError(issue: { path: PropertyKey[] }, data: unknown, prefix: PropertyKey[]): FormatError {
+  const path = [...prefix, ...issue.path];
+  const field = path.map(String).join('.');
+  const missing = getAt(data, path) === undefined;
+  return missing ? { code: 'missing-field', field } : { code: 'bad-field', field };
 }
 
 function getAt(data: unknown, path: ReadonlyArray<PropertyKey>): unknown {

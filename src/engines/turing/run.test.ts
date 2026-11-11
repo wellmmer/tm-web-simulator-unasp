@@ -54,6 +54,14 @@ describe('step', () => {
     expect(run.tape.toString()).toBe('x');
   });
 
+  it('accepts at the left edge with the 2016 rule when the same rule enters an accept state, as the 2016 app did', () => {
+    const run = createRun(
+      compiled(machine([{ state: 'q0', read: '1', write: '1', move: 'L', next: 'qA' }], { leftEdge: 'reject', input: '1' })),
+    );
+    expect(step(run)?.hitLeftEdge).toBe(true);
+    expect(run).toMatchObject({ head: 0, state: 'qA', status: 'accepted' });
+  });
+
   it('moves to negative cells on a two-way tape', () => {
     const run = createRun(compiled(machine([{ state: 'q0', read: '_', write: 'x', move: 'L', next: 'q0' }], { tape: 'two-way' })));
     step(run);

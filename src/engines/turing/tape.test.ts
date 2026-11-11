@@ -25,6 +25,12 @@ describe('Tape', () => {
     expect(tape.bounds()).toEqual({ min: 0, max: 0 });
   });
 
+  it('handles a very long tape without running out of stack', () => {
+    const tape = new Tape('_', '1'.repeat(200_000));
+    expect(tape.bounds()).toEqual({ min: 0, max: 199_999 });
+    expect(tape.toString()).toHaveLength(200_000);
+  });
+
   it('keeps blanks between written cells and supports negative cells', () => {
     const tape = new Tape('_');
     tape.write(-2, 'a');

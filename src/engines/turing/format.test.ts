@@ -24,10 +24,22 @@ describe('parseMachine', () => {
     expect(parseMachine(JSON.stringify(withoutRules))).toEqual({ ok: false, error: { code: 'missing-field', field: 'rules' } });
   });
 
-  it('names a field with a wrong value', () => {
+  it('names a field with a wrong value inside a rule', () => {
     const bad = machine([{ state: 'q0', read: '1', write: '1', move: 'R', next: 'qA' }]);
     const text = JSON.stringify(bad).replace('"move":"R"', '"move":"X"');
-    expect(parseMachine(text)).toMatchObject({ ok: false, error: { field: expect.stringMatching(/^rules\.0/) } });
+    expect(parseMachine(text)).toEqual({ ok: false, error: { code: 'bad-field', field: 'rules.0.move' } });
+  });
+
+  it('names a missing field inside a modern rule', () => {
+    const bad = machine([{ state: 'q0', read: '1', write: '1', move: 'R', next: 'qA' }]);
+    const text = JSON.stringify(bad).replace(',"move":"R"', '');
+    expect(parseMachine(text)).toEqual({ ok: false, error: { code: 'missing-field', field: 'rules.0.move' } });
+  });
+
+  it('names a wrong field inside a 1936 rule', () => {
+    const bad = machine([{ state: 'b', read: { match: 'blank' }, ops: ['P0'], next: 'b' }]);
+    const text = JSON.stringify(bad).replace('"ops":["P0"]', '"ops":"P0"');
+    expect(parseMachine(text)).toEqual({ ok: false, error: { code: 'bad-field', field: 'rules.0.ops' } });
   });
 });
 

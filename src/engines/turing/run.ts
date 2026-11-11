@@ -12,7 +12,7 @@ export type HaltReason =
   | { kind: 'left-edge'; state: string };
 
 /** What one step changed, so the step can be undone exactly. */
-interface StepRecord {
+export interface StepRecord {
   ruleIndex: number | null;
   fromState: string;
   fromHead: number;
@@ -94,18 +94,20 @@ export function step(run: Run): StepOutcome | null {
     } else if (op.move === 'L') {
       if (tapeKind === 'one-sided' && run.head === 0) {
         hitLeftEdge = true;
-        if (leftEdge === 'reject') {
-          run.status = 'rejected';
-          run.reason = { kind: 'left-edge', state: run.state };
-          return { rule, hitLeftEdge };
-        }
       } else {
         run.head -= 1;
       }
     }
   }
-  run.state = rule.next;
   const halt = haltCheck(run.compiled, rule.next);
+  // The 2016 rule rejects a move off the left edge, but only when this same rule does not
+  // already enter an accept or reject state: the 2016 app checked the edge on the next step.
+  if (hitLeftEdge && leftEdge === 'reject' && halt.status === 'running') {
+    run.status = 'rejected';
+    run.reason = { kind: 'left-edge', state: run.state };
+    return { rule, hitLeftEdge };
+  }
+  run.state = rule.next;
   run.status = halt.status;
   run.reason = halt.reason;
   return { rule, hitLeftEdge };
