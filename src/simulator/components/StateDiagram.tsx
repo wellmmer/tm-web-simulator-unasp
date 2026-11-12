@@ -130,6 +130,8 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
       current: rule !== null && edge.ruleIndexes.includes(rule),
     },
   }));
+  // React Flow draws the edges in this order. The arrow of the last step comes last, so its text is on top.
+  const drawn = [...edges.filter((edge) => edge.data?.current !== true), ...edges.filter((edge) => edge.data?.current === true)];
 
   return (
     <>
@@ -160,7 +162,7 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
       >
         <ReactFlow
           nodes={nodes}
-          edges={edges}
+          edges={drawn}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           minZoom={MIN_ZOOM}

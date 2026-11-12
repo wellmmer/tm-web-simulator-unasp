@@ -1,5 +1,5 @@
 import { getViewportForBounds, type Rect, type Viewport } from '@xyflow/react';
-import { LABEL_FONT_PX, NODE_RADIUS, type DiagramLayout } from './diagram-layout';
+import { COLUMN_GAP, LABEL_FONT_PX, NODE_RADIUS, type DiagramLayout } from './diagram-layout';
 
 /** The smallest arrow text on screen, in pixels. With smaller text the diagram follows the run (spec section 2). */
 export const MIN_LABEL_PX = 11;
@@ -54,8 +54,12 @@ export function followStates(layout: DiagramLayout, state: string): string[] {
   return states;
 }
 
-/** The room the view keeps around the current state, in diagram pixels: its circle, and its loop and the loop's text above it. */
-const KEEP_SIDE = 2 * NODE_RADIUS;
+/**
+ * The room the view keeps around the current state, in diagram pixels: half a column on each side,
+ * where the text of the arrows into the next and from the previous column stands, and the loop and
+ * its text above the state.
+ */
+const KEEP_SIDE = COLUMN_GAP / 2 + NODE_RADIUS;
 const KEEP_ABOVE = 3 * NODE_RADIUS;
 const KEEP_BELOW = 2 * NODE_RADIUS;
 

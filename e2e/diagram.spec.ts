@@ -87,3 +87,21 @@ test('Binary +1 shows the whole machine as today, with no "Follow the run"', asy
   // Rules that write what they read and share a move join into one label.
   await expect(diagramEdge(page, 'q0', 'q0')).toContainText('0 1 → R');
 });
+
+test('at 390 px, the arrow of the last step is drawn over the others, and its text is inside the panel', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await openSimulator(page);
+  await pickExample(page, 'TCC machine (2016)');
+  await page.getByRole('button', { name: 'Step', exact: true }).click();
+  // React Flow draws the edges in their order, so the last one is on top.
+  await expect(page.locator('[data-edge]').last()).toHaveAttribute('data-current', 'true');
+  const textInside = () =>
+    page.getByTestId('state-diagram').evaluate((panel) => {
+      const box = panel.getBoundingClientRect();
+      const text = panel.querySelector('[data-edge][data-current] text')?.getBoundingClientRect();
+      return text !== undefined && text.left >= box.left && text.right <= box.right && text.top >= box.top && text.bottom <= box.bottom;
+    });
+  await expect.poll(textInside).toBe(true);
+  // While the view slides, the zoom passes below its end value, so wait for the end.
+  await expect.poll(() => currentArrowTextPx(page)).toBeGreaterThanOrEqual(11);
+});

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { FIT_MAX_ZOOM, followMove, followsRun, followStates, followViewport, READABLE_ZOOM, wholeMachineZoom } from './diagram-follow';
-import { LABEL_FONT_PX, layoutDiagram, NODE_RADIUS } from './diagram-layout';
+import { COLUMN_GAP, LABEL_FONT_PX, layoutDiagram, NODE_RADIUS } from './diagram-layout';
 import { EXAMPLE_IDS, examples } from './examples';
 
 /** The diagram panel's size in the browser, measured at 390 px and 1440 px wide. */
@@ -79,6 +79,23 @@ describe('followViewport', () => {
           const top = (node.y - NODE_RADIUS) * view.zoom + view.y;
           const size = 2 * NODE_RADIUS * view.zoom;
           expect([left >= 0, top >= 0, left + size <= panel.width, top + size <= panel.height]).toEqual([true, true, true, true]);
+        }
+      }
+    }
+  });
+});
+
+describe('followViewport and the arrows of the current state', () => {
+  it('keeps half a column on each side of the current state in the panel, where the text of its arrows stands', () => {
+    for (const id of EXAMPLE_IDS) {
+      const layout = layoutOf(id);
+      for (const panel of [PHONE, DESKTOP]) {
+        for (const node of layout.nodes) {
+          const view = followViewport(layout, node.id, panel);
+          if (view === null) throw new Error(`no view for ${id} ${node.id}`);
+          const left = (node.x - COLUMN_GAP / 2) * view.zoom + view.x;
+          const right = (node.x + COLUMN_GAP / 2) * view.zoom + view.x;
+          expect([id, node.id, left >= 0, right <= panel.width]).toEqual([id, node.id, true, true]);
         }
       }
     }
