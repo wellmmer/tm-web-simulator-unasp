@@ -29,9 +29,12 @@ export function Simulator() {
     store.getState().boot(window.location.hash);
     dropLinkFromUrl();
     // Pasting a link into the address bar of an open tab changes only the hash; the page does not reload.
+    // The paste also added a history entry. Going back to the entry before it means the next Back
+    // leaves the page, instead of showing the same page again. Forward opens the link again.
     const onHashChange = () => {
+      if (!window.location.hash.startsWith('#m=')) return;
       store.getState().openLink(window.location.hash);
-      dropLinkFromUrl();
+      window.history.back();
     };
     window.addEventListener('hashchange', onHashChange);
     return () => {

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act, cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { StrictMode } from 'react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -35,15 +35,20 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe('Simulator', () => {
-  it('opens a share link pasted into the address bar of an open tab, then drops it from the URL', () => {
+  it('opens a share link pasted into an open tab, then goes back, so the next Back leaves the page', async () => {
+    window.history.replaceState({ entry: 'before the link' }, '', `${PAGE}?x=1`);
     renderPage();
     expect(title()).toBe('Binary +1');
-    window.history.replaceState(null, '', `${PAGE}?x=1${linkHash('palindrome')}`);
+    // Pasting a link into the address bar adds a history entry with the hash.
+    window.history.pushState(null, '', `${PAGE}?x=1${linkHash('palindrome')}`);
     act(() => {
       window.dispatchEvent(new HashChangeEvent('hashchange'));
     });
     expect(title()).toBe('Palindrome checker');
+    // The page is back on the entry from before the paste, so the next Back leaves the page.
+    await waitFor(() => expect(window.history.state).toEqual({ entry: 'before the link' }));
     expect(`${window.location.pathname}${window.location.search}${window.location.hash}`).toBe(`${PAGE}?x=1`);
+    expect(title()).toBe('Palindrome checker');
   });
 
   it('shows the bad-link note when React runs the effect twice, as StrictMode does in dev', () => {
