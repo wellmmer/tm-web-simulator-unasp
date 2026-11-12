@@ -40,7 +40,17 @@ export function HomeMachine() {
     const state = store.getState();
     if (playing) {
       if (state.loop !== 'running') state.toggleRun();
-      return () => store.getState().pause();
+      // The store stops at the step limit, which also keeps the run's history small. Home starts the
+      // machine again from an empty tape instead, so it keeps moving and the button still says Pause.
+      const unsubscribe = store.subscribe((next) => {
+        if (next.loop !== 'limit') return;
+        next.reset();
+        next.toggleRun();
+      });
+      return () => {
+        unsubscribe();
+        store.getState().pause();
+      };
     }
     state.pause();
     // Still because of reduced motion, not because of Pause: show the machine after STILL_STEPS steps.

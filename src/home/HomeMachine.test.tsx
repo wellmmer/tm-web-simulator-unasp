@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { DEFAULT_STEP_LIMIT } from '@/engines/turing';
 import { renderWithIntl } from '@/test/intl';
 import { HomeMachine, STILL_STEPS } from './HomeMachine';
 
@@ -47,6 +48,18 @@ describe('HomeMachine', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Play' }));
     act(() => vi.advanceTimersByTime(700));
     expect(screen.getByTestId('head-state').textContent).not.toBe(head);
+  });
+
+  it('starts again from an empty tape at the step limit, and keeps playing', () => {
+    setReducedMotion(false);
+    renderWithIntl(<HomeMachine />);
+    // Step 10,000 comes at 9,999 × 700 ms. The new run makes its first step at once, then three more.
+    act(() => vi.advanceTimersByTime((DEFAULT_STEP_LIMIT - 1 + 3) * 700));
+    expect(firstCells()).toEqual(['0', '_', '1', '_', '_']);
+    expect(screen.getByTestId('step-sentence').textContent).toBe('In 𝔨 reading _: move right, go to 𝔟.');
+    expect(screen.getByRole('button', { name: 'Pause' })).toBeTruthy();
+    act(() => vi.advanceTimersByTime(700));
+    expect(firstCells()).toEqual(['0', '_', '1', '_', '0']);
   });
 
   it(`with reduced motion, shows the tape after ${STILL_STEPS} steps and does not move`, () => {
