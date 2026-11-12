@@ -29,7 +29,10 @@ export function TapeEditor({ cell }: { cell: number }) {
   const write = (at: number, value: string) => store.getState().setInput(writeInputCell(machine.input, machine.blank, at, value));
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    // AltGr (reported as Ctrl+Alt) and Option on a Mac type symbols such as @ [ {, so Alt with one symbol writes it.
+    // Other keys with Ctrl, Alt or Cmd are the browser's, such as Ctrl+C or Alt+← for Back.
+    const altSymbol = event.altKey && symbolsOf(event.key).length === 1;
+    if (event.metaKey || ((event.ctrlKey || event.altKey) && !altSymbol)) return;
     const { moveTapeCursor, endTapeEdit } = store.getState();
     if (event.key === 'ArrowLeft') moveTapeCursor(cell - 1);
     else if (event.key === 'ArrowRight') moveTapeCursor(cell + 1);
