@@ -230,5 +230,23 @@
     "advisor": "Prof. Laercio Martins Carpes",
     "paper": "Read the 2016 paper (PDF, in Portuguese)",
     "tag": "See the 2016 app's code at the git tag <code>v1.0-tcc-2016</code>"
+  },
+  "privacy": {
+    "pageTitle": "Privacy",
+    "title": "Privacy",
+    "lead": "Computable has no accounts, sets no cookies and keeps no personal data about you.",
+    "browserTitle": "What stays in your browser",
+    "browser": "Your browser keeps your current machine and your choice of squared or night paper. They stay on your device. Computable never sends them anywhere.",
+    "shareLink": "A share link holds the machine after the # sign. Browsers do not send that part of a link to any server.",
+    "analytics": {
+      "title": "What the site counts",
+      "summary": "To learn which pages help people, the site counts visits with {service}. It sets no cookies.",
+      "counted": "For each page view it records the time, the page, the page you came from, your country, region and city, your browser, your system and the kind of device.",
+      "visitor": "It tells visits apart with a code made from the request, and throws the code away after 24 hours. It does not tie the visits to you or to your IP address.",
+      "source": "How {service} handles privacy"
+    },
+    "donationsTitle": "Donations",
+    "donations": "The Support page only links to payment services, such as PayPal and Ko-fi. You pay on their pages, under their privacy rules. No payment data passes through Computable.",
+    "questions": "Questions? <link>Open an issue on GitHub</link>."
   }
 }

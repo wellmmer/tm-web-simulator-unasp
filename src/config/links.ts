@@ -1,6 +1,9 @@
 /** The public repo. The footer, About and Privacy link to it. */
 export const REPO_URL = 'https://github.com/wellmmer/tm-web-simulator-unasp';
 
+/** Questions and bug reports. */
+export const ISSUES_URL = `${REPO_URL}/issues`;
+
 /** The 2016 app's code, kept at a git tag (spec 4.1). */
 export const TCC_TAG_URL = `${REPO_URL}/tree/v1.0-tcc-2016`;
 
