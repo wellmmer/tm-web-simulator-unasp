@@ -4,10 +4,9 @@ import { Controls } from './Controls';
 import { KeyboardShortcuts } from './KeyboardShortcuts';
 import { LiveRegion } from './LiveRegion';
 import { MachineHeader } from './MachineHeader';
-import { MachineMessages } from './MachineMessages';
 import { Notices } from './Notices';
 import { ResultLine } from './ResultLine';
-import { RuleTable } from './RuleTable';
+import { RulesPanel } from './RulesPanel';
 import { StepSentence } from './StepSentence';
 import { TapeStage } from './TapeStage';
 
@@ -25,8 +24,7 @@ export function SimulatorView() {
       </div>
       <ResultLine />
       <div className="mt-6">
-        <MachineMessages />
-        <RuleTable />
+        <RulesPanel />
       </div>
       <LiveRegion />
     </main>

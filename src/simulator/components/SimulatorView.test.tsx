@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act, cleanup, fireEvent, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { SimulatorView } from './SimulatorView';
 import { renderSimulator } from './test-utils';
@@ -27,7 +27,13 @@ describe('the simulator page', () => {
     renderSimulator(<SimulatorView />);
     clickStep(6);
     const row = screen.getByRole('row', { current: true });
-    expect(within(row).getAllByRole('cell').map((cell) => cell.textContent)).toEqual(['q1', '1', '0', 'L', 'q1']);
+    expect([...row.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select')].map((field) => field.value)).toEqual([
+      'q1',
+      '1',
+      '0',
+      'L',
+      'q1',
+    ]);
   });
 
   it('shows the result line when Binary +1 accepts after 8 steps', () => {

@@ -93,7 +93,7 @@
     },
     "table": {
       "title": "Rules",
-      "hint": "Each row is one rule. The machine finds the row for its state and the symbol under the head.",
+      "hint": "Each row is one rule. The machine finds the row for its state and the symbol under the head. Type in a cell to change a rule.",
       "state": "If in state",
       "read": "and reading",
       "write": "write",
@@ -102,7 +102,21 @@
       "next": "then go to",
       "any": "any symbol",
       "blank": "blank",
-      "empty": "Your machine has no rules yet."
+      "empty": "Your machine has no rules yet. Add the first rule, or start from an example.",
+      "symbol": "a symbol",
+      "cell": "Rule {rule}: {column}",
+      "readSymbol": "Rule {rule}: symbol read",
+      "deleteColumn": "Delete",
+      "delete": "Delete rule {rule}",
+      "add": "Add a rule",
+      "addFirst": "Add the first rule",
+      "openExample": "Open an example",
+      "fieldHint": {
+        "emptyState": "Type a state.",
+        "badSymbol": "Type exactly one symbol.",
+        "badOp": "Use P and a symbol, E, L or R."
+      },
+      "duplicate": "Two rules for {state} reading {symbol}. A Turing machine needs exactly one."
     },
     "shortcuts": {
       "open": "Keyboard shortcuts",
