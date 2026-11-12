@@ -1,9 +1,7 @@
 'use client';
 
 import { BaseEdge, Handle, Position, type Edge, type EdgeProps, type Node, type NodeProps } from '@xyflow/react';
-
-/** The radius of a state's circle, in diagram pixels. */
-export const NODE_RADIUS = 26;
+import { LABEL_FONT_PX, NODE_RADIUS } from '../diagram-layout';
 
 export type StateNodeData = {
   label: string;
@@ -106,7 +104,7 @@ export function RuleEdgeView({ id, source, target, data }: EdgeProps<RuleEdge>) 
         label={data.label}
         labelX={labelX}
         labelY={labelY}
-        labelStyle={{ fill: data.current ? 'var(--pencil)' : 'var(--muted)', fontFamily: 'var(--font-jetbrains-mono), var(--font-math), monospace', fontSize: 12, fontWeight: 500 }}
+        labelStyle={{ fill: data.current ? 'var(--pencil)' : 'var(--muted)', fontFamily: 'var(--font-jetbrains-mono), var(--font-math), monospace', fontSize: LABEL_FONT_PX, fontWeight: 500 }}
         labelShowBg
         labelBgStyle={{ fill: 'var(--cell)' }}
         labelBgPadding={[3, 1]}

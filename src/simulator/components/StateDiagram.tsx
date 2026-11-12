@@ -4,9 +4,9 @@ import '@xyflow/react/dist/base.css';
 import { ReactFlow, useReactFlow, useStore, type FitViewOptions } from '@xyflow/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
-import { edgeLabel, layoutDiagram } from '../diagram-layout';
+import { edgeLabel, layoutDiagram, NODE_RADIUS } from '../diagram-layout';
 import { currentRuleIndex } from '../store';
-import { NODE_RADIUS, RuleEdgeView, StateNodeView, type RuleEdge, type StateNode } from './diagram-parts';
+import { RuleEdgeView, StateNodeView, type RuleEdge, type StateNode } from './diagram-parts';
 import { useSimulator } from './store-context';
 
 const nodeTypes = { state: StateNodeView };

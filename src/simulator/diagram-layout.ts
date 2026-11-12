@@ -4,6 +4,12 @@ import { isTuringRule, type Machine, type Rule } from '@/engines/turing';
 export const COLUMN_GAP = 160;
 export const ROW_GAP = 110;
 
+/** The radius of a state's circle, in diagram pixels. */
+export const NODE_RADIUS = 26;
+
+/** The font size of the arrow text, in diagram pixels. On screen it is this size times the zoom. */
+export const LABEL_FONT_PX = 12;
+
 export interface DiagramNode {
   /** The state's name. */
   id: string;
