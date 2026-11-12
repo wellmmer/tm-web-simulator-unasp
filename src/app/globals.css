@@ -86,3 +86,29 @@ body {
 .state-diagram .react-flow__pane {
   touch-action: pan-x pan-y;
 }
+
+/*
+ * The theme switch shows a moon on squared paper and a sun on night paper. CSS picks the icon,
+ * so the icon is right before React loads.
+ */
+.on-night {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .on-paper {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .on-night {
+    display: block;
+  }
+}
+
+:root[data-theme="dark"] .on-paper {
+  display: none;
+}
+
+:root[data-theme="dark"] .on-night {
+  display: block;
+}

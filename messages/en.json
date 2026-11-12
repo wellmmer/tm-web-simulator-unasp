@@ -182,5 +182,10 @@
       "off": "Shortcuts are off while you type in a text field.",
       "startTapeEdit": "Edit the tape"
     }
+  },
+  "shell": {
+    "theme": {
+      "label": "Night paper"
+    }
   }
 }
