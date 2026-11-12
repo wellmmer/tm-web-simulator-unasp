@@ -86,3 +86,32 @@ export function followViewport(layout: DiagramLayout, state: string, panel: Pane
     zoom,
   };
 }
+
+/** How long the view slides to the next current state. */
+export const FOLLOW_SLIDE_MS = 300;
+/** At the top speed the view moves at most twice a second. */
+export const FAST_FOLLOW_GAP_MS = 500;
+
+export interface FollowMoveInput {
+  /** The time now, and the time of the last move or null before the first move, in milliseconds. */
+  now: number;
+  lastMoveAt: number | null;
+  /** True at the top speed, where the tape jumps too. */
+  fast: boolean;
+  /** True when the visitor asks the system for reduced motion. */
+  reducedMotion: boolean;
+}
+
+export interface FollowMove {
+  /** How long to wait before the move, in milliseconds. */
+  wait: number;
+  /** How long the view slides, in milliseconds. 0 is a jump. */
+  duration: number;
+}
+
+/** When the view moves to the next current state, and how long it slides (spec section 2). */
+export function followMove({ now, lastMoveAt, fast, reducedMotion }: FollowMoveInput): FollowMove {
+  if (lastMoveAt === null) return { wait: 0, duration: 0 };
+  if (fast) return { wait: Math.max(0, lastMoveAt + FAST_FOLLOW_GAP_MS - now), duration: 0 };
+  return { wait: 0, duration: reducedMotion ? 0 : FOLLOW_SLIDE_MS };
+}

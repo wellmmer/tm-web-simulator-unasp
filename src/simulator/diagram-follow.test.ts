@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FIT_MAX_ZOOM, followsRun, followStates, followViewport, READABLE_ZOOM, wholeMachineZoom } from './diagram-follow';
+import { FIT_MAX_ZOOM, followMove, followsRun, followStates, followViewport, READABLE_ZOOM, wholeMachineZoom } from './diagram-follow';
 import { LABEL_FONT_PX, layoutDiagram, NODE_RADIUS } from './diagram-layout';
 import { EXAMPLE_IDS, examples } from './examples';
 
@@ -82,5 +82,21 @@ describe('followViewport', () => {
         }
       }
     }
+  });
+});
+
+describe('followMove', () => {
+  it('slides for 300 ms, and jumps with reduced motion', () => {
+    expect(followMove({ now: 5000, lastMoveAt: 4000, fast: false, reducedMotion: false })).toEqual({ wait: 0, duration: 300 });
+    expect(followMove({ now: 5000, lastMoveAt: 4000, fast: false, reducedMotion: true })).toEqual({ wait: 0, duration: 0 });
+  });
+
+  it('jumps on the first move, so a new machine does not slide in', () => {
+    expect(followMove({ now: 5000, lastMoveAt: null, fast: false, reducedMotion: false })).toEqual({ wait: 0, duration: 0 });
+  });
+
+  it('at the top speed, jumps at most twice a second', () => {
+    expect(followMove({ now: 5200, lastMoveAt: 5000, fast: true, reducedMotion: false })).toEqual({ wait: 300, duration: 0 });
+    expect(followMove({ now: 5600, lastMoveAt: 5000, fast: true, reducedMotion: false })).toEqual({ wait: 0, duration: 0 });
   });
 });
