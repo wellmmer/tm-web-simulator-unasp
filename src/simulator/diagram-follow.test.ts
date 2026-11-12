@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { followsRun, READABLE_ZOOM, wholeMachineZoom } from './diagram-follow';
-import { LABEL_FONT_PX, layoutDiagram } from './diagram-layout';
+import { FIT_MAX_ZOOM, followsRun, followStates, followViewport, READABLE_ZOOM, wholeMachineZoom } from './diagram-follow';
+import { LABEL_FONT_PX, layoutDiagram, NODE_RADIUS } from './diagram-layout';
 import { EXAMPLE_IDS, examples } from './examples';
 
 /** The diagram panel's size in the browser, measured at 390 px and 1440 px wide. */
@@ -39,5 +39,48 @@ describe('followsRun', () => {
 
   it('does not follow before the panel has a size', () => {
     expect(followsRun(layoutOf('tcc-2016'), { width: 0, height: 0 })).toBe(false);
+  });
+});
+
+describe('followStates', () => {
+  it('lists the current state, then the states its rules go to, in rule table order', () => {
+    expect(followStates(layoutOf('binary-plus-one'), 'q0')).toEqual(['q0', 'q1']);
+    expect(followStates(layoutOf('tcc-2016'), 'q1')).toEqual(['q1', 'qR', 'q2', 'q3', 'q4', 'q5', 'q12']);
+    expect(followStates(layoutOf('binary-plus-one'), 'qA')).toEqual(['qA']);
+  });
+});
+
+describe('followViewport', () => {
+  it('shows the current state and the states its rules go to, never larger than small machines today', () => {
+    const view = followViewport(layoutOf('tcc-2016'), 'q0', DESKTOP);
+    expect(view?.zoom).toBe(FIT_MAX_ZOOM);
+  });
+
+  it('keeps the arrow text readable when those states do not fit, and keeps the current state in the panel', () => {
+    const view = followViewport(layoutOf('tcc-2016'), 'q1', DESKTOP);
+    expect(view?.zoom).toBe(READABLE_ZOOM);
+  });
+
+  it('has no view for a state that is not in the diagram, or before the panel has a size', () => {
+    expect(followViewport(layoutOf('tcc-2016'), 'q99', DESKTOP)).toBeNull();
+    expect(followViewport(layoutOf('tcc-2016'), 'q1', { width: 0, height: 0 })).toBeNull();
+  });
+
+  it('for every state of every example, draws readable text and the whole circle of the current state', () => {
+    for (const id of EXAMPLE_IDS) {
+      const layout = layoutOf(id);
+      for (const panel of [PHONE, DESKTOP, { width: 680, height: 320 }]) {
+        for (const node of layout.nodes) {
+          const view = followViewport(layout, node.id, panel);
+          if (view === null) throw new Error(`no view for ${id} ${node.id}`);
+          expect(view.zoom).toBeGreaterThanOrEqual(READABLE_ZOOM);
+          expect(view.zoom).toBeLessThanOrEqual(FIT_MAX_ZOOM);
+          const left = (node.x - NODE_RADIUS) * view.zoom + view.x;
+          const top = (node.y - NODE_RADIUS) * view.zoom + view.y;
+          const size = 2 * NODE_RADIUS * view.zoom;
+          expect([left >= 0, top >= 0, left + size <= panel.width, top + size <= panel.height]).toEqual([true, true, true, true]);
+        }
+      }
+    }
   });
 });

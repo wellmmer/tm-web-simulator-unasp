@@ -1,4 +1,4 @@
-import { getViewportForBounds, type Rect } from '@xyflow/react';
+import { getViewportForBounds, type Rect, type Viewport } from '@xyflow/react';
 import { LABEL_FONT_PX, NODE_RADIUS, type DiagramLayout } from './diagram-layout';
 
 /** The smallest arrow text on screen, in pixels. With smaller text the diagram follows the run (spec section 2). */
@@ -43,4 +43,46 @@ export function wholeMachineZoom(layout: DiagramLayout, panel: PanelSize): numbe
 export function followsRun(layout: DiagramLayout, panel: PanelSize): boolean {
   const zoom = wholeMachineZoom(layout, panel);
   return zoom !== null && zoom * LABEL_FONT_PX < MIN_LABEL_PX;
+}
+
+/** The states the view shows while following: the current state, then the states its rules go to, in rule table order. */
+export function followStates(layout: DiagramLayout, state: string): string[] {
+  const states = [state];
+  for (const edge of layout.edges) {
+    if (edge.source === state && !states.includes(edge.target)) states.push(edge.target);
+  }
+  return states;
+}
+
+/** The room the view keeps around the current state, in diagram pixels: its circle, and its loop and the loop's text above it. */
+const KEEP_SIDE = 2 * NODE_RADIUS;
+const KEEP_ABOVE = 3 * NODE_RADIUS;
+const KEEP_BELOW = 2 * NODE_RADIUS;
+
+/**
+ * Moves `offset` as little as possible, so that the span from `start` to `end` fits in `size`.
+ * `start` and `end` are screen pixels before the offset. A span larger than `size` is centred.
+ */
+function keepInside(offset: number, start: number, end: number, size: number): number {
+  if (end - start > size) return size / 2 - (start + end) / 2;
+  return Math.min(Math.max(offset, -start), size - end);
+}
+
+/**
+ * The view while following (spec section 2): the current state and the states its rules go to,
+ * never larger than FIT_MAX_ZOOM. When they do not fit with readable text, the zoom stays at
+ * READABLE_ZOOM, and the view moves just enough to keep the current state and its loop in the panel.
+ * Null for a state that is not in the diagram, or before the panel has a size.
+ */
+export function followViewport(layout: DiagramLayout, state: string, panel: PanelSize): Viewport | null {
+  const current = layout.nodes.find((node) => node.id === state);
+  const bounds = circlesBounds(layout, followStates(layout, state));
+  if (current === undefined || bounds === null || panel.width <= 0 || panel.height <= 0) return null;
+  const view = getViewportForBounds(bounds, panel.width, panel.height, READABLE_ZOOM, FIT_MAX_ZOOM, FIT_PADDING);
+  const zoom = view.zoom;
+  return {
+    x: keepInside(view.x, (current.x - KEEP_SIDE) * zoom, (current.x + KEEP_SIDE) * zoom, panel.width),
+    y: keepInside(view.y, (current.y - KEEP_ABOVE) * zoom, (current.y + KEEP_BELOW) * zoom, panel.height),
+    zoom,
+  };
 }
