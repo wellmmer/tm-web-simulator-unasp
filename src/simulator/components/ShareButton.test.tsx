@@ -13,6 +13,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe('ShareButton', () => {
@@ -40,5 +41,22 @@ describe('ShareButton', () => {
     expect(writeText).toHaveBeenCalledOnce();
     expect(screen.getByRole('status').textContent).toBe('Link copied.');
     expect(screen.queryByRole('textbox')).toBeNull();
+  });
+
+  it('offers the file download when the machine is too big for a link (spec 5.6)', async () => {
+    URL.createObjectURL = vi.fn(() => 'blob:machine');
+    URL.revokeObjectURL = vi.fn();
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    const { store } = renderSimulator(<ShareButton />);
+    // Characters that do not repeat, so lz-string cannot make the link short.
+    const name = Array.from({ length: 9000 }, (_, i) => String.fromCodePoint(0x4e00 + ((i * 7919) % 20000))).join('');
+    act(() => store.getState().loadMachine({ ...store.getState().machine, name }));
+    expect(screen.queryByRole('button', { name: 'Download' })).toBeNull();
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Copy share link' }));
+    });
+    expect(screen.getByRole('status').textContent).toBe('This machine is too big for a link. Download it as a file instead.');
+    act(() => fireEvent.click(screen.getByRole('button', { name: 'Download' })));
+    expect(click).toHaveBeenCalledOnce();
   });
 });
