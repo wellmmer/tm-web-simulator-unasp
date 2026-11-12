@@ -60,6 +60,8 @@ describe('SupportView (spec 7)', () => {
     expect(field.getAttribute('aria-invalid')).toBe('true');
     expect(screen.getByText('Type an amount from $1 to $10,000, with up to 2 decimals, like 7 or 7.50.')).toBeTruthy();
     expect(screen.queryByRole('link', { name: /with PayPal/ })).toBeNull();
+    // A disabled button, so screen readers say that it is unavailable.
+    expect(screen.getByRole('button', { name: 'Pay with PayPal' })).toHaveProperty('disabled', true);
     fireEvent.change(field, { target: { value: '7.5' } });
     expect(field.getAttribute('aria-invalid')).toBe('false');
     expect(screen.getByRole('link', { name: 'Pay $7.50 with PayPal' }).getAttribute('href')).toBe('https://paypal.me/devname/7.50USD');

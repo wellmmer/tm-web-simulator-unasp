@@ -45,11 +45,11 @@ function ProviderRow({ id, handles, amount }: { id: ProviderId; handles: Support
         <p className="font-semibold">{name}</p>
         <p className="text-sm text-muted">{note}</p>
       </div>
-      {/* Without a valid amount, PayPal's link would carry a wrong one, so it is not a link until the amount is fixed. */}
+      {/* Without a valid amount, PayPal's link would carry a wrong one, so it is a disabled button until the amount is fixed. */}
       {link.carriesAmount && amount === null ? (
-        <span aria-disabled="true" className={`${button} cursor-not-allowed bg-cell text-ink opacity-50`}>
+        <button type="button" disabled className={`${button} cursor-not-allowed bg-cell text-ink opacity-50`}>
           {label}
-        </span>
+        </button>
       ) : (
         <a href={link.href} className={`${button} ${link.carriesAmount ? 'bg-ink text-paper' : 'bg-cell text-ink'}`}>
           {label}
