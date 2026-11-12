@@ -40,6 +40,14 @@ describe('MachineFile', () => {
     expect(store.getState().exampleId).toBe('binary-plus-one');
   });
 
+  it('says so when the browser cannot read the chosen file, and keeps the machine', async () => {
+    vi.spyOn(File.prototype, 'text').mockRejectedValue(new DOMException('The file was moved.', 'NotFoundError'));
+    const { store } = renderSimulator(<MachineFile />);
+    chooseFile('palindrome.json', serializeMachine(examples.palindrome.machine));
+    await waitFor(() => expect(screen.getByRole('status').textContent).toBe('The browser could not read this file. Try to open it again.'));
+    expect(store.getState().exampleId).toBe('binary-plus-one');
+  });
+
   it('downloads the machine as <name>.json', () => {
     // jsdom has no object URLs.
     URL.createObjectURL = vi.fn(() => 'blob:machine');

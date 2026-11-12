@@ -9,7 +9,9 @@ import { newMachine } from '../rule-edit';
 import { fieldClass, plainTextProps } from './fields';
 import { useSimulator, useSimulatorStore } from './store-context';
 
-type FileStatus = { kind: 'opened'; name: string } | { kind: 'error'; error: MachineFileError } | null;
+/** `unreadable`: the browser could not read the file at all, for example because it was moved. */
+type FileError = MachineFileError | { code: 'unreadable' };
+type FileStatus = { kind: 'opened'; name: string } | { kind: 'error'; error: FileError } | null;
 
 const button = 'inline-flex items-center gap-2 border-2 border-ink bg-cell px-3 py-1.5 font-medium text-ink';
 
@@ -21,8 +23,10 @@ export function MachineFile() {
   const fileInput = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<FileStatus>(null);
 
-  const errorText = (error: MachineFileError) => {
+  const errorText = (error: FileError) => {
     switch (error.code) {
+      case 'unreadable':
+        return t('error.unreadable');
       case 'not-json':
         return t('error.notJson');
       case 'not-a-machine':
@@ -39,7 +43,14 @@ export function MachineFile() {
   };
 
   const open = async (file: File) => {
-    const result = readMachineFile(file.name, await file.text());
+    let text: string;
+    try {
+      text = await file.text();
+    } catch {
+      setStatus({ kind: 'error', error: { code: 'unreadable' } });
+      return;
+    }
+    const result = readMachineFile(file.name, text);
     if (!result.ok) {
       setStatus({ kind: 'error', error: result.error });
       return;

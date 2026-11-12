@@ -159,7 +159,8 @@
         "missingField": "This file is not a Computable machine (missing `{field}`).",
         "badField": "This file is not a Computable machine (`{field}` has a wrong value).",
         "legacyTooShort": "This 2016 file is too short. Line 1 must be the start state and line 2 the input.",
-        "legacyBadRow": "This 2016 file has a broken rule on line {row}."
+        "legacyBadRow": "This 2016 file has a broken rule on line {row}.",
+        "unreadable": "The browser could not read this file. Try to open it again."
       }
     },
     "shortcuts": {
