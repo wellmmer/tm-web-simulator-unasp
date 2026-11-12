@@ -118,6 +118,19 @@
       },
       "duplicate": "Two rules for {state} reading {symbol}. A Turing machine needs exactly one."
     },
+    "settings": {
+      "legend": "Machine settings",
+      "start": "Start state",
+      "accept": "Accept states",
+      "reject": "Reject states",
+      "listHint": "Separate states with commas.",
+      "acceptAndReject": "A state cannot both accept and reject.",
+      "blank": "Blank",
+      "tape": "Tape",
+      "oneSided": "One-sided",
+      "twoWay": "Two-way",
+      "leftEdgeReject": "On this tape, a move left of cell 0 rejects, as in the 2016 app."
+    },
     "shortcuts": {
       "open": "Keyboard shortcuts",
       "title": "Keyboard shortcuts",

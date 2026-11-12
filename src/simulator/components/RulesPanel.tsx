@@ -2,9 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 import { MachineMessages } from './MachineMessages';
+import { MachineSettings } from './MachineSettings';
 import { RuleTable } from './RuleTable';
 
-/** The left panel of the bench: compile messages and the rule table. */
+/** The left panel of the bench: compile messages, the machine settings and the rule table. */
 export function RulesPanel() {
   const t = useTranslations('simulator.table');
   return (
@@ -14,6 +15,7 @@ export function RulesPanel() {
       </h2>
       <p className="mb-3 text-sm text-muted">{t('hint')}</p>
       <MachineMessages />
+      <MachineSettings />
       <RuleTable />
     </section>
   );
