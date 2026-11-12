@@ -60,7 +60,7 @@ export function MachineFile() {
           <input
             {...plainTextProps}
             value={machine.name}
-            onChange={(event) => store.getState().editMachine({ ...machine, name: event.target.value })}
+            onChange={(event) => store.getState().renameMachine(event.target.value)}
             className={`${fieldClass(false)} w-64 font-sans text-[15px] font-medium`}
           />
         </label>

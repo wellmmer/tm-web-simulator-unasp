@@ -57,6 +57,8 @@ export interface SimulatorState {
   loadMachine(machine: Machine, importWarnings?: LegacyWarning[]): void;
   /** Replaces the machine after an edit in the rule table: compiles it and starts the run again. */
   editMachine(machine: Machine): void;
+  /** Changes only the machine's name. The run, its history and the import warnings stay, and the machine is saved. */
+  renameMachine(name: string): void;
   setInput(input: string): void;
   stepForward(): void;
   stepBack(): void;
@@ -224,6 +226,11 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
         get().pause();
         // Import warnings name lines of the file, so they do not fit the edited machine.
         set((state) => ({ ...machineState(machine, []), version: state.version + 1 }));
+      },
+
+      renameMachine(name) {
+        const machine = { ...get().machine, name };
+        set({ machine, exampleId: findExampleId(machine) });
       },
 
       setInput(input) {

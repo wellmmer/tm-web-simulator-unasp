@@ -246,6 +246,23 @@ describe('the simulator store', () => {
     expect(storage.loadMachine()).toEqual(edited);
   });
 
+  it('renames the machine and saves it, without sending the run back to the start', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().loadExample('tcc-2016');
+    for (let i = 0; i < 3; i++) store.getState().stepForward();
+    const run = store.getState().run;
+    store.getState().renameMachine('My TCC machine');
+    const state = store.getState();
+    expect(state.machine).toEqual({ ...examples['tcc-2016'].machine, name: 'My TCC machine' });
+    expect(state.run).toBe(run);
+    expect(state.run?.steps).toBe(3);
+    expect(state.run?.history).toHaveLength(3);
+    expect(state.event.kind).toBe('step');
+    expect(state.importWarnings).toEqual(examples['tcc-2016'].warnings);
+    expect(state.exampleId).toBeNull();
+    expect(storage.loadMachine()).toEqual(state.machine);
+  });
+
   it('has no run while an edit leaves an issue, and runs again once it is fixed', () => {
     const store = createSimulatorStore({ storage });
     const rule = { state: 'q0', read: '', write: '0', move: 'R', next: 'q0' } as const;

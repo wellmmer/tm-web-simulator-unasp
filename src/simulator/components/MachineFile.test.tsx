@@ -53,10 +53,12 @@ describe('MachineFile', () => {
     expect(clicked.map((link) => [link.download, link.href])).toEqual([['Binary +1.json', 'blob:machine']]);
   });
 
-  it('renames the machine, and starts a new machine with no rules', () => {
+  it('renames the machine without sending the run back to the start, and starts a new machine with no rules', () => {
     const { store } = renderSimulator(<MachineFile />);
+    act(() => store.getState().stepForward());
     act(() => fireEvent.change(screen.getByRole('textbox', { name: 'Name' }), { target: { value: 'Adder' } }));
     expect(store.getState().machine.name).toBe('Adder');
+    expect(store.getState().run?.steps).toBe(1);
     act(() => fireEvent.click(screen.getByRole('button', { name: 'New machine' })));
     expect(store.getState().machine).toMatchObject({ name: 'My machine', tape: 'one-sided', rules: [] });
   });
