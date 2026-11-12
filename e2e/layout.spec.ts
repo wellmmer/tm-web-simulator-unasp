@@ -26,4 +26,22 @@ for (const width of [390, 768, 1440]) {
       await page.screenshot({ path: `test-results/screenshots/simulator-${width}-${colorScheme}.png`, fullPage: true });
     });
   }
+
+  test(`at ${width}px, the move field is wide enough to show the letter next to its arrow`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openSimulator(page);
+    const move = page.getByRole('combobox', { name: 'Rule 1: move' });
+    // A copy of the field with its natural width shows the letter and the arrow in full.
+    const { shown, natural } = await move.evaluate((select) => {
+      const copy = select.cloneNode(true);
+      if (!(copy instanceof HTMLSelectElement)) throw new Error('the copy is not a select');
+      copy.style.width = 'auto';
+      copy.style.minWidth = '0';
+      document.body.append(copy);
+      const natural = copy.clientWidth;
+      copy.remove();
+      return { shown: select.clientWidth, natural };
+    });
+    expect(shown).toBeGreaterThanOrEqual(natural);
+  });
 }

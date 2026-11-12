@@ -118,8 +118,9 @@ export function RuleRow({ rule, index, turing, problem, current, stateClass, onC
                 {hint('write')}
               </td>
               <td className={td}>
+                {/* 48 px shows the letter next to the arrow. A narrower field puts the arrow over the letter. */}
                 <select
-                  {...fieldProps('move', t('move'))}
+                  {...fieldProps('move', t('move'), 'min-w-12')}
                   value={rule.move}
                   onChange={(event) => onChange({ ...rule, move: MOVES.find((move) => move === event.target.value) ?? rule.move })}
                 >
