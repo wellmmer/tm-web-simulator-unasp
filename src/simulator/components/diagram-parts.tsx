@@ -1,9 +1,7 @@
 'use client';
 
 import { BaseEdge, Handle, Position, type Edge, type EdgeProps, type Node, type NodeProps } from '@xyflow/react';
-
-/** The radius of a state's circle, in diagram pixels. */
-export const NODE_RADIUS = 26;
+import { LABEL_FONT_PX, NODE_RADIUS } from '../diagram-layout';
 
 export type StateNodeData = {
   label: string;
@@ -26,6 +24,8 @@ export type RuleEdgeData = {
   bend: number;
   /** True when the last step applied one of this edge's rules. */
   current: boolean;
+  /** True while following, for an arrow that does not leave the current state: light grey, without text. */
+  faded: boolean;
 };
 export type RuleEdge = Edge<RuleEdgeData, 'rule'>;
 
@@ -85,14 +85,17 @@ export function edgePath({ from, to, loop, bend }: Pick<RuleEdgeData, 'from' | '
   };
 }
 
-/** The rules from one state to another, as one arrow with every rule in its label. */
+/**
+ * The rules from one state to another, as one arrow with every rule in its label. The arrow of the
+ * last step is pencil red. A faded arrow is light grey and has no text, so it hides no other text.
+ */
 export function RuleEdgeView({ id, source, target, data }: EdgeProps<RuleEdge>) {
   if (data === undefined) return null;
   const { path, labelX, labelY } = edgePath(data);
-  const color = data.current ? 'var(--pencil)' : 'var(--ink)';
+  const color = data.current ? 'var(--pencil)' : data.faded ? 'var(--soft)' : 'var(--ink)';
   const marker = `arrow-${id}`;
   return (
-    <g data-edge={`${source}→${target}`} data-current={data.current || undefined}>
+    <g data-edge={`${source}→${target}`} data-current={data.current || undefined} data-faded={data.faded || undefined}>
       <defs>
         <marker id={marker} viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto">
           <path d="M0,0 L10,5 L0,10 z" fill={color} />
@@ -103,10 +106,10 @@ export function RuleEdgeView({ id, source, target, data }: EdgeProps<RuleEdge>) 
         path={path}
         markerEnd={`url(#${marker})`}
         style={{ stroke: color, strokeWidth: data.current ? 3.5 : 2 }}
-        label={data.label}
+        label={data.faded ? undefined : data.label}
         labelX={labelX}
         labelY={labelY}
-        labelStyle={{ fill: data.current ? 'var(--pencil)' : 'var(--muted)', fontFamily: 'var(--font-jetbrains-mono), var(--font-math), monospace', fontSize: 12, fontWeight: 500 }}
+        labelStyle={{ fill: data.current ? 'var(--pencil)' : 'var(--muted)', fontFamily: 'var(--font-jetbrains-mono), var(--font-math), monospace', fontSize: LABEL_FONT_PX, fontWeight: 500 }}
         labelShowBg
         labelBgStyle={{ fill: 'var(--cell)' }}
         labelBgPadding={[3, 1]}

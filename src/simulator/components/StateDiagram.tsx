@@ -1,49 +1,113 @@
 'use client';
 
 import '@xyflow/react/dist/base.css';
-import { ReactFlow, useReactFlow, useStore, type FitViewOptions } from '@xyflow/react';
+import { ReactFlow, ReactFlowProvider, useKeyPress, useReactFlow, useStore, type FitViewOptions } from '@xyflow/react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo } from 'react';
-import { layoutDiagram, ruleLabel } from '../diagram-layout';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { Run } from '@/engines/turing';
+import { edgesLeaving, FIT_MAX_ZOOM, FIT_PADDING, FOLLOW_SLIDE_MS, followMove, followsRun, followViewport, MIN_ZOOM } from '../diagram-follow';
+import { edgeLabel, layoutDiagram, NODE_RADIUS, type DiagramLayout } from '../diagram-layout';
+import { SPEEDS } from '../speed';
 import { currentRuleIndex } from '../store';
-import { NODE_RADIUS, RuleEdgeView, StateNodeView, type RuleEdge, type StateNode } from './diagram-parts';
+import { DiagramButtons } from './DiagramButtons';
+import { RuleEdgeView, StateNodeView, type RuleEdge, type StateNode } from './diagram-parts';
 import { useSimulator } from './store-context';
+import { useReducedMotion } from './use-reduced-motion';
 
 const nodeTypes = { state: StateNodeView };
 const edgeTypes = { rule: RuleEdgeView };
-const fitViewOptions: FitViewOptions = { padding: 0.12, maxZoom: 1.1 };
+const wholeMachine: FitViewOptions = { padding: FIT_PADDING, maxZoom: FIT_MAX_ZOOM };
+/** Zoom in stops at twice the normal size. */
+const MAX_ZOOM = 2;
+
+/** How the view is set: it follows the run, it shows the whole machine, or the visitor moved it by hand. */
+type ViewMode = 'follow' | 'whole' | 'hand';
 
 /**
- * Fits the view again when the panel changes size, as when a phone turns or the window crosses 1024 px.
- * React Flow fits the view on the first draw only, and the visitor cannot pan or zoom.
+ * The state diagram drawn with React Flow (spec 5.1), with the buttons above it. A new set of states
+ * and edges draws a new React Flow, so the view and the "moved by hand" mark start again.
  */
-function FitOnResize() {
-  const { fitView } = useReactFlow();
-  const width = useStore((s) => s.width);
-  const height = useStore((s) => s.height);
-  useEffect(() => {
-    void fitView(fitViewOptions);
-  }, [fitView, width, height]);
-  return null;
+export default function StateDiagram() {
+  const machine = useSimulator((s) => s.machine);
+  const layout = useMemo(() => layoutDiagram(machine), [machine]);
+  const shape = useMemo(() => JSON.stringify([layout.nodes.map((n) => n.id), layout.edges.map((e) => [e.source, e.target])]), [layout]);
+  return (
+    <ReactFlowProvider key={shape}>
+      <Diagram layout={layout} />
+    </ReactFlowProvider>
+  );
 }
 
 /**
- * The state diagram drawn with React Flow (spec 5.1). It is a picture only: nothing can be dragged,
- * selected or focused, it listens to no keys, and the page scrolls over it as over any picture.
+ * The view follows the run when the whole machine would draw its arrow text smaller than 11 px
+ * (spec section 2). A drag, a zoom by hand, Zoom in, Zoom out and Whole machine stop following until
+ * the next run: Reset, a new machine, an edit or an example make a new run.
+ *
+ * Mouse and touch (spec section 4): a drag moves the diagram. The plain wheel scrolls the page;
+ * Ctrl or ⌘ with the wheel and a trackpad pinch zoom. One finger scrolls the page, two fingers move
+ * and zoom the diagram. The diagram takes no keys.
  */
-export default function StateDiagram() {
+function Diagram({ layout }: { layout: DiagramLayout }) {
   const t = useTranslations('simulator.diagram');
   const machine = useSimulator((s) => s.machine);
+  const run = useSimulator((s) => s.run);
   const state = useSimulator((s) => s.run?.state ?? null);
   const rule = useSimulator(currentRuleIndex);
+  const fast = useSimulator((s) => SPEEDS[s.speed].slideMs === 0);
   useSimulator((s) => s.version);
+  const width = useStore((s) => s.width);
+  const height = useStore((s) => s.height);
+  const { fitView, setViewport, zoomIn, zoomOut } = useReactFlow();
+  const reducedMotion = useReducedMotion();
+  // React Flow zooms with ⌘ and the wheel only while it stops the page from scrolling.
+  const metaHeld = useKeyPress('Meta');
 
-  const layout = useMemo(() => layoutDiagram(machine), [machine]);
-  // A new set of states and edges draws a new React Flow, so it fits the view again.
-  const shape = useMemo(() => JSON.stringify([layout.nodes.map((n) => n.id), layout.edges.map((e) => [e.source, e.target])]), [layout]);
+  // The run on which the visitor moved the view by hand. A new run follows again.
+  const [movedByHand, setMovedByHand] = useState<{ run: Run | null } | null>(null);
+  // A machine with errors has no run, so there is no state to follow: the diagram shows the whole machine.
+  const canFollow = state !== null && followsRun(layout, { width, height });
+  const mode: ViewMode = movedByHand !== null && movedByHand.run === run ? 'hand' : canFollow ? 'follow' : 'whole';
+  const slide = reducedMotion ? 0 : FOLLOW_SLIDE_MS;
+  const stopFollowing = () => setMovedByHand({ run });
+
+  useEffect(() => {
+    if (mode === 'whole' && width > 0 && height > 0) void fitView(wholeMachine);
+  }, [mode, width, height, fitView]);
+
+  const target = useMemo(
+    () => (mode === 'follow' && state !== null ? followViewport(layout, state, { width, height }) : null),
+    [mode, layout, state, width, height],
+  );
+  const lastMoveAt = useRef<number | null>(null);
+  useEffect(() => {
+    if (target === null) return;
+    const move = followMove({ now: performance.now(), lastMoveAt: lastMoveAt.current, fast, reducedMotion });
+    const go = () => {
+      lastMoveAt.current = performance.now();
+      void setViewport(target, { duration: move.duration });
+    };
+    if (move.wait === 0) {
+      go();
+      return;
+    }
+    const timer = setTimeout(go, move.wait);
+    return () => clearTimeout(timer);
+  }, [target, fast, reducedMotion, setViewport]);
+
+  // React Flow pans with any touch. A touch that starts with one finger never reaches it, so the page scrolls.
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = box.current;
+    if (element === null) return;
+    const onTouchStart = (event: TouchEvent) => {
+      if (event.touches.length < 2) event.stopPropagation();
+    };
+    element.addEventListener('touchstart', onTouchStart, { capture: true });
+    return () => element.removeEventListener('touchstart', onTouchStart, { capture: true });
+  }, []);
+
   const words = { any: t('any'), blank: t('blank') };
   const fraktur = machine.notation === 'turing1936';
-
   const nodes: StateNode[] = layout.nodes.map((node) => ({
     id: node.id,
     type: 'state',
@@ -53,52 +117,91 @@ export default function StateDiagram() {
     data: { label: node.id, start: node.start, accept: node.accept, reject: node.reject, current: node.id === state, fraktur },
   }));
   const centre = new Map(layout.nodes.map((node) => [node.id, { x: node.x, y: node.y }]));
-  const edges: RuleEdge[] = layout.edges.map((edge) => ({
-    id: edge.id,
-    type: 'rule',
-    source: edge.source,
-    target: edge.target,
-    data: {
-      label: edge.ruleIndexes.map((index) => ruleLabel(machine.rules[index], words)).join('  '),
-      from: centre.get(edge.source)!,
-      to: centre.get(edge.target)!,
-      loop: edge.loop,
-      bend: edge.bend,
-      current: rule !== null && edge.ruleIndexes.includes(rule),
-    },
-  }));
+  // While following, only the arrows that leave the current state, and the arrow of the last step, keep their text.
+  const leaving = new Set(edgesLeaving(layout, state).map((edge) => edge.id));
+  const edges: RuleEdge[] = layout.edges.map((edge) => {
+    const current = rule !== null && edge.ruleIndexes.includes(rule);
+    return {
+      id: edge.id,
+      type: 'rule',
+      source: edge.source,
+      target: edge.target,
+      data: {
+        label: edgeLabel(edge.ruleIndexes.map((index) => machine.rules[index]), words),
+        from: centre.get(edge.source)!,
+        to: centre.get(edge.target)!,
+        loop: edge.loop,
+        bend: edge.bend,
+        current,
+        faded: mode === 'follow' && !current && !leaving.has(edge.id),
+      },
+    };
+  });
+  // React Flow draws the edges in this order: faded arrows first, the arrow of the last step last, so its text is on top.
+  const drawn = [
+    ...edges.filter((edge) => edge.data?.faded === true),
+    ...edges.filter((edge) => edge.data?.faded !== true && edge.data?.current !== true),
+    ...edges.filter((edge) => edge.data?.current === true),
+  ];
 
   return (
-    <ReactFlow
-      key={shape}
-      nodes={nodes}
-      edges={edges}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      fitView
-      fitViewOptions={fitViewOptions}
-      minZoom={0.1}
-      maxZoom={1.1}
-      nodesDraggable={false}
-      nodesConnectable={false}
-      nodesFocusable={false}
-      edgesFocusable={false}
-      elementsSelectable={false}
-      panOnDrag={false}
-      panOnScroll={false}
-      zoomOnScroll={false}
-      zoomOnPinch={false}
-      zoomOnDoubleClick={false}
-      preventScrolling={false}
-      deleteKeyCode={null}
-      selectionKeyCode={null}
-      multiSelectionKeyCode={null}
-      panActivationKeyCode={null}
-      zoomActivationKeyCode={null}
-      disableKeyboardA11y
-      proOptions={{ hideAttribution: true }}
-    >
-      <FitOnResize />
-    </ReactFlow>
+    <>
+      <DiagramButtons
+        canFollow={canFollow}
+        following={mode === 'follow'}
+        onZoomIn={() => {
+          stopFollowing();
+          void zoomIn({ duration: slide });
+        }}
+        onZoomOut={() => {
+          stopFollowing();
+          void zoomOut({ duration: slide });
+        }}
+        onWholeMachine={() => {
+          stopFollowing();
+          void fitView({ ...wholeMachine, duration: slide });
+        }}
+        onToggleFollow={() => (mode === 'follow' ? stopFollowing() : setMovedByHand(null))}
+      />
+      <div
+        ref={box}
+        role="img"
+        aria-label={t('label', { name: machine.name })}
+        aria-describedby="diagram-hint"
+        data-testid="state-diagram"
+        className="state-diagram h-[220px] touch-pan-x touch-pan-y sm:h-[320px]"
+      >
+        <ReactFlow
+          nodes={nodes}
+          edges={drawn}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          minZoom={MIN_ZOOM}
+          maxZoom={MAX_ZOOM}
+          // A move with an event is a move by hand. Moves from this component have no event.
+          onMove={(event) => {
+            if (event !== null && mode !== 'hand') stopFollowing();
+          }}
+          nodesDraggable={false}
+          nodesConnectable={false}
+          nodesFocusable={false}
+          edgesFocusable={false}
+          elementsSelectable={false}
+          panOnDrag
+          panOnScroll={false}
+          zoomOnScroll={false}
+          zoomOnPinch
+          zoomOnDoubleClick={false}
+          zoomActivationKeyCode="Meta"
+          preventScrolling={metaHeld}
+          deleteKeyCode={null}
+          selectionKeyCode={null}
+          multiSelectionKeyCode={null}
+          panActivationKeyCode={null}
+          disableKeyboardA11y
+          proOptions={{ hideAttribution: true }}
+        />
+      </div>
+    </>
   );
 }

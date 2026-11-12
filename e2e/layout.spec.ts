@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { openSimulator } from './helpers';
+import { openSimulator, pickExample, statesCutOff } from './helpers';
 
 for (const width of [390, 768, 1440]) {
   for (const colorScheme of ['light', 'dark'] as const) {
@@ -49,15 +49,34 @@ for (const width of [390, 768, 1440]) {
 test('the state diagram fits its panel again after the window changes size', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openSimulator(page);
+  await expect(page.getByRole('button', { name: 'Follow the run' })).toHaveCount(0);
   await page.setViewportSize({ width: 390, height: 900 });
-  // The number of state circles that stick out of the diagram panel, so part of them is cut off.
-  const cutOff = () =>
-    page.getByTestId('state-diagram').evaluate((panel) => {
-      const box = panel.getBoundingClientRect();
-      return [...panel.querySelectorAll('.react-flow__node')]
-        .map((node) => node.getBoundingClientRect())
-        .filter((circle) => circle.left < box.left || circle.right > box.right || circle.top < box.top || circle.bottom > box.bottom).length;
-    });
+  // At 390 px the whole of Binary +1 would draw its arrow text at 9.4 px, so the diagram follows the run.
+  await expect(page.getByRole('button', { name: 'Follow the run' })).toHaveAttribute('aria-pressed', 'true');
+  await expect.poll(() => statesCutOff(page, 'q0')).toBe(0);
+  await page.getByRole('button', { name: 'Whole machine' }).click();
   await expect(page.locator('.react-flow__node')).toHaveCount(3);
-  await expect.poll(cutOff).toBe(0);
+  await expect.poll(() => statesCutOff(page)).toBe(0);
 });
+
+for (const width of [390, 1440]) {
+  for (const colorScheme of ['light', 'dark'] as const) {
+    test(`at ${width}px in ${colorScheme} mode, the 2016 diagram follows the run, then shows the whole machine`, async ({ page }) => {
+      // Reduced motion makes the view jump, so the screenshot shows where the view stops.
+      await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' });
+      await page.setViewportSize({ width, height: 900 });
+      await openSimulator(page);
+      await pickExample(page, 'TCC machine (2016)');
+      await page.getByRole('button', { name: 'Step', exact: true }).click();
+      await expect.poll(() => statesCutOff(page, 'q1')).toBe(0);
+      const scroll = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      expect(scroll).toBe(0);
+
+      const panel = page.locator('section', { has: page.getByTestId('state-diagram') });
+      await panel.screenshot({ path: `test-results/screenshots/diagram-2016-${width}-${colorScheme}-follow.png` });
+      await page.getByRole('button', { name: 'Whole machine' }).click();
+      await expect.poll(() => statesCutOff(page)).toBe(0);
+      await panel.screenshot({ path: `test-results/screenshots/diagram-2016-${width}-${colorScheme}-whole.png` });
+    });
+  }
+}

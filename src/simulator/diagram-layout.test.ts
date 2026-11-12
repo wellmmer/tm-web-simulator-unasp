@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { machine } from '@/engines/turing/test-helpers';
-import { COLUMN_GAP, layoutDiagram, ROW_GAP, ruleLabel } from './diagram-layout';
+import { COLUMN_GAP, edgeLabel, layoutDiagram, ROW_GAP, ruleLabel } from './diagram-layout';
 import { examples } from './examples';
 
 const words = { any: 'any', blank: 'blank' };
@@ -84,5 +84,52 @@ describe('ruleLabel', () => {
     expect(ruleLabel({ state: 'q0', read: '0', write: '1', move: 'R', next: 'q0' }, words)).toBe('0→1,R');
     expect(ruleLabel({ state: 'b', read: { match: 'blank' }, ops: ['P0', 'R'], next: 'c' }, words)).toBe('blank→P0,R');
     expect(ruleLabel({ state: 'b', read: { match: 'any' }, ops: [], next: 'c' }, words)).toBe('any→');
+  });
+});
+
+describe('edgeLabel', () => {
+  const copy = (read: string, move: 'L' | 'R' | 'S') => ({ state: 'q0', read, write: read, move, next: 'q1' });
+
+  it('joins rules that write the symbol they read and share a move', () => {
+    expect(edgeLabel([copy('w', 'R'), copy('y', 'R'), copy('z', 'R'), copy('x', 'R')], words)).toBe('w y z x → R');
+  });
+
+  it('keeps the full form for a rule that writes another symbol, and for a rule that joins no other', () => {
+    expect(edgeLabel([{ state: 'q1', read: '1', write: '0', move: 'L', next: 'q1' }], words)).toBe('1→0,L');
+    expect(edgeLabel([copy('0', 'R'), { state: 'q0', read: '1', write: '0', move: 'R', next: 'q1' }], words)).toBe('0→0,R  1→0,R');
+  });
+
+  it('keeps the rule table order: a joined label stands where its first rule stands', () => {
+    const rules = [copy('a', 'R'), { state: 'q0', read: '1', write: '0', move: 'L', next: 'q1' } as const, copy('b', 'R'), copy('c', 'L')];
+    expect(edgeLabel(rules, words)).toBe('a b → R  1→0,L  c→c,L');
+  });
+
+  it('joins 1936 rules with the same operations, and shows the blank and the matchers as today', () => {
+    const turing = (read: string | { match: 'any' | 'blank' }, ops: string[]) => ({ state: 'b', read, ops, next: 'c' });
+    expect(edgeLabel([turing('0', ['R']), turing('1', ['R'])], words)).toBe('0 1 → R');
+    expect(edgeLabel([turing({ match: 'blank' }, ['P0', 'R']), turing({ match: 'any' }, ['P0', 'R']), turing('_', ['L'])], words)).toBe(
+      'blank any → P0,R  _→L',
+    );
+    expect(edgeLabel([turing('0', []), turing('1', [])], words)).toBe('0 1 →');
+  });
+
+  it('keeps the full form for a new rule with an empty read or write: it joins no other', () => {
+    const rules = [
+      copy('0', 'R'),
+      { state: 'q0', read: '1', write: '0', move: 'R', next: 'q1' } as const,
+      copy('1', 'R'),
+      copy('_', 'L'),
+      { state: 'q0', read: '', write: '', move: 'R', next: 'q1' } as const,
+    ];
+    expect(edgeLabel(rules, words)).toBe('0 1 → R  1→0,R  _→_,L  →,R');
+    const turing = (read: string, ops: string[]) => ({ state: 'b', read, ops, next: 'c' });
+    expect(edgeLabel([turing('0', ['R']), turing('', ['R'])], words)).toBe('0→R  →R');
+  });
+
+  it('shortens the arrows of the 2016 example', () => {
+    const tcc = examples['tcc-2016'].machine;
+    const loop = layoutDiagram(tcc).edges.find((edge) => edge.source === 'q2' && edge.target === 'q2');
+    if (loop === undefined) throw new Error('q2 has no loop');
+    expect(edgeLabel(loop.ruleIndexes.map((index) => tcc.rules[index]), words)).toBe('w y z x → R');
   });
 });
