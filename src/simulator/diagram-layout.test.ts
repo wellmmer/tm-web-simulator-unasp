@@ -113,6 +113,19 @@ describe('edgeLabel', () => {
     expect(edgeLabel([turing('0', []), turing('1', [])], words)).toBe('0 1 →');
   });
 
+  it('keeps the full form for a new rule with an empty read or write: it joins no other', () => {
+    const rules = [
+      copy('0', 'R'),
+      { state: 'q0', read: '1', write: '0', move: 'R', next: 'q1' } as const,
+      copy('1', 'R'),
+      copy('_', 'L'),
+      { state: 'q0', read: '', write: '', move: 'R', next: 'q1' } as const,
+    ];
+    expect(edgeLabel(rules, words)).toBe('0 1 → R  1→0,R  _→_,L  →,R');
+    const turing = (read: string, ops: string[]) => ({ state: 'b', read, ops, next: 'c' });
+    expect(edgeLabel([turing('0', ['R']), turing('', ['R'])], words)).toBe('0→R  →R');
+  });
+
   it('shortens the arrows of the 2016 example', () => {
     const tcc = examples['tcc-2016'].machine;
     const loop = layoutDiagram(tcc).edges.find((edge) => edge.source === 'q2' && edge.target === 'q2');

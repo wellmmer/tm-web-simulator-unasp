@@ -55,9 +55,11 @@ function readLabel(rule: Rule, words: MatcherWords): string {
 
 /**
  * What a joined label ends with: the move of a modern rule that writes the symbol it reads, or the
- * operations of a 1936 rule. Null for a modern rule that writes another symbol: it never joins.
+ * operations of a 1936 rule. Null for a modern rule that writes another symbol, and for a new rule
+ * with an empty read or write: it never joins.
  */
 function joinedEnd(rule: Rule): string | null {
+  if (rule.read === '') return null;
   if (isTuringRule(rule)) return rule.ops.join(',');
   return rule.write === rule.read ? rule.move : null;
 }
