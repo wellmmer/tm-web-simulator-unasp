@@ -9,7 +9,7 @@ import { currentRuleIndex } from '../store';
 import { RuleRow } from './RuleRow';
 import { useSimulator, useSimulatorStore } from './store-context';
 
-/** Where focus goes after a rule is added or deleted, so it is never lost. */
+/** Where focus goes after a rule is added or deleted, or an example opens, so it is never lost. */
 type FocusTarget = { kind: 'field'; rule: number } | { kind: 'delete'; rule: number } | { kind: 'add' } | null;
 
 const textButton = 'inline-flex items-center gap-1.5 py-1 text-sm font-semibold text-ink underline underline-offset-4';
@@ -50,6 +50,11 @@ export function RuleTable() {
     const left = machine.rules.length - 1;
     setFocusTarget(left === 0 ? { kind: 'add' } : { kind: 'delete', rule: Math.min(index, left - 1) });
   };
+  const openExample = () => {
+    store.getState().loadExample(DEFAULT_EXAMPLE_ID);
+    // The button goes away with the empty table, so focus moves to the first field of the example.
+    setFocusTarget({ kind: 'field', rule: 0 });
+  };
 
   if (machine.rules.length === 0) {
     return (
@@ -60,7 +65,7 @@ export function RuleTable() {
             <Plus aria-hidden className="size-4" />
             {t('addFirst')}
           </button>
-          <button type="button" onClick={() => store.getState().loadExample(DEFAULT_EXAMPLE_ID)} className={textButton}>
+          <button type="button" onClick={openExample} className={textButton}>
             {t('openExample')}
           </button>
         </div>

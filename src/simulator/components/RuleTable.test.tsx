@@ -122,6 +122,7 @@ describe('RuleTable', () => {
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Add the first rule' }));
     act(() => fireEvent.click(screen.getByRole('button', { name: 'Open an example' })));
     expect(store.getState().exampleId).toBe('binary-plus-one');
+    expect(document.activeElement).toBe(field('Rule 1: If in state'));
   });
 });
 
