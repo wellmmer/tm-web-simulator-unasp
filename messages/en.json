@@ -141,7 +141,12 @@
       "hint": "The same rules drawn as arrows. Circles are states. A double circle accepts, a dashed circle rejects, and the arrow on the left points at the start state. The rule table lists the same rules as text.",
       "label": "State diagram of {name}",
       "any": "any",
-      "blank": "blank"
+      "blank": "blank",
+      "view": "Diagram view",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "wholeMachine": "Whole machine",
+      "follow": "Follow the run"
     },
     "file": {
       "title": "Machine file",
