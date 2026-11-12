@@ -43,6 +43,11 @@ export interface SimulatorState {
   badLink: boolean;
   /** What the live region says. `id` changes every time, so the same text is spoken again. */
   announcement: { messages: SimMessage[]; id: number } | null;
+  /**
+   * The tape editor's cursor while the visitor edits the tape (spec 5.4), or null. Editing writes the
+   * machine's input. `resetRun` is true when starting to edit sent a started run back to the start.
+   */
+  tapeEdit: { cell: number; resetRun: boolean } | null;
 
   /** Opens the saved machine, then the share link in `hash`. Runs once per store. */
   boot(hash: string): void;
@@ -65,6 +70,11 @@ export interface SimulatorState {
   faster(): void;
   slower(): void;
   dismissLeftEdgeNote(): void;
+  /** Starts editing the tape with the cursor on `cell`. A run that has started goes back to the start first. */
+  startTapeEdit(cell?: number): void;
+  /** Moves the tape editor's cursor. The input starts on cell 0, so the cursor stays on cell 0 or right of it. */
+  moveTapeCursor(cell: number): void;
+  endTapeEdit(): void;
 }
 
 export interface StoreOptions {
@@ -82,7 +92,7 @@ function machineState(machine: Machine, importWarnings: LegacyWarning[]) {
   const compile = compileMachine(machine);
   const run = compile.ok ? createRun(compile.compiled, machine.input) : null;
   const event: StepEvent = { kind: 'ready', state: machine.start, cell: 0 };
-  return { machine, exampleId: findExampleId(machine), compile, importWarnings, run, event, leftEdgeNote: false };
+  return { machine, exampleId: findExampleId(machine), compile, importWarnings, run, event, leftEdgeNote: false, tapeEdit: null };
 }
 
 export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }: StoreOptions) {
@@ -298,6 +308,23 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
 
       dismissLeftEdgeNote() {
         set({ leftEdgeNote: false });
+      },
+
+      startTapeEdit(cell = 0) {
+        get().pause();
+        const { run } = get();
+        const resetRun = run !== null && run.history.length > 0;
+        if (resetRun) get().reset();
+        set({ tapeEdit: { cell: Math.max(0, cell), resetRun } });
+      },
+
+      moveTapeCursor(cell) {
+        const { tapeEdit } = get();
+        if (tapeEdit !== null) set({ tapeEdit: { ...tapeEdit, cell: Math.max(0, cell) } });
+      },
+
+      endTapeEdit() {
+        if (get().tapeEdit !== null) set({ tapeEdit: null });
       },
     };
   });

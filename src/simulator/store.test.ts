@@ -255,6 +255,33 @@ describe('the simulator store', () => {
     expect(store.getState().run?.status).toBe('running');
   });
 
+  it('edits the tape from cell 0 when the run has not started', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().startTapeEdit();
+    expect(store.getState().tapeEdit).toEqual({ cell: 0, resetRun: false });
+    store.getState().moveTapeCursor(3);
+    store.getState().setInput('1010');
+    expect(store.getState().tapeEdit).toEqual({ cell: 3, resetRun: false });
+    store.getState().endTapeEdit();
+    expect(store.getState().tapeEdit).toBeNull();
+  });
+
+  it('goes back to the start before editing the tape of a run that has started, and says so', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().toggleRun();
+    store.getState().startTapeEdit(2);
+    expect(store.getState()).toMatchObject({ loop: 'idle', run: { steps: 0 }, tapeEdit: { cell: 2, resetRun: true } });
+    store.getState().moveTapeCursor(-1);
+    expect(store.getState().tapeEdit?.cell).toBe(0);
+  });
+
+  it('stops editing the tape when another machine loads', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().startTapeEdit();
+    store.getState().loadExample('palindrome');
+    expect(store.getState().tapeEdit).toBeNull();
+  });
+
   it('keeps the 2016 import warnings of the TCC example', () => {
     const store = createSimulatorStore({ storage });
     store.getState().loadExample('tcc-2016');
