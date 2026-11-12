@@ -210,5 +210,25 @@
       "source": "Source code",
       "license": "Code under the MIT license. Texts under CC BY 4.0."
     }
+  },
+  "about": {
+    "pageTitle": "About",
+    "title": "About Computable",
+    "lead": "Computable began in 2016 as a capstone project for a degree in Computer Science at UNASP: a Turing machine simulator for the web.",
+    "rebuilt": "In 2026 the author rebuilt it from scratch as Computable. The simulator still opens the machines saved by the 2016 app.",
+    "record": "The 2016 project",
+    "projectLabel": "Title",
+    "project": "Simulador de Máquina de Turing, Uma Aplicação Web para o Ensino",
+    "projectEnglish": "(A Turing machine simulator: a web app for teaching)",
+    "schoolLabel": "School",
+    "school": "UNASP, Computer Science",
+    "yearLabel": "Year",
+    "year": "2016",
+    "authorLabel": "Author",
+    "author": "Wellmmer Lucas de Oliveira Pinto",
+    "advisorLabel": "Advisor",
+    "advisor": "Prof. Laercio Martins Carpes",
+    "paper": "Read the 2016 paper (PDF, in Portuguese)",
+    "tag": "See the 2016 app's code at the git tag <code>v1.0-tcc-2016</code>"
   }
 }
