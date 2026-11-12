@@ -186,6 +186,17 @@
   "shell": {
     "theme": {
       "label": "Night paper"
+    },
+    "menu": {
+      "label": "Main menu",
+      "wordmark": "Computable",
+      "learn": "Learn",
+      "simulator": "Simulator",
+      "enigma": "Enigma",
+      "bombe": "Bombe",
+      "support": "Support the dev",
+      "soon": "soon",
+      "comingSoon": "coming soon"
     }
   }
 }

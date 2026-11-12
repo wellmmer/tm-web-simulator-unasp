@@ -16,6 +16,7 @@
   --muted: #4a5570;
   --blank-ink: #848fa5;
   --row-now: #fbe3e0;
+  --coffee: #7a4a2a;
   color-scheme: light;
 }
 
@@ -31,6 +32,7 @@
     --muted: #9aa6bf;
     --blank-ink: #6b7894;
     --row-now: #3a2233;
+    --coffee: #d69a6a;
     color-scheme: dark;
   }
 }
@@ -46,6 +48,7 @@
   --muted: #9aa6bf;
   --blank-ink: #6b7894;
   --row-now: #3a2233;
+  --coffee: #d69a6a;
   color-scheme: dark;
 }
 
@@ -59,6 +62,7 @@
   --color-muted: var(--muted);
   --color-blank-ink: var(--blank-ink);
   --color-row-now: var(--row-now);
+  --color-coffee: var(--coffee);
   /* --font-math draws Turing's Fraktur state letters (𝔟, 𝔠, 𝔢, 𝔨) in every text style. */
   --font-display: var(--font-spectral), var(--font-math), Georgia, serif;
   --font-sans: var(--font-plex-sans), var(--font-math), system-ui, sans-serif;
