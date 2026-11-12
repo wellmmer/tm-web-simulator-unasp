@@ -50,6 +50,8 @@ export interface SimulatorState {
   openLink(hash: string): boolean;
   loadExample(id: ExampleId): void;
   loadMachine(machine: Machine, importWarnings?: LegacyWarning[]): void;
+  /** Replaces the machine after an edit in the rule table: compiles it and starts the run again. */
+  editMachine(machine: Machine): void;
   setInput(input: string): void;
   stepForward(): void;
   stepBack(): void;
@@ -206,6 +208,12 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
         const next = machineState(machine, importWarnings ?? []);
         const exampleWarnings = next.exampleId === null ? [] : examples[next.exampleId].warnings;
         set((state) => ({ ...next, importWarnings: importWarnings ?? exampleWarnings, badLink: false, version: state.version + 1 }));
+      },
+
+      editMachine(machine) {
+        get().pause();
+        // Import warnings name lines of the file, so they do not fit the edited machine.
+        set((state) => ({ ...machineState(machine, []), version: state.version + 1 }));
       },
 
       setInput(input) {

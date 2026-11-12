@@ -4,6 +4,7 @@ import { shareUrl } from '@/share/share-link';
 import { createMemoryStorage, type MachineStorage } from '@/storage/machine-storage';
 import { describeStep } from './describe';
 import { examples } from './examples';
+import { updateRule } from './rule-edit';
 import { createSimulatorStore, currentRuleIndex } from './store';
 
 let storage: MachineStorage;
@@ -232,6 +233,26 @@ describe('the simulator store', () => {
     const state = store.getState();
     expect(state.run).toBeNull();
     expect(state.compile).toMatchObject({ ok: false, issues: [{ code: 'accept-and-reject', state: 'q0' }] });
+  });
+
+  it('stops the run, compiles the edited machine and saves it after an edit', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().toggleRun();
+    const edited = updateRule(store.getState().machine, 0, { state: 'q0', read: '0', write: '1', move: 'R', next: 'q0' });
+    store.getState().editMachine(edited);
+    expect(store.getState()).toMatchObject({ loop: 'idle', exampleId: null, run: { steps: 0 }, event: { kind: 'ready' } });
+    vi.advanceTimersByTime(5000);
+    expect(store.getState().run?.steps).toBe(0);
+    expect(storage.loadMachine()).toEqual(edited);
+  });
+
+  it('has no run while an edit leaves an issue, and runs again once it is fixed', () => {
+    const store = createSimulatorStore({ storage });
+    const rule = { state: 'q0', read: '', write: '0', move: 'R', next: 'q0' } as const;
+    store.getState().editMachine(updateRule(store.getState().machine, 0, rule));
+    expect(store.getState().run).toBeNull();
+    store.getState().editMachine(updateRule(store.getState().machine, 0, { ...rule, read: '0' }));
+    expect(store.getState().run?.status).toBe('running');
   });
 
   it('keeps the 2016 import warnings of the TCC example', () => {
