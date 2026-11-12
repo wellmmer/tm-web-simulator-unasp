@@ -45,3 +45,19 @@ for (const width of [390, 768, 1440]) {
     expect(shown).toBeGreaterThanOrEqual(natural);
   });
 }
+
+test('the state diagram fits its panel again after the window changes size', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSimulator(page);
+  await page.setViewportSize({ width: 390, height: 900 });
+  // The number of state circles that stick out of the diagram panel, so part of them is cut off.
+  const cutOff = () =>
+    page.getByTestId('state-diagram').evaluate((panel) => {
+      const box = panel.getBoundingClientRect();
+      return [...panel.querySelectorAll('.react-flow__node')]
+        .map((node) => node.getBoundingClientRect())
+        .filter((circle) => circle.left < box.left || circle.right > box.right || circle.top < box.top || circle.bottom > box.bottom).length;
+    });
+  await expect(page.locator('.react-flow__node')).toHaveCount(3);
+  await expect.poll(cutOff).toBe(0);
+});

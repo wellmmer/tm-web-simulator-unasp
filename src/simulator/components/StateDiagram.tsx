@@ -1,9 +1,9 @@
 'use client';
 
 import '@xyflow/react/dist/base.css';
-import { ReactFlow } from '@xyflow/react';
+import { ReactFlow, useReactFlow, useStore, type FitViewOptions } from '@xyflow/react';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { layoutDiagram, ruleLabel } from '../diagram-layout';
 import { currentRuleIndex } from '../store';
 import { NODE_RADIUS, RuleEdgeView, StateNodeView, type RuleEdge, type StateNode } from './diagram-parts';
@@ -11,6 +11,21 @@ import { useSimulator } from './store-context';
 
 const nodeTypes = { state: StateNodeView };
 const edgeTypes = { rule: RuleEdgeView };
+const fitViewOptions: FitViewOptions = { padding: 0.12, maxZoom: 1.1 };
+
+/**
+ * Fits the view again when the panel changes size, as when a phone turns or the window crosses 1024 px.
+ * React Flow fits the view on the first draw only, and the visitor cannot pan or zoom.
+ */
+function FitOnResize() {
+  const { fitView } = useReactFlow();
+  const width = useStore((s) => s.width);
+  const height = useStore((s) => s.height);
+  useEffect(() => {
+    void fitView(fitViewOptions);
+  }, [fitView, width, height]);
+  return null;
+}
 
 /**
  * The state diagram drawn with React Flow (spec 5.1). It is a picture only: nothing can be dragged,
@@ -61,7 +76,7 @@ export default function StateDiagram() {
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       fitView
-      fitViewOptions={{ padding: 0.12, maxZoom: 1.1 }}
+      fitViewOptions={fitViewOptions}
       minZoom={0.1}
       maxZoom={1.1}
       nodesDraggable={false}
@@ -82,6 +97,8 @@ export default function StateDiagram() {
       zoomActivationKeyCode={null}
       disableKeyboardA11y
       proOptions={{ hideAttribution: true }}
-    />
+    >
+      <FitOnResize />
+    </ReactFlow>
   );
 }
