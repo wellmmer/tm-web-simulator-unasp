@@ -126,6 +126,7 @@ describe('KeyboardShortcuts', () => {
     press('?');
     const dialog = screen.getByRole('dialog', { name: 'Keyboard shortcuts' });
     expect(dialog.textContent).toContain('Run or pause');
+    expect(dialog.textContent).toContain('EEdit the tape');
     expect(dialog.textContent).toContain('Shortcuts are off while you type in a text field.');
   });
 });

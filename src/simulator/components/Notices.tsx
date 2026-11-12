@@ -3,17 +3,20 @@
 import { Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useSimulator } from './store-context';
+import { TAPE_HELP_ID } from './TapeEditor';
 
-/** Short notes above the controls: blocked storage, a bad share link, and the first left-edge move. */
+/** Short notes above the controls: blocked storage, a bad share link, the first left-edge move, and tape editing. */
 export function Notices() {
   const t = useTranslations('simulator.notes');
   const storageBlocked = useSimulator((s) => s.storageBlocked);
   const badLink = useSimulator((s) => s.badLink);
   const leftEdgeNote = useSimulator((s) => s.leftEdgeNote);
   const dismissLeftEdgeNote = useSimulator((s) => s.dismissLeftEdgeNote);
+  const tapeEdit = useSimulator((s) => s.tapeEdit);
+  const tTape = useTranslations('simulator.tape');
 
   const notes = [storageBlocked && t('storageBlocked'), badLink && t('badLink')].filter((note) => note !== false);
-  if (notes.length === 0 && !leftEdgeNote) return null;
+  if (notes.length === 0 && !leftEdgeNote && tapeEdit === null) return null;
   return (
     <ul className="mx-auto mt-4 flex max-w-[640px] flex-col gap-2 text-sm">
       {notes.map((note) => (
@@ -22,6 +25,12 @@ export function Notices() {
           {note}
         </li>
       ))}
+      {tapeEdit !== null && (
+        <li id={TAPE_HELP_ID} className="border-l-4 border-pencil bg-cell px-3 py-2">
+          {tapeEdit.resetRun && `${t('tapeReset')} `}
+          {tTape('editHelp')}
+        </li>
+      )}
       {leftEdgeNote && (
         <li className="flex flex-wrap items-center gap-3 border-l-4 border-pencil bg-cell px-3 py-2">
           <span className="flex-1">{t('leftEdge')}</span>

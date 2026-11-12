@@ -10,6 +10,7 @@ import { Notices } from './Notices';
 import { ResultLine } from './ResultLine';
 import { RulesPanel } from './RulesPanel';
 import { StepSentence } from './StepSentence';
+import { EditTapeButton } from './TapeEditor';
 import { TapeStage } from './TapeStage';
 
 /** The simulator page layout from the approved mockup (simulator-v4.html): the rule table and the state diagram side by side. */
@@ -21,7 +22,8 @@ export function SimulatorView() {
       <StepSentence />
       <Notices />
       <Controls />
-      <div className="mt-2 flex justify-center">
+      <div className="mt-2 flex flex-wrap justify-center gap-2">
+        <EditTapeButton />
         <KeyboardShortcuts />
       </div>
       <ResultLine />

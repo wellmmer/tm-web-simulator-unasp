@@ -70,7 +70,11 @@
     },
     "tape": {
       "label": "Tape",
-      "summary": "Head on cell {cell}, in state {state}, reading {symbol}."
+      "summary": "Head on cell {cell}, in state {state}, reading {symbol}.",
+      "edit": "Edit the tape",
+      "editor": "Tape input",
+      "cursor": "Cell {cell}: {symbol}",
+      "editHelp": "Editing the tape. Arrows move the cursor. Type a symbol to write it. Backspace writes the blank. Esc ends editing."
     },
     "controls": {
       "reset": "Reset",
@@ -89,7 +93,8 @@
       "storageBlocked": "This browser won't keep your machine after you close it.",
       "badLink": "This link does not hold a Computable machine. The simulator kept the current machine.",
       "leftEdge": "The head tried to move left of cell 0, the left end of this tape. It stays on cell 0 instead, as in Sipser's book.",
-      "gotIt": "Got it"
+      "gotIt": "Got it",
+      "tapeReset": "The run went back to the start, so you edit the input on the tape."
     },
     "table": {
       "title": "Rules",
@@ -168,7 +173,8 @@
       "faster": "Faster",
       "slower": "Slower",
       "help": "Show this list",
-      "off": "Shortcuts are off while you type in a text field."
+      "off": "Shortcuts are off while you type in a text field.",
+      "startTapeEdit": "Edit the tape"
     }
   }
 }
