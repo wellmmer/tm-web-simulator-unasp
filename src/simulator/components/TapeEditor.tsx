@@ -41,8 +41,10 @@ export function TapeEditor({ cell }: { cell: number }) {
       const at = Math.max(0, cell - 1);
       write(at, machine.blank);
       moveTapeCursor(at);
-    } else if (event.key === 'Delete') write(cell, machine.blank);
-    else if (event.key === 'Escape' || event.key === 'Enter') {
+    } else if (event.key === 'Delete' || event.key === ' ') {
+      // Space writes the blank too: a space character looks like the blank but no rule reads it.
+      write(cell, machine.blank);
+    } else if (event.key === 'Escape' || event.key === 'Enter') {
       endTapeEdit();
       document.getElementById(EDIT_TAPE_BUTTON_ID)?.focus();
     } else if (symbolsOf(event.key).length === 1) {

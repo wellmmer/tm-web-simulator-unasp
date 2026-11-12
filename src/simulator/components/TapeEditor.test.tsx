@@ -49,6 +49,18 @@ describe('the tape editor (spec 5.4)', () => {
     expect(cursorCell()).toBe('2');
   });
 
+  it('writes the blank with Space and keeps the cursor, as Delete does', () => {
+    const { store } = renderSimulator(<SimulatorView />);
+    press('e', document.body);
+    press('ArrowRight');
+    press(' ');
+    expect(store.getState().machine.input).toBe('1_11');
+    expect(cursorCell()).toBe('1');
+    press('Delete');
+    expect(store.getState().machine.input).toBe('1_11');
+    expect(cursorCell()).toBe('1');
+  });
+
   it('goes back to the start and says so when a cell is clicked after the run started', () => {
     const { store } = renderSimulator(<SimulatorView />);
     act(() => fireEvent.click(screen.getByRole('button', { name: 'Step' })));
