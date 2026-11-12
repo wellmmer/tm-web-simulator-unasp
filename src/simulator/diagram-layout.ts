@@ -40,8 +40,40 @@ export interface MatcherWords {
 
 /** A rule on an edge: "0→1,R" for a modern rule, "blank→P0,R" for a 1936 rule. */
 export function ruleLabel(rule: Rule, words: MatcherWords): string {
-  const read = typeof rule.read === 'string' ? rule.read : words[rule.read.match];
-  return isTuringRule(rule) ? `${read}→${rule.ops.join(',')}` : `${read}→${rule.write},${rule.move}`;
+  return isTuringRule(rule) ? `${readLabel(rule, words)}→${rule.ops.join(',')}` : `${readLabel(rule, words)}→${rule.write},${rule.move}`;
+}
+
+function readLabel(rule: Rule, words: MatcherWords): string {
+  return typeof rule.read === 'string' ? rule.read : words[rule.read.match];
+}
+
+/**
+ * What a joined label ends with: the move of a modern rule that writes the symbol it reads, or the
+ * operations of a 1936 rule. Null for a modern rule that writes another symbol: it never joins.
+ */
+function joinedEnd(rule: Rule): string | null {
+  if (isTuringRule(rule)) return rule.ops.join(',');
+  return rule.write === rule.read ? rule.move : null;
+}
+
+/**
+ * The label of one edge (spec section 1). Rules with the same end join into one label, such as
+ * "w y z x → R". A rule that joins no other keeps its full form, such as "1→0,L". The labels keep the
+ * rule table's order: a joined label stands where its first rule stands.
+ */
+export function edgeLabel(rules: Rule[], words: MatcherWords): string {
+  const groups: { end: string | null; rules: Rule[] }[] = [];
+  for (const rule of rules) {
+    const end = joinedEnd(rule);
+    const group = end === null ? undefined : groups.find((candidate) => candidate.end === end);
+    if (group === undefined) groups.push({ end, rules: [rule] });
+    else group.rules.push(rule);
+  }
+  return groups
+    .map(({ end, rules: joined }) =>
+      joined.length === 1 ? ruleLabel(joined[0], words) : `${joined.map((rule) => readLabel(rule, words)).join(' ')} → ${end}`.trimEnd(),
+    )
+    .join('  ');
 }
 
 /**

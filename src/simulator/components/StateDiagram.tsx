@@ -4,7 +4,7 @@ import '@xyflow/react/dist/base.css';
 import { ReactFlow, useReactFlow, useStore, type FitViewOptions } from '@xyflow/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
-import { layoutDiagram, ruleLabel } from '../diagram-layout';
+import { edgeLabel, layoutDiagram } from '../diagram-layout';
 import { currentRuleIndex } from '../store';
 import { NODE_RADIUS, RuleEdgeView, StateNodeView, type RuleEdge, type StateNode } from './diagram-parts';
 import { useSimulator } from './store-context';
@@ -59,7 +59,7 @@ export default function StateDiagram() {
     source: edge.source,
     target: edge.target,
     data: {
-      label: edge.ruleIndexes.map((index) => ruleLabel(machine.rules[index], words)).join('  '),
+      label: edgeLabel(edge.ruleIndexes.map((index) => machine.rules[index]), words),
       from: centre.get(edge.source)!,
       to: centre.get(edge.target)!,
       loop: edge.loop,
