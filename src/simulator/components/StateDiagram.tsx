@@ -64,7 +64,8 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
 
   // The run on which the visitor moved the view by hand. A new run follows again.
   const [movedByHand, setMovedByHand] = useState<{ run: Run | null } | null>(null);
-  const canFollow = followsRun(layout, { width, height });
+  // A machine with errors has no run, so there is no state to follow: the diagram shows the whole machine.
+  const canFollow = state !== null && followsRun(layout, { width, height });
   const mode: ViewMode = movedByHand !== null && movedByHand.run === run ? 'hand' : canFollow ? 'follow' : 'whole';
   const slide = reducedMotion ? 0 : FOLLOW_SLIDE_MS;
   const stopFollowing = () => setMovedByHand({ run });

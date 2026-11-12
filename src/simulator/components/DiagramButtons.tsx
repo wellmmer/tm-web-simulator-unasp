@@ -4,7 +4,7 @@ import { LocateFixed, Maximize, ZoomIn, ZoomOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 interface DiagramButtonsProps {
-  /** True when the diagram follows the run for this machine and panel size: "Follow the run" shows. */
+  /** True when the diagram follows the run for this machine and panel size, and the machine has a run: "Follow the run" shows. */
   canFollow: boolean;
   /** True while the view follows the run: "Follow the run" shows as pressed. */
   following: boolean;

@@ -66,6 +66,24 @@ test.describe('the state diagram of the 2016 machine at 1440 px', () => {
     await expect.poll(() => diagramZoom(page)).toBeCloseTo(1.1, 2);
   });
 
+  test('while the machine has errors, it shows the whole machine with every arrow and its text; then it follows again', async ({ page }) => {
+    const follow = page.getByRole('button', { name: 'Follow the run' });
+    await expect(follow).toHaveAttribute('aria-pressed', 'true');
+    // An empty read and write is an error, so the machine has no run and no current state.
+    await page.getByRole('button', { name: 'Add a rule' }).click();
+    await expect(page.locator('[data-faded]')).toHaveCount(0);
+    await expect(page.locator('[data-edge] text')).toHaveCount(await page.locator('[data-edge]').count());
+    await expect(page.locator('.react-flow__node')).toHaveCount(15);
+    await expect.poll(() => statesCutOff(page)).toBe(0);
+    // "Follow the run" hides, as for a machine that never follows: there is nothing to follow.
+    await expect(follow).toHaveCount(0);
+
+    await page.getByRole('button', { name: /^Delete rule \d+$/ }).last().click();
+    await expect(follow).toHaveAttribute('aria-pressed', 'true');
+    await expect.poll(() => page.locator('[data-faded]').count()).toBeGreaterThan(20);
+    await expect.poll(() => diagramZoom(page)).toBeCloseTo(1.1, 2);
+  });
+
   test('with reduced motion, the view jumps to the next state instead of sliding', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const before = await viewSoon(page);
