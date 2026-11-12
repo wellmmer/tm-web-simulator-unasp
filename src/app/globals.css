@@ -78,3 +78,11 @@ body {
   outline: 3px solid var(--pencil);
   outline-offset: 2px;
 }
+
+/*
+ * React Flow stops every touch on its pane. Over the state diagram, one finger scrolls the page
+ * instead; StateDiagram passes only touches with two fingers to React Flow.
+ */
+.state-diagram .react-flow__pane {
+  touch-action: pan-x pan-y;
+}

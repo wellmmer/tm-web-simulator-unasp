@@ -1,7 +1,7 @@
 'use client';
 
 import '@xyflow/react/dist/base.css';
-import { ReactFlow, ReactFlowProvider, useReactFlow, useStore, type FitViewOptions } from '@xyflow/react';
+import { ReactFlow, ReactFlowProvider, useKeyPress, useReactFlow, useStore, type FitViewOptions } from '@xyflow/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Run } from '@/engines/turing';
@@ -40,8 +40,12 @@ export default function StateDiagram() {
 
 /**
  * The view follows the run when the whole machine would draw its arrow text smaller than 11 px
- * (spec section 2). Zoom in, Zoom out and Whole machine stop following until the next run: Reset,
- * a new machine, an edit or an example make a new run. The diagram takes no keys.
+ * (spec section 2). A drag, a zoom by hand, Zoom in, Zoom out and Whole machine stop following until
+ * the next run: Reset, a new machine, an edit or an example make a new run.
+ *
+ * Mouse and touch (spec section 4): a drag moves the diagram. The plain wheel scrolls the page;
+ * Ctrl or ⌘ with the wheel and a trackpad pinch zoom. One finger scrolls the page, two fingers move
+ * and zoom the diagram. The diagram takes no keys.
  */
 function Diagram({ layout }: { layout: DiagramLayout }) {
   const t = useTranslations('simulator.diagram');
@@ -55,6 +59,8 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
   const height = useStore((s) => s.height);
   const { fitView, setViewport, zoomIn, zoomOut } = useReactFlow();
   const reducedMotion = useReducedMotion();
+  // React Flow zooms with ⌘ and the wheel only while it stops the page from scrolling.
+  const metaHeld = useKeyPress('Meta');
 
   // The run on which the visitor moved the view by hand. A new run follows again.
   const [movedByHand, setMovedByHand] = useState<{ run: Run | null } | null>(null);
@@ -86,6 +92,18 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
     const timer = setTimeout(go, move.wait);
     return () => clearTimeout(timer);
   }, [target, fast, reducedMotion, setViewport]);
+
+  // React Flow pans with any touch. A touch that starts with one finger never reaches it, so the page scrolls.
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = box.current;
+    if (element === null) return;
+    const onTouchStart = (event: TouchEvent) => {
+      if (event.touches.length < 2) event.stopPropagation();
+    };
+    element.addEventListener('touchstart', onTouchStart, { capture: true });
+    return () => element.removeEventListener('touchstart', onTouchStart, { capture: true });
+  }, []);
 
   const words = { any: t('any'), blank: t('blank') };
   const fraktur = machine.notation === 'turing1936';
@@ -133,11 +151,12 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
         onToggleFollow={() => (mode === 'follow' ? stopFollowing() : setMovedByHand(null))}
       />
       <div
+        ref={box}
         role="img"
         aria-label={t('label', { name: machine.name })}
         aria-describedby="diagram-hint"
         data-testid="state-diagram"
-        className="h-[220px] sm:h-[320px]"
+        className="state-diagram h-[220px] touch-pan-x touch-pan-y sm:h-[320px]"
       >
         <ReactFlow
           nodes={nodes}
@@ -146,18 +165,22 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
           edgeTypes={edgeTypes}
           minZoom={MIN_ZOOM}
           maxZoom={MAX_ZOOM}
+          // A move with an event is a move by hand. Moves from this component have no event.
+          onMove={(event) => {
+            if (event !== null && mode !== 'hand') stopFollowing();
+          }}
           nodesDraggable={false}
           nodesConnectable={false}
           nodesFocusable={false}
           edgesFocusable={false}
           elementsSelectable={false}
-          panOnDrag={false}
+          panOnDrag
           panOnScroll={false}
           zoomOnScroll={false}
-          zoomOnPinch={false}
+          zoomOnPinch
           zoomOnDoubleClick={false}
-          zoomActivationKeyCode={null}
-          preventScrolling={false}
+          zoomActivationKeyCode="Meta"
+          preventScrolling={metaHeld}
           deleteKeyCode={null}
           selectionKeyCode={null}
           multiSelectionKeyCode={null}
