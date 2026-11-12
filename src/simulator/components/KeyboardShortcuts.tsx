@@ -38,9 +38,12 @@ const LIST = [
 /** Holding these keys must not repeat them: a held Space would run and pause many times a second. */
 const NO_REPEAT: ReadonlySet<Action> = new Set(['toggleRun', 'reset', 'startTapeEdit', 'help']);
 
-/** True for fields where keys type text or change a value: shortcuts stay off there. */
+/**
+ * True for fields where keys type text or change a value: shortcuts stay off there. Also true for a
+ * block marked `data-no-shortcuts`, such as the machine file JSON, where the arrows and Space scroll.
+ */
 function isField(target: EventTarget | null): boolean {
-  return target instanceof HTMLElement && (target.isContentEditable || target.matches('input, textarea, select'));
+  return target instanceof HTMLElement && (target.isContentEditable || target.matches('input, textarea, select, [data-no-shortcuts]'));
 }
 
 /** True for controls that Space already presses, so Space must not also run the machine. */

@@ -101,7 +101,8 @@ export function MachineFile() {
         {status?.kind === 'opened' && t('opened', { name: status.name })}
         {status?.kind === 'error' && errorText(status.error)}
       </p>
-      <pre tabIndex={0} aria-label={t('json')} className="mt-2 max-h-80 overflow-auto border-2 border-soft bg-paper p-3 font-mono text-[13px]">
+      {/* The arrows and Space scroll this block, so the keyboard shortcuts stay off while it has focus. */}
+      <pre tabIndex={0} data-no-shortcuts aria-label={t('json')} className="mt-2 max-h-80 overflow-auto border-2 border-soft bg-paper p-3 font-mono text-[13px]">
         {serializeMachine(machine)}
       </pre>
     </details>

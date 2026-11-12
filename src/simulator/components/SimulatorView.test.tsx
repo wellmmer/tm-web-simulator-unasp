@@ -54,6 +54,16 @@ describe('the simulator page', () => {
     expect(store.getState().run?.steps).toBe(1);
   });
 
+  it('keeps the shortcuts off while the machine file JSON has focus, so the arrows and Space scroll it', () => {
+    const { store } = renderSimulator(<SimulatorView />);
+    const json = screen.getByLabelText('The machine file, as JSON');
+    json.focus();
+    act(() => fireEvent.keyDown(json, { key: 'ArrowRight' }));
+    act(() => fireEvent.keyDown(json, { key: ' ' }));
+    expect(store.getState().run?.steps).toBe(0);
+    expect(store.getState().loop).toBe('idle');
+  });
+
   it('loads an example from the picker and a new input from the field', () => {
     const { store } = renderSimulator(<SimulatorView />);
     act(() => fireEvent.change(screen.getByRole('combobox', { name: 'Example' }), { target: { value: 'palindrome' } }));
