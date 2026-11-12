@@ -27,6 +27,26 @@ function plain(text: string, max: number): string {
     .slice(0, max);
 }
 
+/**
+ * The longest key that fits. A field length has two digits, so field 26 holds at most 99 characters:
+ * 18 for the "br.gov.bcb.pix" field, 4 for the key field's id and length, and 77 for the key.
+ */
+const MAX_KEY_LENGTH = 77;
+
+/**
+ * True when `payee` builds a valid Pix code: a key of 1 to 77 plain ASCII characters, so its length
+ * in characters is its length in bytes, and a name and a city that keep some letters in plain ASCII.
+ */
+export function isValidPixPayee(payee: PixPayee): boolean {
+  return (
+    payee.key.trim() !== '' &&
+    payee.key.length <= MAX_KEY_LENGTH &&
+    /^[\x20-\x7E]*$/.test(payee.key) &&
+    plain(payee.name, 25) !== '' &&
+    plain(payee.city, 15) !== ''
+  );
+}
+
 /** CRC-16/CCITT-FALSE (polynomial 0x1021, start 0xFFFF), as four upper-case hex digits. */
 export function crc16(text: string): string {
   let crc = 0xffff;

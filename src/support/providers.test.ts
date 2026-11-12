@@ -43,6 +43,12 @@ describe('supportOptions (spec 7)', () => {
     expect(supportOptions('en', { ...NONE, revolutLink: 'revolut.me/devname' })).toEqual({ first: [], more: [] });
   });
 
+  it('hides Pix when its key, name or city would build a broken Pix code', () => {
+    expect(supportOptions('pt-BR', { ...NONE, pix: { ...ALL.pix, key: 'a'.repeat(78) } })).toEqual({ first: [], more: [] });
+    expect(supportOptions('pt-BR', { ...NONE, pix: { ...ALL.pix, key: 'chave-ção@example.com' } })).toEqual({ first: [], more: [] });
+    expect(supportOptions('pt-BR', { ...NONE, pix: { ...ALL.pix, name: '東京' } })).toEqual({ first: [], more: [] });
+  });
+
   it('moves "More ways to pay" up when nothing would show first', () => {
     expect(supportOptions('en', { ...NONE, wiseLink: ALL.wiseLink })).toEqual({ first: ['wise'], more: [] });
   });

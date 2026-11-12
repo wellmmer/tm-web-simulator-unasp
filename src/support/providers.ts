@@ -1,5 +1,6 @@
 import type { SupportHandles } from '@/config/support';
 import { amountText } from './amount';
+import { isValidPixPayee } from './pix';
 
 export type ProviderId = 'pix' | 'paypal' | 'kofi' | 'revolut' | 'wise' | 'github';
 
@@ -26,7 +27,7 @@ const isHttps = (link: string) => link.trim().startsWith('https://');
 function isReady(id: ProviderId, handles: SupportHandles): boolean {
   switch (id) {
     case 'pix':
-      return filled(handles.pix.key) && filled(handles.pix.name) && filled(handles.pix.city);
+      return isValidPixPayee(handles.pix);
     case 'paypal':
       return filled(handles.paypal);
     case 'kofi':

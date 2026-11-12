@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { crc16, pixCode } from './pix';
+import { crc16, isValidPixPayee, pixCode } from './pix';
 
 /** The static Pix example from the Banco Central do Brasil's manual, "Manual de Padrões para Iniciação do Pix". */
 const EXAMPLE =
@@ -32,5 +32,28 @@ describe('pixCode', () => {
   it('writes names and cities without accents and cuts them to 25 and 15 characters', () => {
     const code = pixCode({ key: 'a@b.co', name: 'Wellmmer Lucas de Oliveira Pinto', city: 'São Paulo do Potengi' });
     expect(code).toContain('5925Wellmmer Lucas de Oliveir' + '6015Sao Paulo do Po');
+  });
+});
+
+describe('isValidPixPayee', () => {
+  const payee = { key: '123e4567-e12b-12d1-a456-426655440000', name: 'Fulano de Tal', city: 'BRASILIA' };
+
+  it('takes a key of up to 77 plain ASCII characters, and a name and city with Latin letters', () => {
+    expect(isValidPixPayee(payee)).toBe(true);
+    expect(isValidPixPayee({ ...payee, key: 'a'.repeat(77), name: 'José', city: 'São Paulo' })).toBe(true);
+  });
+
+  it('refuses a key longer than 77 characters, which would need a 3-digit field length', () => {
+    expect(isValidPixPayee({ ...payee, key: 'a'.repeat(78) })).toBe(false);
+  });
+
+  it('refuses a key with characters outside plain ASCII, whose length in bytes differs', () => {
+    expect(isValidPixPayee({ ...payee, key: 'chave-ção@example.com' })).toBe(false);
+  });
+
+  it('refuses an empty key, and a name or city with nothing left after accents and other letters go', () => {
+    expect(isValidPixPayee({ ...payee, key: ' ' })).toBe(false);
+    expect(isValidPixPayee({ ...payee, name: '東京' })).toBe(false);
+    expect(isValidPixPayee({ ...payee, city: ' ' })).toBe(false);
   });
 });
