@@ -8,11 +8,12 @@ export const MIN_AMOUNT = 1;
 export const MAX_AMOUNT = 10_000;
 
 /**
- * Reads the "Other" field: whole dollars, or dollars and cents with a point or a comma.
- * Returns null for anything else, and for amounts outside MIN_AMOUNT to MAX_AMOUNT.
+ * Reads the "Other" field: whole dollars, or dollars and cents with a point or a comma, with or
+ * without a "$" in front. Returns null for anything else, a thousands separator included, and for
+ * amounts outside MIN_AMOUNT to MAX_AMOUNT.
  */
 export function parseAmount(text: string): number | null {
-  const value = text.trim().replace(',', '.');
+  const value = text.trim().replace(/^\$\s*/, '').replace(',', '.');
   if (!/^\d{1,5}(\.\d{1,2})?$/.test(value)) return null;
   const amount = Number(value);
   return amount >= MIN_AMOUNT && amount <= MAX_AMOUNT ? amount : null;

@@ -26,6 +26,19 @@ describe('parseAmount', () => {
     expect(parseAmount('1e3')).toBeNull();
     expect(parseAmount('five')).toBeNull();
   });
+
+  it('takes a dollar sign before the amount, with spaces around', () => {
+    expect(parseAmount('$5')).toBe(5);
+    expect(parseAmount(' $ 7.50 ')).toBe(7.5);
+  });
+
+  it('refuses a thousands separator, more than $10,000, more than 2 decimals, and a misplaced dollar sign', () => {
+    expect(parseAmount('1,000')).toBeNull();
+    expect(parseAmount('20000')).toBeNull();
+    expect(parseAmount('5.123')).toBeNull();
+    expect(parseAmount('5$')).toBeNull();
+    expect(parseAmount('$$5')).toBeNull();
+  });
 });
 
 describe('amountText', () => {

@@ -52,12 +52,13 @@ describe('SupportView (spec 7)', () => {
     expect(screen.getAllByText('Type $10 on the next page.')).toHaveLength(4);
   });
 
-  it('takes another amount of $1 or more', () => {
+  it('takes another amount from $1 to $10,000, and says the rule', () => {
     renderWithIntl(<SupportView handles={ALL} />);
     fireEvent.click(screen.getByRole('radio', { name: 'Other' }));
     const field = screen.getByRole('textbox', { name: 'Other amount, in US dollars' });
     fireEvent.change(field, { target: { value: '0.50' } });
     expect(field.getAttribute('aria-invalid')).toBe('true');
+    expect(screen.getByText('Type an amount from $1 to $10,000, with up to 2 decimals, like 7 or 7.50.')).toBeTruthy();
     expect(screen.queryByRole('link', { name: /with PayPal/ })).toBeNull();
     fireEvent.change(field, { target: { value: '7.5' } });
     expect(field.getAttribute('aria-invalid')).toBe('false');
