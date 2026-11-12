@@ -6,8 +6,11 @@
   },
   "home": {
     "title": "Computable",
-    "lead": "Turing's 1936 machine, running live in your browser. The new app is being built.",
-    "openSimulator": "Open the simulator"
+    "lead": "Computable is a place to learn the Turing machine by running one, step by step.",
+    "openSimulator": "Open the simulator",
+    "caption": "This is Turing's first machine, from his 1936 paper. It prints 0 1 0 1 … on every other cell and never stops.",
+    "pause": "Pause",
+    "play": "Play"
   },
   "simulator": {
     "page": {
