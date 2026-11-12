@@ -248,5 +248,42 @@
     "donationsTitle": "Donations",
     "donations": "The Support page only links to payment services, such as PayPal and Ko-fi. You pay on their pages, under their privacy rules. No payment data passes through Computable.",
     "questions": "Questions? <link>Open an issue on GitHub</link>."
+  },
+  "support": {
+    "pageTitle": "Support the dev",
+    "title": "Buy the dev a coffee",
+    "lead": "Computable is free, with no ads and no accounts. If it helped you learn, a coffee helps me keep building it.",
+    "notReady": "The payment links are not ready yet. Thank you for wanting to help.",
+    "notReadyShare": "Until then, sharing Computable with a friend or a class helps too.",
+    "amount": "Amount, in US dollars",
+    "preset": "${amount}",
+    "other": "Other",
+    "otherField": "Other amount, in US dollars",
+    "otherHint": "Type an amount of $1 or more.",
+    "payWith": "Pay with",
+    "provider": {
+      "pix": "Pix",
+      "paypal": "PayPal",
+      "kofi": "Ko-fi",
+      "revolut": "Revolut",
+      "wise": "Wise",
+      "github": "GitHub Sponsors"
+    },
+    "pay": "Pay ${amount} with {provider}",
+    "payNoAmount": "Pay with {provider}",
+    "open": "Open {provider}",
+    "carries": "The link fills in ${amount}.",
+    "typeIt": "Type ${amount} on the next page.",
+    "typeAny": "Type the amount on the next page.",
+    "more": "More ways to pay",
+    "pixHint": "Pix moves Brazilian reais. Scan the code or copy it, then type the amount in your bank app.",
+    "pixKey": "Pix key: {key}",
+    "pixQr": "Pix QR code",
+    "pixCode": "Pix code",
+    "copyPix": "Copy the Pix code",
+    "copied": "Copied.",
+    "copyFailed": "Your browser did not allow copying. Copy the code from the field.",
+    "thanks": "Thank you. Every coffee turns into more lessons and machines.",
+    "noData": "Computable never sees your payment. Each link opens the provider's own page."
   }
 }
