@@ -25,9 +25,9 @@ test.describe('editing', () => {
     await openSimulator(page);
     await page.getByRole('textbox', { name: 'Rule 2: and reading' }).fill('0');
     await expect(page.getByText('Two rules for q0 reading 0. A Turing machine needs exactly one.', { exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Run' })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Run', exact: true })).toBeDisabled();
     await page.getByRole('textbox', { name: 'Rule 2: and reading' }).fill('1');
-    await expect(page.getByRole('button', { name: 'Run' })).toBeEnabled();
+    await expect(page.getByRole('button', { name: 'Run', exact: true })).toBeEnabled();
   });
 
   test('opens a 2016 .txt file and runs it', async ({ page }) => {

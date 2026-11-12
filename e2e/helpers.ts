@@ -17,7 +17,7 @@ export async function pickExample(page: Page, name: string) {
 /** Sets the fastest speed and presses Run. Returns the result line. */
 export async function runFast(page: Page) {
   await page.getByRole('slider', { name: 'Speed' }).fill('5');
-  await page.getByRole('button', { name: 'Run' }).click();
+  await page.getByRole('button', { name: 'Run', exact: true }).click();
   return page.getByTestId('result-line');
 }
 
@@ -29,4 +29,20 @@ export function diagramEdge(page: Page, from: string, to: string) {
 /** The diagram's circle for a state. */
 export function diagramState(page: Page, state: string) {
   return page.locator(`.react-flow__node[data-id="${state}"]`);
+}
+
+/** The zoom of the state diagram: the scale of React Flow's viewport. */
+export function diagramZoom(page: Page) {
+  return page.locator('.react-flow__viewport').evaluate((viewport) => new DOMMatrix(getComputedStyle(viewport).transform).a);
+}
+
+/** How many state circles stick out of the diagram panel, so part of them is cut off. Only `state` when it is given. */
+export function statesCutOff(page: Page, state?: string) {
+  return page.getByTestId('state-diagram').evaluate((panel, only) => {
+    const box = panel.getBoundingClientRect();
+    return [...panel.querySelectorAll('.react-flow__node')]
+      .filter((node) => only === null || node.getAttribute('data-id') === only)
+      .map((node) => node.getBoundingClientRect())
+      .filter((circle) => circle.left < box.left || circle.right > box.right || circle.top < box.top || circle.bottom > box.bottom).length;
+  }, state ?? null);
 }
