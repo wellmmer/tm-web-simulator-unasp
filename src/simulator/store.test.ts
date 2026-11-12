@@ -202,6 +202,24 @@ describe('the simulator store', () => {
     expect(store.getState()).toMatchObject({ exampleId: 'palindrome', badLink: true });
   });
 
+  it('keeps the bad-link note when boot opens the saved machine instead', () => {
+    storage.saveMachine(examples.palindrome.machine);
+    const store = createSimulatorStore({ storage });
+    store.getState().boot('#m=broken');
+    store.getState().boot('');
+    expect(store.getState()).toMatchObject({ exampleId: 'palindrome', badLink: true });
+  });
+
+  it('clears the bad-link note when any machine loads', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().boot('#m=broken');
+    store.getState().loadExample('palindrome');
+    expect(store.getState().badLink).toBe(false);
+    store.getState().openLink('#m=broken');
+    store.getState().loadMachine(machine([]));
+    expect(store.getState().badLink).toBe(false);
+  });
+
   it('says when the browser will not keep the machine', () => {
     const store = createSimulatorStore({ storage });
     store.getState().boot('');

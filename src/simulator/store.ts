@@ -39,11 +39,12 @@ export interface SimulatorState {
   leftEdgeNote: boolean;
   /** True when the browser will not keep the machine after the tab closes. */
   storageBlocked: boolean;
-  /** True after a share link that holds no machine, until a good link opens. */
+  /** True after a share link that holds no machine, until the next machine loads. */
   badLink: boolean;
   /** What the live region says. `id` changes every time, so the same text is spoken again. */
   announcement: { messages: SimMessage[]; id: number } | null;
 
+  /** Opens the saved machine, then the share link in `hash`. Runs once per store. */
   boot(hash: string): void;
   /** Opens the machine in a share link. Returns false when the hash holds no machine. */
   openLink(hash: string): boolean;
@@ -84,6 +85,7 @@ function machineState(machine: Machine, importWarnings: LegacyWarning[]) {
 
 export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }: StoreOptions) {
   let timer: ReturnType<typeof setTimeout> | null = null;
+  let booted = false;
   let stepsThisPress = 0;
   let announcementId = 0;
   const announcer = createAnnouncer();
@@ -174,21 +176,23 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
       announcement: null,
 
       boot(hash) {
+        // In dev, React runs effects twice. A second boot would open the saved machine over the link.
+        if (booted) return;
+        booted = true;
         set({ storageBlocked: !storage.persistent });
-        if (get().openLink(hash)) return;
-        const machine = storage.loadMachine();
-        if (machine !== null) get().loadMachine(machine);
+        const saved = storage.loadMachine();
+        if (saved !== null) get().loadMachine(saved);
+        // The link comes last: a good link replaces the saved machine, and a bad link's note stays.
+        get().openLink(hash);
       },
 
       openLink(hash) {
         const fromLink = machineFromHash(hash);
-        // No link leaves badLink alone: in dev, React runs boot a second time after the hash is gone.
         if (fromLink.kind === 'none') return false;
         if (fromLink.kind === 'bad') {
           set({ badLink: true });
           return false;
         }
-        set({ badLink: false });
         get().loadMachine(fromLink.machine);
         return true;
       },
@@ -201,7 +205,7 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
         get().pause();
         const next = machineState(machine, importWarnings ?? []);
         const exampleWarnings = next.exampleId === null ? [] : examples[next.exampleId].warnings;
-        set((state) => ({ ...next, importWarnings: importWarnings ?? exampleWarnings, version: state.version + 1 }));
+        set((state) => ({ ...next, importWarnings: importWarnings ?? exampleWarnings, badLink: false, version: state.version + 1 }));
       },
 
       setInput(input) {
