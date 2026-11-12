@@ -7,9 +7,9 @@ import type { SimulatorState } from '../store';
 import { Kbd } from './Controls';
 import { useSimulatorStore } from './store-context';
 
-type Action = 'toggleRun' | 'stepForward' | 'stepBack' | 'reset' | 'faster' | 'slower' | 'help';
+type Action = 'toggleRun' | 'stepForward' | 'stepBack' | 'reset' | 'faster' | 'slower' | 'startTapeEdit' | 'help';
 
-/** Spec 5.4. `E` (edit the tape) comes with tape editing in plan R1b-2. */
+/** Spec 5.4. */
 const KEYS: Record<string, Action> = {
   ' ': 'toggleRun',
   ArrowRight: 'stepForward',
@@ -18,6 +18,8 @@ const KEYS: Record<string, Action> = {
   R: 'reset',
   '+': 'faster',
   '-': 'slower',
+  e: 'startTapeEdit',
+  E: 'startTapeEdit',
   '?': 'help',
 };
 
@@ -29,15 +31,19 @@ const LIST = [
   ['R', 'reset'],
   ['+', 'faster'],
   ['-', 'slower'],
+  ['E', 'startTapeEdit'],
   ['?', 'help'],
 ] as const;
 
 /** Holding these keys must not repeat them: a held Space would run and pause many times a second. */
-const NO_REPEAT: ReadonlySet<Action> = new Set(['toggleRun', 'reset', 'help']);
+const NO_REPEAT: ReadonlySet<Action> = new Set(['toggleRun', 'reset', 'startTapeEdit', 'help']);
 
-/** True for fields where keys type text or change a value: shortcuts stay off there. */
+/**
+ * True for fields where keys type text or change a value: shortcuts stay off there. Also true for a
+ * block marked `data-no-shortcuts`, such as the machine file JSON, where the arrows and Space scroll.
+ */
 function isField(target: EventTarget | null): boolean {
-  return target instanceof HTMLElement && (target.isContentEditable || target.matches('input, textarea, select'));
+  return target instanceof HTMLElement && (target.isContentEditable || target.matches('input, textarea, select, [data-no-shortcuts]'));
 }
 
 /** True for controls that Space already presses, so Space must not also run the machine. */

@@ -70,7 +70,11 @@
     },
     "tape": {
       "label": "Tape",
-      "summary": "Head on cell {cell}, in state {state}, reading {symbol}."
+      "summary": "Head on cell {cell}, in state {state}, reading {symbol}.",
+      "edit": "Edit the tape",
+      "editor": "Tape input",
+      "cursor": "Cell {cell}: {symbol}",
+      "editHelp": "Editing the tape. Arrows move the cursor. Type a symbol to write it. Backspace writes the blank. Esc ends editing."
     },
     "controls": {
       "reset": "Reset",
@@ -87,13 +91,14 @@
     },
     "notes": {
       "storageBlocked": "This browser won't keep your machine after you close it.",
-      "badLink": "This link does not hold a Computable machine. The simulator opened your last machine instead.",
+      "badLink": "This link does not hold a Computable machine. The simulator kept the current machine.",
       "leftEdge": "The head tried to move left of cell 0, the left end of this tape. It stays on cell 0 instead, as in Sipser's book.",
-      "gotIt": "Got it"
+      "gotIt": "Got it",
+      "tapeReset": "The run went back to the start, so you edit the input on the tape."
     },
     "table": {
       "title": "Rules",
-      "hint": "Each row is one rule. The machine finds the row for its state and the symbol under the head.",
+      "hint": "Each row is one rule. The machine finds the row for its state and the symbol under the head. Type in a cell to change a rule.",
       "state": "If in state",
       "read": "and reading",
       "write": "write",
@@ -102,7 +107,61 @@
       "next": "then go to",
       "any": "any symbol",
       "blank": "blank",
-      "empty": "Your machine has no rules yet."
+      "empty": "Your machine has no rules yet. Add the first rule, or start from an example.",
+      "symbol": "a symbol",
+      "cell": "Rule {rule}: {column}",
+      "readSymbol": "Rule {rule}: symbol read",
+      "deleteColumn": "Delete",
+      "delete": "Delete rule {rule}",
+      "add": "Add a rule",
+      "addFirst": "Add the first rule",
+      "openExample": "Open an example",
+      "fieldHint": {
+        "emptyState": "Type a state.",
+        "badSymbol": "Type exactly one symbol.",
+        "badOp": "Use P and a symbol, E, L or R."
+      },
+      "duplicate": "Two rules for {state} reading {symbol}. A Turing machine needs exactly one."
+    },
+    "settings": {
+      "legend": "Machine settings",
+      "start": "Start state",
+      "accept": "Accept states",
+      "reject": "Reject states",
+      "listHint": "Separate states with commas.",
+      "acceptAndReject": "A state cannot both accept and reject.",
+      "blank": "Blank",
+      "tape": "Tape",
+      "oneSided": "One-sided",
+      "twoWay": "Two-way",
+      "leftEdgeReject": "On this tape, a move left of cell 0 rejects, as in the 2016 app."
+    },
+    "diagram": {
+      "title": "State diagram",
+      "hint": "The same rules drawn as arrows. Circles are states. A double circle accepts, a dashed circle rejects, and the arrow on the left points at the start state. The rule table lists the same rules as text.",
+      "label": "State diagram of {name}",
+      "any": "any",
+      "blank": "blank"
+    },
+    "file": {
+      "title": "Machine file",
+      "hint": "The machine as a JSON file. Download it to keep it, or open a file you saved before. Open file also reads .txt files from the 2016 app.",
+      "name": "Name",
+      "json": "The machine file, as JSON",
+      "download": "Download",
+      "open": "Open file",
+      "newMachine": "New machine",
+      "newName": "My machine",
+      "opened": "Opened {name}.",
+      "error": {
+        "notJson": "This file is not a Computable machine (it is not JSON).",
+        "notAMachine": "This file is not a Computable machine (its format is not computable/machine@1).",
+        "missingField": "This file is not a Computable machine (missing `{field}`).",
+        "badField": "This file is not a Computable machine (`{field}` has a wrong value).",
+        "legacyTooShort": "This 2016 file is too short. Line 1 must be the start state and line 2 the input.",
+        "legacyBadRow": "This 2016 file has a broken rule on line {row}.",
+        "unreadable": "The browser could not read this file. Try to open it again."
+      }
     },
     "shortcuts": {
       "open": "Keyboard shortcuts",
@@ -115,7 +174,8 @@
       "faster": "Faster",
       "slower": "Slower",
       "help": "Show this list",
-      "off": "Shortcuts are off while you type in a text field."
+      "off": "Shortcuts are off while you type in a text field.",
+      "startTapeEdit": "Edit the tape"
     }
   }
 }

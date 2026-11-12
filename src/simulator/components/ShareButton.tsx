@@ -1,16 +1,18 @@
 'use client';
 
-import { Link2 } from 'lucide-react';
+import { Download, Link2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { downloadMachine } from '@/files/machine-file';
 import { shareUrl } from '@/share/share-link';
 import { useSimulatorStore } from './store-context';
 
 type ShareStatus = 'copied' | 'tooLong' | 'copyFailed';
 
-/** Copies a link that holds the whole machine (spec 5.6). Download for big machines comes in plan R1b-2. */
+/** Copies a link that holds the whole machine (spec 5.6). A machine too big for a link gets a Download button. */
 export function ShareButton() {
   const t = useTranslations('simulator.share');
+  const tFile = useTranslations('simulator.file');
   const store = useSimulatorStore();
   const [status, setStatus] = useState<ShareStatus | null>(null);
   /** The link to copy by hand when the browser does not allow copying. */
@@ -44,6 +46,16 @@ export function ShareButton() {
       <span role="status" className="text-sm text-muted">
         {status !== null && t(status)}
       </span>
+      {status === 'tooLong' && (
+        <button
+          type="button"
+          onClick={() => downloadMachine(store.getState().machine)}
+          className="inline-flex items-center gap-2 border-2 border-ink bg-cell px-3 py-1.5 font-medium"
+        >
+          <Download aria-hidden className="size-4" />
+          {tFile('download')}
+        </button>
+      )}
       {manualLink !== null && (
         <input
           type="text"

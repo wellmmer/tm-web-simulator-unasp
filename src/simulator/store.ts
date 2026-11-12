@@ -39,16 +39,26 @@ export interface SimulatorState {
   leftEdgeNote: boolean;
   /** True when the browser will not keep the machine after the tab closes. */
   storageBlocked: boolean;
-  /** True after a share link that holds no machine, until a good link opens. */
+  /** True after a share link that holds no machine, until the next machine loads. */
   badLink: boolean;
   /** What the live region says. `id` changes every time, so the same text is spoken again. */
   announcement: { messages: SimMessage[]; id: number } | null;
+  /**
+   * The tape editor's cursor while the visitor edits the tape (spec 5.4), or null. Editing writes the
+   * machine's input. `resetRun` is true when starting to edit sent a started run back to the start.
+   */
+  tapeEdit: { cell: number; resetRun: boolean } | null;
 
+  /** Opens the saved machine, then the share link in `hash`. Runs once per store. */
   boot(hash: string): void;
   /** Opens the machine in a share link. Returns false when the hash holds no machine. */
   openLink(hash: string): boolean;
   loadExample(id: ExampleId): void;
   loadMachine(machine: Machine, importWarnings?: LegacyWarning[]): void;
+  /** Replaces the machine after an edit in the rule table: compiles it and starts the run again. */
+  editMachine(machine: Machine): void;
+  /** Changes only the machine's name. The run, its history and the import warnings stay, and the machine is saved. */
+  renameMachine(name: string): void;
   setInput(input: string): void;
   stepForward(): void;
   stepBack(): void;
@@ -62,6 +72,11 @@ export interface SimulatorState {
   faster(): void;
   slower(): void;
   dismissLeftEdgeNote(): void;
+  /** Starts editing the tape with the cursor on `cell`. A run that has started goes back to the start first. */
+  startTapeEdit(cell?: number): void;
+  /** Moves the tape editor's cursor. The input starts on cell 0, so the cursor stays on cell 0 or right of it. */
+  moveTapeCursor(cell: number): void;
+  endTapeEdit(): void;
 }
 
 export interface StoreOptions {
@@ -79,11 +94,12 @@ function machineState(machine: Machine, importWarnings: LegacyWarning[]) {
   const compile = compileMachine(machine);
   const run = compile.ok ? createRun(compile.compiled, machine.input) : null;
   const event: StepEvent = { kind: 'ready', state: machine.start, cell: 0 };
-  return { machine, exampleId: findExampleId(machine), compile, importWarnings, run, event, leftEdgeNote: false };
+  return { machine, exampleId: findExampleId(machine), compile, importWarnings, run, event, leftEdgeNote: false, tapeEdit: null };
 }
 
 export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }: StoreOptions) {
   let timer: ReturnType<typeof setTimeout> | null = null;
+  let booted = false;
   let stepsThisPress = 0;
   let announcementId = 0;
   const announcer = createAnnouncer();
@@ -174,21 +190,23 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
       announcement: null,
 
       boot(hash) {
+        // In dev, React runs effects twice. A second boot would open the saved machine over the link.
+        if (booted) return;
+        booted = true;
         set({ storageBlocked: !storage.persistent });
-        if (get().openLink(hash)) return;
-        const machine = storage.loadMachine();
-        if (machine !== null) get().loadMachine(machine);
+        const saved = storage.loadMachine();
+        if (saved !== null) get().loadMachine(saved);
+        // The link comes last: a good link replaces the saved machine, and a bad link's note stays.
+        get().openLink(hash);
       },
 
       openLink(hash) {
         const fromLink = machineFromHash(hash);
-        // No link leaves badLink alone: in dev, React runs boot a second time after the hash is gone.
         if (fromLink.kind === 'none') return false;
         if (fromLink.kind === 'bad') {
           set({ badLink: true });
           return false;
         }
-        set({ badLink: false });
         get().loadMachine(fromLink.machine);
         return true;
       },
@@ -201,7 +219,18 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
         get().pause();
         const next = machineState(machine, importWarnings ?? []);
         const exampleWarnings = next.exampleId === null ? [] : examples[next.exampleId].warnings;
-        set((state) => ({ ...next, importWarnings: importWarnings ?? exampleWarnings, version: state.version + 1 }));
+        set((state) => ({ ...next, importWarnings: importWarnings ?? exampleWarnings, badLink: false, version: state.version + 1 }));
+      },
+
+      editMachine(machine) {
+        get().pause();
+        // Import warnings name lines of the file, so they do not fit the edited machine.
+        set((state) => ({ ...machineState(machine, []), version: state.version + 1 }));
+      },
+
+      renameMachine(name) {
+        const machine = { ...get().machine, name };
+        set({ machine, exampleId: findExampleId(machine) });
       },
 
       setInput(input) {
@@ -286,6 +315,23 @@ export function createSimulatorStore({ storage, stepLimit = DEFAULT_STEP_LIMIT }
 
       dismissLeftEdgeNote() {
         set({ leftEdgeNote: false });
+      },
+
+      startTapeEdit(cell = 0) {
+        get().pause();
+        const { run } = get();
+        const resetRun = run !== null && run.history.length > 0;
+        if (resetRun) get().reset();
+        set({ tapeEdit: { cell: Math.max(0, cell), resetRun } });
+      },
+
+      moveTapeCursor(cell) {
+        const { tapeEdit } = get();
+        if (tapeEdit !== null) set({ tapeEdit: { ...tapeEdit, cell: Math.max(0, cell) } });
+      },
+
+      endTapeEdit() {
+        if (get().tapeEdit !== null) set({ tapeEdit: null });
       },
     };
   });

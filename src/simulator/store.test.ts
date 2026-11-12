@@ -4,6 +4,7 @@ import { shareUrl } from '@/share/share-link';
 import { createMemoryStorage, type MachineStorage } from '@/storage/machine-storage';
 import { describeStep } from './describe';
 import { examples } from './examples';
+import { updateRule } from './rule-edit';
 import { createSimulatorStore, currentRuleIndex } from './store';
 
 let storage: MachineStorage;
@@ -202,6 +203,24 @@ describe('the simulator store', () => {
     expect(store.getState()).toMatchObject({ exampleId: 'palindrome', badLink: true });
   });
 
+  it('keeps the bad-link note when boot opens the saved machine instead', () => {
+    storage.saveMachine(examples.palindrome.machine);
+    const store = createSimulatorStore({ storage });
+    store.getState().boot('#m=broken');
+    store.getState().boot('');
+    expect(store.getState()).toMatchObject({ exampleId: 'palindrome', badLink: true });
+  });
+
+  it('clears the bad-link note when any machine loads', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().boot('#m=broken');
+    store.getState().loadExample('palindrome');
+    expect(store.getState().badLink).toBe(false);
+    store.getState().openLink('#m=broken');
+    store.getState().loadMachine(machine([]));
+    expect(store.getState().badLink).toBe(false);
+  });
+
   it('says when the browser will not keep the machine', () => {
     const store = createSimulatorStore({ storage });
     store.getState().boot('');
@@ -214,6 +233,70 @@ describe('the simulator store', () => {
     const state = store.getState();
     expect(state.run).toBeNull();
     expect(state.compile).toMatchObject({ ok: false, issues: [{ code: 'accept-and-reject', state: 'q0' }] });
+  });
+
+  it('stops the run, compiles the edited machine and saves it after an edit', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().toggleRun();
+    const edited = updateRule(store.getState().machine, 0, { state: 'q0', read: '0', write: '1', move: 'R', next: 'q0' });
+    store.getState().editMachine(edited);
+    expect(store.getState()).toMatchObject({ loop: 'idle', exampleId: null, run: { steps: 0 }, event: { kind: 'ready' } });
+    vi.advanceTimersByTime(5000);
+    expect(store.getState().run?.steps).toBe(0);
+    expect(storage.loadMachine()).toEqual(edited);
+  });
+
+  it('renames the machine and saves it, without sending the run back to the start', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().loadExample('tcc-2016');
+    for (let i = 0; i < 3; i++) store.getState().stepForward();
+    const run = store.getState().run;
+    store.getState().renameMachine('My TCC machine');
+    const state = store.getState();
+    expect(state.machine).toEqual({ ...examples['tcc-2016'].machine, name: 'My TCC machine' });
+    expect(state.run).toBe(run);
+    expect(state.run?.steps).toBe(3);
+    expect(state.run?.history).toHaveLength(3);
+    expect(state.event.kind).toBe('step');
+    expect(state.importWarnings).toEqual(examples['tcc-2016'].warnings);
+    expect(state.exampleId).toBeNull();
+    expect(storage.loadMachine()).toEqual(state.machine);
+  });
+
+  it('has no run while an edit leaves an issue, and runs again once it is fixed', () => {
+    const store = createSimulatorStore({ storage });
+    const rule = { state: 'q0', read: '', write: '0', move: 'R', next: 'q0' } as const;
+    store.getState().editMachine(updateRule(store.getState().machine, 0, rule));
+    expect(store.getState().run).toBeNull();
+    store.getState().editMachine(updateRule(store.getState().machine, 0, { ...rule, read: '0' }));
+    expect(store.getState().run?.status).toBe('running');
+  });
+
+  it('edits the tape from cell 0 when the run has not started', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().startTapeEdit();
+    expect(store.getState().tapeEdit).toEqual({ cell: 0, resetRun: false });
+    store.getState().moveTapeCursor(3);
+    store.getState().setInput('1010');
+    expect(store.getState().tapeEdit).toEqual({ cell: 3, resetRun: false });
+    store.getState().endTapeEdit();
+    expect(store.getState().tapeEdit).toBeNull();
+  });
+
+  it('goes back to the start before editing the tape of a run that has started, and says so', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().toggleRun();
+    store.getState().startTapeEdit(2);
+    expect(store.getState()).toMatchObject({ loop: 'idle', run: { steps: 0 }, tapeEdit: { cell: 2, resetRun: true } });
+    store.getState().moveTapeCursor(-1);
+    expect(store.getState().tapeEdit?.cell).toBe(0);
+  });
+
+  it('stops editing the tape when another machine loads', () => {
+    const store = createSimulatorStore({ storage });
+    store.getState().startTapeEdit();
+    store.getState().loadExample('palindrome');
+    expect(store.getState().tapeEdit).toBeNull();
   });
 
   it('keeps the 2016 import warnings of the TCC example', () => {
