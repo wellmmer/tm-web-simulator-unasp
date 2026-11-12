@@ -138,6 +138,25 @@
       "any": "any",
       "blank": "blank"
     },
+    "file": {
+      "title": "Machine file",
+      "hint": "The machine as a JSON file. Download it to keep it, or open a file you saved before. Open file also reads .txt files from the 2016 app.",
+      "name": "Name",
+      "json": "The machine file, as JSON",
+      "download": "Download",
+      "open": "Open file",
+      "newMachine": "New machine",
+      "newName": "My machine",
+      "opened": "Opened {name}.",
+      "error": {
+        "notJson": "This file is not a Computable machine (it is not JSON).",
+        "notAMachine": "This file is not a Computable machine (its format is not computable/machine@1).",
+        "missingField": "This file is not a Computable machine (missing `{field}`).",
+        "badField": "This file is not a Computable machine (`{field}` has a wrong value).",
+        "legacyTooShort": "This 2016 file is too short. Line 1 must be the start state and line 2 the input.",
+        "legacyBadRow": "This 2016 file has a broken rule on line {row}."
+      }
+    },
     "shortcuts": {
       "open": "Keyboard shortcuts",
       "title": "Keyboard shortcuts",

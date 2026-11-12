@@ -4,6 +4,7 @@ import { Controls } from './Controls';
 import { DiagramPanel } from './DiagramPanel';
 import { KeyboardShortcuts } from './KeyboardShortcuts';
 import { LiveRegion } from './LiveRegion';
+import { MachineFile } from './MachineFile';
 import { MachineHeader } from './MachineHeader';
 import { Notices } from './Notices';
 import { ResultLine } from './ResultLine';
@@ -28,6 +29,7 @@ export function SimulatorView() {
         <RulesPanel />
         <DiagramPanel />
       </div>
+      <MachineFile />
       <LiveRegion />
     </main>
   );
