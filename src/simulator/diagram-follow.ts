@@ -1,5 +1,5 @@
 import { getViewportForBounds, type Rect, type Viewport } from '@xyflow/react';
-import { COLUMN_GAP, LABEL_FONT_PX, NODE_RADIUS, type DiagramLayout } from './diagram-layout';
+import { COLUMN_GAP, LABEL_FONT_PX, NODE_RADIUS, type DiagramEdge, type DiagramLayout } from './diagram-layout';
 
 /** The smallest arrow text on screen, in pixels. With smaller text the diagram follows the run (spec section 2). */
 export const MIN_LABEL_PX = 11;
@@ -118,4 +118,12 @@ export function followMove({ now, lastMoveAt, fast, reducedMotion }: FollowMoveI
   if (lastMoveAt === null) return { wait: 0, duration: 0 };
   if (fast) return { wait: Math.max(0, lastMoveAt + FAST_FOLLOW_GAP_MS - now), duration: 0 };
   return { wait: 0, duration: reducedMotion ? 0 : FOLLOW_SLIDE_MS };
+}
+
+/**
+ * The arrows that leave the current state, its loop included, in rule table order. While following,
+ * only these keep their text and their full color (spec section 2). None before the machine has a state.
+ */
+export function edgesLeaving(layout: DiagramLayout, state: string | null): DiagramEdge[] {
+  return layout.edges.filter((edge) => edge.source === state);
 }

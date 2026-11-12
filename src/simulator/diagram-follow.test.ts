@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FIT_MAX_ZOOM, followMove, followsRun, followStates, followViewport, READABLE_ZOOM, wholeMachineZoom } from './diagram-follow';
+import { edgesLeaving, FIT_MAX_ZOOM, followMove, followsRun, followStates, followViewport, READABLE_ZOOM, wholeMachineZoom } from './diagram-follow';
 import { COLUMN_GAP, LABEL_FONT_PX, layoutDiagram, NODE_RADIUS } from './diagram-layout';
 import { EXAMPLE_IDS, examples } from './examples';
 
@@ -115,5 +115,20 @@ describe('followMove', () => {
   it('at the top speed, jumps at most twice a second', () => {
     expect(followMove({ now: 5200, lastMoveAt: 5000, fast: true, reducedMotion: false })).toEqual({ wait: 300, duration: 0 });
     expect(followMove({ now: 5600, lastMoveAt: 5000, fast: true, reducedMotion: false })).toEqual({ wait: 0, duration: 0 });
+  });
+});
+
+describe('edgesLeaving', () => {
+  const pairs = (id: (typeof EXAMPLE_IDS)[number], state: string | null) =>
+    edgesLeaving(layoutOf(id), state).map((edge) => `${edge.source}→${edge.target}`);
+
+  it('lists the arrows that leave the current state, its loop included, in rule table order', () => {
+    expect(pairs('binary-plus-one', 'q0')).toEqual(['q0→q0', 'q0→q1']);
+    expect(pairs('tcc-2016', 'q1')).toEqual(['q1→qR', 'q1→q2', 'q1→q3', 'q1→q4', 'q1→q5', 'q1→q1', 'q1→q12']);
+  });
+
+  it('lists no arrow for a state without rules, or before the machine has a state', () => {
+    expect(pairs('binary-plus-one', 'qA')).toEqual([]);
+    expect(pairs('binary-plus-one', null)).toEqual([]);
   });
 });

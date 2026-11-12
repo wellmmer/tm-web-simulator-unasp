@@ -5,7 +5,7 @@ import { ReactFlow, ReactFlowProvider, useKeyPress, useReactFlow, useStore, type
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Run } from '@/engines/turing';
-import { FIT_MAX_ZOOM, FIT_PADDING, FOLLOW_SLIDE_MS, followMove, followsRun, followViewport, MIN_ZOOM } from '../diagram-follow';
+import { edgesLeaving, FIT_MAX_ZOOM, FIT_PADDING, FOLLOW_SLIDE_MS, followMove, followsRun, followViewport, MIN_ZOOM } from '../diagram-follow';
 import { edgeLabel, layoutDiagram, NODE_RADIUS, type DiagramLayout } from '../diagram-layout';
 import { SPEEDS } from '../speed';
 import { currentRuleIndex } from '../store';
@@ -116,22 +116,32 @@ function Diagram({ layout }: { layout: DiagramLayout }) {
     data: { label: node.id, start: node.start, accept: node.accept, reject: node.reject, current: node.id === state, fraktur },
   }));
   const centre = new Map(layout.nodes.map((node) => [node.id, { x: node.x, y: node.y }]));
-  const edges: RuleEdge[] = layout.edges.map((edge) => ({
-    id: edge.id,
-    type: 'rule',
-    source: edge.source,
-    target: edge.target,
-    data: {
-      label: edgeLabel(edge.ruleIndexes.map((index) => machine.rules[index]), words),
-      from: centre.get(edge.source)!,
-      to: centre.get(edge.target)!,
-      loop: edge.loop,
-      bend: edge.bend,
-      current: rule !== null && edge.ruleIndexes.includes(rule),
-    },
-  }));
-  // React Flow draws the edges in this order. The arrow of the last step comes last, so its text is on top.
-  const drawn = [...edges.filter((edge) => edge.data?.current !== true), ...edges.filter((edge) => edge.data?.current === true)];
+  // While following, only the arrows that leave the current state, and the arrow of the last step, keep their text.
+  const leaving = new Set(edgesLeaving(layout, state).map((edge) => edge.id));
+  const edges: RuleEdge[] = layout.edges.map((edge) => {
+    const current = rule !== null && edge.ruleIndexes.includes(rule);
+    return {
+      id: edge.id,
+      type: 'rule',
+      source: edge.source,
+      target: edge.target,
+      data: {
+        label: edgeLabel(edge.ruleIndexes.map((index) => machine.rules[index]), words),
+        from: centre.get(edge.source)!,
+        to: centre.get(edge.target)!,
+        loop: edge.loop,
+        bend: edge.bend,
+        current,
+        faded: mode === 'follow' && !current && !leaving.has(edge.id),
+      },
+    };
+  });
+  // React Flow draws the edges in this order: faded arrows first, the arrow of the last step last, so its text is on top.
+  const drawn = [
+    ...edges.filter((edge) => edge.data?.faded === true),
+    ...edges.filter((edge) => edge.data?.faded !== true && edge.data?.current !== true),
+    ...edges.filter((edge) => edge.data?.current === true),
+  ];
 
   return (
     <>

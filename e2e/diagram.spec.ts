@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { diagramEdge, diagramZoom, openSimulator, pickExample, statesCutOff } from './helpers';
+import { diagramEdge, diagramState, diagramZoom, openSimulator, pickExample, statesCutOff } from './helpers';
 
 /** The on-screen size of the text of the arrow that the last step used: its font size times the zoom. */
 async function currentArrowTextPx(page: Page) {
@@ -104,4 +104,23 @@ test('at 390 px, the arrow of the last step is drawn over the others, and its te
   await expect.poll(textInside).toBe(true);
   // While the view slides, the zoom passes below its end value, so wait for the end.
   await expect.poll(() => currentArrowTextPx(page)).toBeGreaterThanOrEqual(11);
+});
+
+test('while following, only the arrows that leave the current state keep their text; Whole machine shows it all', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSimulator(page);
+  await pickExample(page, 'TCC machine (2016)');
+  await page.getByRole('button', { name: 'Step', exact: true }).click();
+  await expect(diagramState(page, 'q1').locator('[data-current]')).toHaveCount(1);
+  // q1 has 7 arrows that leave it. The arrow of the last step, q0→q1, keeps its red text too.
+  await expect(page.locator('[data-edge^="q1→"] text')).toHaveCount(7);
+  await expect(page.locator('[data-edge][data-current] text')).toHaveCount(1);
+  const others = page.locator('[data-edge]:not([data-edge^="q1→"]):not([data-current])');
+  expect(await others.count()).toBeGreaterThan(20);
+  await expect(others.locator('text')).toHaveCount(0);
+  await expect(others.first()).toHaveAttribute('data-faded', 'true');
+
+  await page.getByRole('button', { name: 'Whole machine' }).click();
+  await expect(page.locator('[data-faded]')).toHaveCount(0);
+  await expect(page.locator('[data-edge] text')).toHaveCount(await page.locator('[data-edge]').count());
 });
