@@ -197,6 +197,15 @@
       "support": "Support the dev",
       "soon": "soon",
       "comingSoon": "coming soon"
+    },
+    "skip": "Skip to the page",
+    "footer": {
+      "label": "Site",
+      "tagline": "Learn the Turing machine by running one.",
+      "about": "About",
+      "privacy": "Privacy",
+      "source": "Source code",
+      "license": "Code under the MIT license. Texts under CC BY 4.0."
     }
   }
 }
