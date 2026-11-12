@@ -8,7 +8,11 @@ export interface SupportHandles {
   paypal: string;
   /** The Ko-fi page name: "name" in https://ko-fi.com/name. */
   kofi: string;
-  /** Pix needs all three: the key, and the name and city that the payer's bank shows. */
+  /**
+   * Pix needs all three: the key, and the name and city that the payer's bank shows.
+   * The key is public: the page shows it, and the QR code holds it. So use a random key
+   * (chave aleatória) or an e-mail, never a CPF or a phone number.
+   */
   pix: { key: string; name: string; city: string };
   /** The whole Revolut link, copied from the Revolut app. It must start with https://. */
   revolutLink: string;
