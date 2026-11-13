@@ -22,6 +22,24 @@ describe('StepSentence', () => {
   });
 });
 
+describe('StepSentence when the machine cannot run (spec 8)', () => {
+  it('says why under the tape, where the steps were, instead of going blank', () => {
+    const { store } = renderSimulator(<StepSentence />);
+    act(() =>
+      store.getState().loadMachine(
+        machine([
+          { state: 'q0', read: '0', write: '1', move: 'R', next: 'q0' },
+          { state: 'q0', read: '0', write: '0', move: 'L', next: 'qA' },
+        ]),
+      ),
+    );
+    expect(store.getState().run).toBeNull();
+    const sentence = screen.getByTestId('step-sentence');
+    expect(sentence.textContent).toBe('Rules 1 and 2: two rules for q0 reading 0. A Turing machine needs exactly one.');
+    expect(sentence.className).toContain('text-pencil');
+  });
+});
+
 describe('ResultLine', () => {
   it('stays empty until the machine halts', () => {
     const { store } = renderSimulator(<ResultLine />);
