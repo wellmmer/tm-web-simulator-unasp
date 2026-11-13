@@ -20,6 +20,10 @@ describe('the language in the URL (spec 3, "Language on first visit")', () => {
     expect(visit('/', { 'accept-language': 'fr-CA,fr;q=0.9' }).headers.get('location')).toBe('http://localhost/fr');
   });
 
+  it('sends a German browser from Austria to /de', () => {
+    expect(visit('/', { 'accept-language': 'de-AT,de;q=0.9' }).headers.get('location')).toBe('http://localhost/de');
+  });
+
   it('sends a browser language the site does not have to English', () => {
     expect(visit('/', { 'accept-language': 'ja-JP' }).headers.get('location')).toBe('http://localhost/en');
   });

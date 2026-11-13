@@ -1,3 +1,4 @@
+import type de from '../../messages/de.json';
 import type en from '../../messages/en.json';
 import type es from '../../messages/es.json';
 import type fr from '../../messages/fr.json';
@@ -10,4 +11,4 @@ import type ptBR from '../../messages/pt-BR.json';
  */
 type HasEveryKey<Messages extends typeof en> = Messages;
 
-export type CheckedMessages = [HasEveryKey<typeof ptBR>, HasEveryKey<typeof es>, HasEveryKey<typeof fr>];
+export type CheckedMessages = [HasEveryKey<typeof ptBR>, HasEveryKey<typeof es>, HasEveryKey<typeof fr>, HasEveryKey<typeof de>];

@@ -5,7 +5,7 @@ import { defineRouting } from 'next-intl/routing';
  * add its code here and `messages/<code>.json` with the same keys as `en.json`.
  */
 export const routing = defineRouting({
-  locales: ['en', 'pt-BR', 'es', 'fr'],
+  locales: ['en', 'pt-BR', 'es', 'fr', 'de'],
   defaultLocale: 'en',
   // URLs stay in lower case, like /en: /pt-br/simulator. A link to /pt-BR/... redirects there.
   localePrefix: { mode: 'always', prefixes: { 'pt-BR': '/pt-br' } },
