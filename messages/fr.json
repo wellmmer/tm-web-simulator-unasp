@@ -202,6 +202,11 @@
       "comingSoon": "bientôt disponible"
     },
     "skip": "Aller à la page",
+    "languageBar": {
+      "label": "Langue",
+      "showing": "Affiché en français. Passer à l’anglais ?",
+      "keep": "Rester en français"
+    },
     "footer": {
       "label": "Site",
       "tagline": "Apprenez la machine de Turing en en faisant tourner une.",

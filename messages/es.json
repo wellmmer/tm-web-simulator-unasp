@@ -202,6 +202,11 @@
       "comingSoon": "próximamente"
     },
     "skip": "Saltar a la página",
+    "languageBar": {
+      "label": "Idioma",
+      "showing": "Mostrando en español. ¿Cambiar a inglés?",
+      "keep": "Seguir en español"
+    },
     "footer": {
       "label": "Sitio",
       "tagline": "Aprende la máquina de Turing ejecutando una.",

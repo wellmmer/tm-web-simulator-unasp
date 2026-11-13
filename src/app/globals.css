@@ -116,3 +116,15 @@ body {
 :root[data-theme="dark"] .on-night {
   display: block;
 }
+
+/*
+ * The language bar shows only while the script in <head> marks <html>: the page is not in English,
+ * and the visitor has not chosen its language yet. So the bar is there at the first paint.
+ */
+.language-bar {
+  display: none;
+}
+
+:root[data-language-bar] .language-bar {
+  display: block;
+}

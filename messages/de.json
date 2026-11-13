@@ -202,6 +202,11 @@
       "comingSoon": "kommt bald"
     },
     "skip": "Zur Seite springen",
+    "languageBar": {
+      "label": "Sprache",
+      "showing": "Angezeigt auf Deutsch. Zu Englisch wechseln?",
+      "keep": "Auf Deutsch bleiben"
+    },
     "footer": {
       "label": "Website",
       "tagline": "Lerne die Turingmaschine, indem du eine laufen lässt.",

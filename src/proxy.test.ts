@@ -32,4 +32,15 @@ describe('the language in the URL (spec 3, "Language on first visit")', () => {
     expect(visit('/pt-BR/simulator').headers.get('location')).toBe('http://localhost/pt-br/simulator');
     expect(visit('/pt-br/simulator').headers.get('x-middleware-rewrite')).toBe('http://localhost/pt-BR/simulator');
   });
+
+  it('opens "/" in the language the NEXT_LOCALE cookie remembers, before the browser language', () => {
+    const request = { 'accept-language': 'pt-BR', cookie: 'NEXT_LOCALE=en' };
+    expect(visit('/', request).headers.get('location')).toBe('http://localhost/en');
+  });
+
+  it('remembers for a year a language that is not the browser language', () => {
+    const cookie = visit('/pt-br', { 'accept-language': 'en-US' }).headers.get('set-cookie');
+    expect(cookie).toContain('NEXT_LOCALE=pt-BR');
+    expect(cookie).toContain('Max-Age=31536000');
+  });
 });

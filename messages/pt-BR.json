@@ -202,6 +202,11 @@
       "comingSoon": "em breve"
     },
     "skip": "Pular para a página",
+    "languageBar": {
+      "label": "Idioma",
+      "showing": "Mostrando em português. Mudar para o inglês?",
+      "keep": "Continuar em português"
+    },
     "footer": {
       "label": "Site",
       "tagline": "Aprenda a máquina de Turing rodando uma.",
