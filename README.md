@@ -34,7 +34,7 @@ machine could do the same work.
 
 | Release | What you get | Status |
 | --- | --- | --- |
-| **R1** | The simulator, the guided tour, 5 languages, light and dark themes, About, Support the dev | Live |
+| **R1** | The simulator, the guided tour, 5 languages, light and dark themes, About, Support the dev | Live. Support the dev shows its payment links once they are set. |
 | **R2** | Lessons: the formal definition, the Entscheidungsproblem, the halting problem, Church–Turing, the universal machine, and Turing's 1936 paper read alongside a running tape. Quizzes. | Planned |
 | **R3** | Enigma lab: a working Enigma I with plugboard, real and practice messages | Planned |
 | **R4** | Bombe lab: break your own Enigma message with a crib and a wall of drums | Planned |
