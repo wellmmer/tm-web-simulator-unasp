@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { openPage, PAGES } from './helpers';
+import { LOCALE_PATHS, openPage, PAGES } from './helpers';
 
 for (const width of [390, 768, 1440]) {
   for (const colorScheme of ['light', 'dark'] as const) {
@@ -33,3 +33,18 @@ for (const width of [390, 768, 1440]) {
     });
   }
 }
+
+test('on a phone, the text under Home\'s tape stays still while the machine runs, in every language', async ({ page }) => {
+  // Lighthouse measured a layout shift of 0.114 on /pt-br at 412 px: the step sentence took one line, then two.
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const path of LOCALE_PATHS) {
+    await openPage(page, path);
+    const tops = new Set<number>();
+    // Speed 3 makes one step every 700 ms, so 20 looks over 5 seconds see about 7 sentences.
+    for (let look = 0; look < 20; look++) {
+      tops.add(await page.getByRole('button', { name: /^(Pause|Pausar)$/ }).evaluate((button) => Math.round(button.getBoundingClientRect().top)));
+      await page.waitForTimeout(250);
+    }
+    expect([...tops], path).toHaveLength(1);
+  }
+});
