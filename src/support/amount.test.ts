@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { AMOUNTS, amountExamples, amountText, currencyOf, currencySymbol, formatAmount, parseAmount } from './amount';
+import { AMOUNTS, amountExamples, amountText, currencyOf, currencySymbol, formatAmount, formatLimit, parseAmount } from './amount';
 
 describe('the amounts', () => {
   it('offers $1, $3, $5 and $10, with $5 chosen first (spec 7)', () => {
@@ -98,6 +98,24 @@ describe('formatAmount', () => {
     expect(formatAmount(7.5, 'BRL', 'pt-BR')).toBe('R$ 7,50');
     expect(formatAmount(5, 'USD', 'fr')).toBe('5 $US');
     expect(formatAmount(5, 'USD', 'de')).toBe('5 $');
+  });
+});
+
+describe('formatLimit', () => {
+  // The hint shows the limits as the field takes them: the field refuses a thousands separator.
+  it('writes the minimum and the maximum without a thousands separator, in every language', () => {
+    expect(formatLimit(10_000, 'USD', 'en')).toBe('$10000');
+    expect(formatLimit(50_000, 'BRL', 'pt-BR')).toBe('R$\u00a050000');
+    expect(formatLimit(10_000, 'USD', 'es')).toBe('10000\u00a0US$');
+    expect(formatLimit(10_000, 'USD', 'fr')).toBe('10000\u00a0$US');
+    expect(formatLimit(10_000, 'USD', 'de')).toBe('10000\u00a0$');
+    expect(formatLimit(1, 'USD', 'en')).toBe('$1');
+    expect(formatLimit(5, 'BRL', 'pt-BR')).toBe('R$\u00a05');
+  });
+
+  it('writes a maximum the field takes', () => {
+    expect(parseAmount(formatLimit(10_000, 'USD', 'en'), 'USD')).toBe(10_000);
+    expect(parseAmount(formatLimit(50_000, 'BRL', 'pt-BR'), 'BRL')).toBe(50_000);
   });
 });
 

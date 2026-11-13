@@ -48,13 +48,21 @@ export function amountText(amount: number): string {
   return Number.isInteger(amount) ? String(amount) : amount.toFixed(2);
 }
 
-function currencyFormat(currency: Currency, locale: string) {
-  return new Intl.NumberFormat(locale, { style: 'currency', currency, trailingZeroDisplay: 'stripIfInteger' });
+function currencyFormat(currency: Currency, locale: string, useGrouping = true) {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency, trailingZeroDisplay: 'stripIfInteger', useGrouping });
 }
 
 /** The amount as the language writes it: "$5" and "$7.50" in English, "R$ 25" and "R$ 7,50" in Brazilian Portuguese. */
 export function formatAmount(amount: number, currency: Currency, locale: string): string {
   return currencyFormat(currency, locale).format(amount);
+}
+
+/**
+ * A limit of the "Other" field, for its hint: "$10000", "R$ 50000". No thousands separator, because
+ * the field refuses one, so the visitor can type the maximum exactly as the hint shows it.
+ */
+export function formatLimit(amount: number, currency: Currency, locale: string): string {
+  return currencyFormat(currency, locale, false).format(amount);
 }
 
 /** The currency sign as the language writes it, and whether it comes before the number. */

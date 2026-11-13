@@ -52,13 +52,13 @@ describe('SupportView (spec 7)', () => {
     expect(screen.getAllByText('Type $10 on the next page.')).toHaveLength(4);
   });
 
-  it('takes another amount from $1 to $10,000, and says the rule', () => {
+  it('takes another amount from $1 to $10000, and says the rule', () => {
     renderWithIntl(<SupportView handles={ALL} />);
     fireEvent.click(screen.getByRole('radio', { name: 'Other' }));
     const field = screen.getByRole('textbox', { name: 'Other amount, in US dollars' });
     fireEvent.change(field, { target: { value: '0.50' } });
     expect(field.getAttribute('aria-invalid')).toBe('true');
-    expect(screen.getByText('Type an amount from $1 to $10,000, with up to 2 decimals and no thousands separator, like 5 or 5.50.')).toBeTruthy();
+    expect(screen.getByText('Type an amount from $1 to $10000, with up to 2 decimals and no thousands separator, like 5 or 5.50.')).toBeTruthy();
     expect(screen.queryByRole('link', { name: /with PayPal/ })).toBeNull();
     // A disabled button, so screen readers say that it is unavailable.
     expect(screen.getByRole('button', { name: 'Pay with PayPal' })).toHaveProperty('disabled', true);
@@ -95,14 +95,14 @@ describe('SupportView (spec 7)', () => {
     expect(screen.getByRole('textbox', { name: 'Pix code' })).toHaveProperty('value', pixCode(ALL.pix, 50));
   });
 
-  it('takes another amount in reais from R$ 5 to R$ 50.000, with a decimal comma', () => {
+  it('takes another amount in reais from R$ 5 to R$ 50000, with a decimal comma', () => {
     renderWithIntl(<SupportView handles={ALL} />, 'pt-BR');
     fireEvent.click(screen.getByRole('radio', { name: 'Other' }));
     const field = screen.getByRole('textbox', { name: 'Other amount, in Brazilian reais' });
     fireEvent.change(field, { target: { value: '4,99' } });
     expect(field.getAttribute('aria-invalid')).toBe('true');
     expect(
-      screen.getByText('Type an amount from R$ 5 to R$ 50.000, with up to 2 decimals and no thousands separator, like 25 or 25,50.'),
+      screen.getByText('Type an amount from R$ 5 to R$ 50000, with up to 2 decimals and no thousands separator, like 25 or 25,50.'),
     ).toBeTruthy();
     // Without a valid amount, the Pix code holds none, and the donor types it in the bank app.
     expect(screen.getByRole('textbox', { name: 'Pix code' })).toHaveProperty('value', pixCode(ALL.pix));

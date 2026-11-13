@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useId, useState } from 'react';
 import type { SupportHandles } from '@/config/support';
-import { AMOUNTS, amountExamples, currencyOf, currencySymbol, formatAmount, parseAmount, type Currency } from './amount';
+import { AMOUNTS, amountExamples, currencyOf, currencySymbol, formatAmount, formatLimit, parseAmount, type Currency } from './amount';
 import { PixPanel } from './PixPanel';
 import { providerLink, supportOptions, type ProviderId } from './providers';
 
@@ -137,8 +137,8 @@ export function SupportView({ handles }: { handles: SupportHandles }) {
             </div>
             <p id={otherHintId} className={`mt-1 text-sm ${otherInvalid ? 'text-pencil' : 'text-muted'}`}>
               {t('otherHint', {
-                min: formatAmount(rules.min, currency, locale),
-                max: formatAmount(rules.max, currency, locale),
+                min: formatLimit(rules.min, currency, locale),
+                max: formatLimit(rules.max, currency, locale),
                 ...amountExamples(currency, locale),
               })}
             </p>
