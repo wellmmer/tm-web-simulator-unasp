@@ -30,6 +30,20 @@ function back(opener: Element | null): HTMLElement | null {
   return visible ? opener : document.querySelector<HTMLElement>('[data-tour-button]');
 }
 
+/** The room left between the spotlight's frame and the edges of the space above the panel. */
+const GAP = 16;
+
+/**
+ * Where the page scrolls to show a step's part (box, as the window sees it now) above the panel,
+ * which covers the bottom of the window from panelTop down. A part that fits sits in the middle of
+ * the space above the panel. A taller part starts at the top of the window.
+ */
+function scrollTopFor(box: DOMRect, panelTop: number): number {
+  const space = panelTop - 2 * GAP;
+  const offset = box.height <= space ? GAP + (space - box.height) / 2 : GAP;
+  return Math.max(0, window.scrollY + box.top - offset);
+}
+
 function sameBox(a: Box | null, b: Box): boolean {
   return a !== null && Math.abs(a.top - b.top) < 0.5 && Math.abs(a.left - b.left) < 0.5 && Math.abs(a.width - b.width) < 0.5 && Math.abs(a.height - b.height) < 0.5;
 }
@@ -48,6 +62,7 @@ export function TourPanel() {
   const reducedMotion = useReducedMotion();
   const [box, setBox] = useState<Box | null>(null);
   const title = useRef<HTMLHeadingElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
   const opener = useRef<Element | null>(null);
   const wasOpen = useRef(false);
   const textId = useId();
@@ -63,12 +78,12 @@ export function TourPanel() {
     tourStore.getState().start();
   }, [requested, simulator]);
 
-  // Each step scrolls its part into view and moves the focus to its title.
+  // Each step scrolls its part above the panel and moves the focus to its title.
   useEffect(() => {
     if (id === null) return;
     const target = targetOf(id);
-    const tall = target !== null && target.offsetHeight > window.innerHeight / 2;
-    target?.scrollIntoView({ block: tall ? 'start' : 'center', behavior: reducedMotion ? 'auto' : 'smooth' });
+    const panelTop = panel.current?.getBoundingClientRect().top ?? window.innerHeight;
+    if (target !== null) window.scrollTo({ top: scrollTopFor(target.getBoundingClientRect(), panelTop), behavior: reducedMotion ? 'auto' : 'smooth' });
     title.current?.focus({ preventScroll: true });
   }, [id, reducedMotion]);
 
@@ -133,6 +148,7 @@ export function TourPanel() {
         />
       )}
       <div
+        ref={panel}
         role="dialog"
         aria-label={t('label')}
         aria-describedby={textId}

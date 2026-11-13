@@ -7,7 +7,7 @@ import { TOUR_KEY, tourStore } from './tour';
 
 beforeAll(() => {
   // jsdom does not scroll.
-  Element.prototype.scrollIntoView = () => {};
+  window.scrollTo = () => {};
 });
 
 afterEach(() => {
