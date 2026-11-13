@@ -294,6 +294,54 @@
     "noData": "Computable ne voit jamais votre paiement. Chaque lien ouvre la page du service lui-même."
   },
   "tour": {
-    "button": "Visite"
+    "button": "Visite",
+    "label": "Visite du simulateur",
+    "progress": "Étape {step} sur {total}",
+    "skip": "Passer la visite",
+    "back": "Retour",
+    "next": "Suivant",
+    "finish": "Terminer",
+    "prompt": {
+      "text": "Nouveau ici ? Faites la visite d’une minute.",
+      "take": "Faire la visite",
+      "dismiss": "Non merci"
+    },
+    "steps": {
+      "tape": {
+        "title": "La bande",
+        "text": "La bande est une rangée de cases. Chaque case contient un symbole. Le nombre sous une case est sa place.",
+        "task": "Trouvez la case 0 : l’entrée commence là."
+      },
+      "head": {
+        "title": "La tête et son état",
+        "text": "Le cercle rouge est la tête. Elle lit la case qu’il entoure. L’étiquette au-dessus montre l’état de la machine.",
+        "task": "Appuyez sur Pas et regardez la tête avancer d’une case."
+      },
+      "sentence": {
+        "title": "La phrase du pas",
+        "text": "Cette phrase dit avec des mots ce que le dernier pas a fait.",
+        "task": "Appuyez sur Pas et lisez la nouvelle phrase."
+      },
+      "controls": {
+        "title": "Les commandes",
+        "text": "Pas fait un pas, et Pas arrière l’annule. Lancer fait tourner la machine jusqu’à son arrêt. Réinitialiser recommence. Chaque bouton montre sa touche.",
+        "task": "Appuyez sur Lancer et regardez la machine travailler."
+      },
+      "rules": {
+        "title": "La table des règles",
+        "text": "Chaque ligne est une règle : dans cet état, en lisant ce symbole, écrire, se déplacer, puis passer à l’état suivant.",
+        "task": "Appuyez sur Pas et regardez quelle ligne s’allume."
+      },
+      "diagram": {
+        "title": "Le diagramme d’états",
+        "text": "Les mêmes règles en cercles et en flèches. Chaque cercle est un état. La flèche de la dernière règle devient rouge.",
+        "task": "Appuyez sur Pas et regardez la flèche rouge."
+      },
+      "keys": {
+        "title": "Clavier et exemples",
+        "text": "Choisissez une autre machine dans la liste Exemple. Appuyez sur ? à tout moment pour voir tous les raccourcis clavier.",
+        "task": "Choisissez un exemple, puis appuyez sur Terminer."
+      }
+    }
   }
 }

@@ -14,7 +14,7 @@ const StateDiagram = dynamic(() => import('./StateDiagram'), { ssr: false, loadi
 export function DiagramPanel() {
   const t = useTranslations('simulator.diagram');
   return (
-    <section aria-labelledby="diagram-title" className="min-w-0 self-start bg-cell px-4 pt-4 pb-5 lg:sticky lg:top-4">
+    <section aria-labelledby="diagram-title" data-tour="diagram" className="min-w-0 self-start bg-cell px-4 pt-4 pb-5 lg:sticky lg:top-4">
       <h2 id="diagram-title" className="font-display text-xl font-semibold">
         {t('title')}
       </h2>

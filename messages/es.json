@@ -294,6 +294,54 @@
     "noData": "Computable nunca ve tu pago. Cada enlace abre la página del propio servicio."
   },
   "tour": {
-    "button": "Recorrido"
+    "button": "Recorrido",
+    "label": "Recorrido por el simulador",
+    "progress": "Paso {step} de {total}",
+    "skip": "Saltar el recorrido",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "finish": "Terminar",
+    "prompt": {
+      "text": "¿Primera vez aquí? Haz el recorrido de 1 minuto.",
+      "take": "Hacer el recorrido",
+      "dismiss": "No, gracias"
+    },
+    "steps": {
+      "tape": {
+        "title": "La cinta",
+        "text": "La cinta es una fila de casillas. Cada casilla guarda un símbolo. El número bajo una casilla es su posición.",
+        "task": "Busca la casilla 0: la entrada empieza ahí."
+      },
+      "head": {
+        "title": "La cabeza y su estado",
+        "text": "El círculo rojo es la cabeza. Lee la casilla que tiene dentro. La etiqueta de arriba muestra el estado de la máquina.",
+        "task": "Pulsa Paso y mira cómo la cabeza avanza una casilla."
+      },
+      "sentence": {
+        "title": "La frase del paso",
+        "text": "Esta frase dice con palabras lo que hizo el último paso.",
+        "task": "Pulsa Paso y lee la nueva frase."
+      },
+      "controls": {
+        "title": "Los controles",
+        "text": "Paso da un paso, y Paso atrás lo deshace. Ejecutar hace funcionar la máquina hasta que se detiene. Reiniciar empieza de nuevo. Cada botón muestra su tecla.",
+        "task": "Pulsa Ejecutar y mira trabajar a la máquina."
+      },
+      "rules": {
+        "title": "La tabla de reglas",
+        "text": "Cada fila es una regla: en este estado, leyendo este símbolo, escribe, mueve y pasa al estado siguiente.",
+        "task": "Pulsa Paso y mira qué fila se ilumina."
+      },
+      "diagram": {
+        "title": "El diagrama de estados",
+        "text": "Las mismas reglas como círculos y flechas. Cada círculo es un estado. La flecha de la última regla se pone roja.",
+        "task": "Pulsa Paso y mira la flecha roja."
+      },
+      "keys": {
+        "title": "Teclado y ejemplos",
+        "text": "Elige otra máquina en la lista Ejemplo. Pulsa ? en cualquier momento para ver todos los atajos de teclado.",
+        "task": "Elige un ejemplo y pulsa Terminar."
+      }
+    }
   }
 }

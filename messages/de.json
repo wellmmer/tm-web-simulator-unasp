@@ -294,6 +294,54 @@
     "noData": "Computable sieht deine Zahlung nie. Jeder Link öffnet die Seite des Dienstes selbst."
   },
   "tour": {
-    "button": "Tour"
+    "button": "Tour",
+    "label": "Tour durch den Simulator",
+    "progress": "Schritt {step} von {total}",
+    "skip": "Tour überspringen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Fertig",
+    "prompt": {
+      "text": "Neu hier? Mach die 1-Minuten-Tour.",
+      "take": "Tour starten",
+      "dismiss": "Nein, danke"
+    },
+    "steps": {
+      "tape": {
+        "title": "Das Band",
+        "text": "Das Band ist eine Reihe von Feldern. Jedes Feld enthält ein Symbol. Die Zahl unter einem Feld ist seine Position.",
+        "task": "Finde Feld 0: Dort beginnt die Eingabe."
+      },
+      "head": {
+        "title": "Der Kopf und sein Zustand",
+        "text": "Der rote Kreis ist der Kopf. Er liest das Feld in seiner Mitte. Das Schild darüber zeigt den Zustand der Maschine.",
+        "task": "Drücke Schritt und sieh zu, wie der Kopf ein Feld weitergeht."
+      },
+      "sentence": {
+        "title": "Der Schrittsatz",
+        "text": "Dieser Satz sagt in Worten, was der letzte Schritt getan hat.",
+        "task": "Drücke Schritt und lies den neuen Satz."
+      },
+      "controls": {
+        "title": "Die Steuerung",
+        "text": "Schritt macht einen Schritt, und Schritt zurück macht ihn rückgängig. Starten lässt die Maschine laufen, bis sie anhält. Zurücksetzen beginnt von vorn. Jeder Knopf zeigt seine Taste.",
+        "task": "Drücke Starten und sieh der Maschine bei der Arbeit zu."
+      },
+      "rules": {
+        "title": "Die Regeltabelle",
+        "text": "Jede Zeile ist eine Regel: in diesem Zustand, beim Lesen dieses Symbols, schreibe, bewege, dann wechsle zum nächsten Zustand.",
+        "task": "Drücke Schritt und sieh, welche Zeile aufleuchtet."
+      },
+      "diagram": {
+        "title": "Das Zustandsdiagramm",
+        "text": "Dieselben Regeln als Kreise und Pfeile. Jeder Kreis ist ein Zustand. Der Pfeil der letzten Regel wird rot.",
+        "task": "Drücke Schritt und achte auf den roten Pfeil."
+      },
+      "keys": {
+        "title": "Tastatur und Beispiele",
+        "text": "Wähle eine andere Maschine in der Liste Beispiel. Drücke jederzeit ?, um alle Tastenkürzel zu sehen.",
+        "task": "Wähle ein Beispiel und drücke dann Fertig."
+      }
+    }
   }
 }

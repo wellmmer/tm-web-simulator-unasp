@@ -128,3 +128,12 @@ body {
 :root[data-language-bar] .language-bar {
   display: block;
 }
+
+/* "New here? Take the 1-minute tour" shows only on the first visit, when the script in <head> marks <html>. */
+.tour-prompt {
+  display: none;
+}
+
+:root[data-tour-new] .tour-prompt {
+  display: block;
+}

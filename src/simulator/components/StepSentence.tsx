@@ -12,7 +12,7 @@ export function StepSentence() {
   const { rich } = useSimText();
   if (!canRun) return null;
   return (
-    <p data-testid="step-sentence" className="mx-auto mt-3.5 min-h-7 max-w-[60ch] text-center font-display text-xl/snug">
+    <p data-testid="step-sentence" data-tour="sentence" className="mx-auto mt-3.5 min-h-7 max-w-[60ch] text-center font-display text-xl/snug">
       {rich(describeStep(machine, event))}
     </p>
   );

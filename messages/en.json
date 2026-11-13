@@ -294,6 +294,54 @@
     "noData": "Computable never sees your payment. Each link opens the provider's own page."
   },
   "tour": {
-    "button": "Tour"
+    "button": "Tour",
+    "label": "Tour of the simulator",
+    "progress": "Step {step} of {total}",
+    "skip": "Skip tour",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "prompt": {
+      "text": "New here? Take the 1-minute tour.",
+      "take": "Take the tour",
+      "dismiss": "No, thanks"
+    },
+    "steps": {
+      "tape": {
+        "title": "The tape",
+        "text": "The tape is a row of cells. Each cell holds one symbol. The number under a cell is its place.",
+        "task": "Find cell 0: the input starts there."
+      },
+      "head": {
+        "title": "The head and its state",
+        "text": "The red circle is the head. It reads the cell inside it. The tag above it shows the machine's state.",
+        "task": "Press Step and watch the head move one cell."
+      },
+      "sentence": {
+        "title": "The step sentence",
+        "text": "This sentence says in words what the last step did.",
+        "task": "Press Step and read the new sentence."
+      },
+      "controls": {
+        "title": "The controls",
+        "text": "Step does one step, and Step back undoes it. Run plays the machine until it stops. Reset starts again. Each button shows its key.",
+        "task": "Press Run and watch the machine work."
+      },
+      "rules": {
+        "title": "The rule table",
+        "text": "Each row is one rule: in this state, reading this symbol, write, move, then go to the next state.",
+        "task": "Press Step and watch which row lights up."
+      },
+      "diagram": {
+        "title": "The state diagram",
+        "text": "The same rules as circles and arrows. Each circle is a state. The arrow of the last rule turns red.",
+        "task": "Press Step and watch the red arrow."
+      },
+      "keys": {
+        "title": "Keyboard and examples",
+        "text": "Pick another machine from the Example list. Press ? at any time to see every keyboard shortcut.",
+        "task": "Pick an example, then press Finish."
+      }
+    }
   }
 }

@@ -294,6 +294,54 @@
     "noData": "O Computable nunca vê o seu pagamento. Cada link abre a página do próprio serviço."
   },
   "tour": {
-    "button": "Tour"
+    "button": "Tour",
+    "label": "Tour do simulador",
+    "progress": "Passo {step} de {total}",
+    "skip": "Pular o tour",
+    "back": "Voltar",
+    "next": "Próximo",
+    "finish": "Concluir",
+    "prompt": {
+      "text": "Primeira vez aqui? Faça o tour de 1 minuto.",
+      "take": "Fazer o tour",
+      "dismiss": "Não, obrigado"
+    },
+    "steps": {
+      "tape": {
+        "title": "A fita",
+        "text": "A fita é uma fileira de casas. Cada casa guarda um símbolo. O número embaixo de uma casa é a posição dela.",
+        "task": "Ache a casa 0: a entrada começa nela."
+      },
+      "head": {
+        "title": "A cabeça e o estado",
+        "text": "O círculo vermelho é a cabeça. Ela lê a casa dentro dele. A etiqueta acima mostra o estado da máquina.",
+        "task": "Aperte Passo e veja a cabeça andar uma casa."
+      },
+      "sentence": {
+        "title": "A frase do passo",
+        "text": "Esta frase diz em palavras o que o último passo fez.",
+        "task": "Aperte Passo e leia a nova frase."
+      },
+      "controls": {
+        "title": "Os controles",
+        "text": "Passo dá um passo, e Voltar desfaz. Rodar executa a máquina até ela parar. Reiniciar começa de novo. Cada botão mostra a sua tecla.",
+        "task": "Aperte Rodar e veja a máquina trabalhar."
+      },
+      "rules": {
+        "title": "A tabela de regras",
+        "text": "Cada linha é uma regra: neste estado, lendo este símbolo, escreve, move e vai para o próximo estado.",
+        "task": "Aperte Passo e veja qual linha acende."
+      },
+      "diagram": {
+        "title": "O diagrama de estados",
+        "text": "As mesmas regras como círculos e setas. Cada círculo é um estado. A seta da última regra fica vermelha.",
+        "task": "Aperte Passo e veja a seta vermelha."
+      },
+      "keys": {
+        "title": "Teclado e exemplos",
+        "text": "Escolha outra máquina na lista Exemplo. Aperte ? a qualquer momento para ver todos os atalhos de teclado.",
+        "task": "Escolha um exemplo e aperte Concluir."
+      }
+    }
   }
 }

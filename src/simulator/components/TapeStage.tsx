@@ -43,12 +43,12 @@ export function TapeStage({ editable = true }: { editable?: boolean }) {
   };
 
   return (
-    <section aria-label={t('label')} onClick={editable ? onClick : undefined} className="relative mt-6 h-[170px] overflow-hidden">
+    <section aria-label={t('label')} data-tour="tape" onClick={editable ? onClick : undefined} className="relative mt-6 h-[170px] overflow-hidden">
       {tapeEdit !== null && <TapeEditor cell={tapeEdit.cell} />}
       {run !== null && tapeEdit === null && (
         <>
           <p className="sr-only">{t('summary', { cell: head, state: run.state, symbol: tape.read(head) })}</p>
-          <div aria-hidden className="pointer-events-none absolute top-4 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center">
+          <div aria-hidden data-tour="head" className="pointer-events-none absolute top-4 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center">
             <span
               data-testid="head-state"
               className={`bg-pencil px-2.5 py-0.5 font-mono font-semibold text-on-pencil ${fraktur ? 'text-xl/6' : 'text-[15px]/6'}`}

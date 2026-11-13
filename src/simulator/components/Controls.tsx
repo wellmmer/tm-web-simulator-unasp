@@ -58,7 +58,7 @@ export function Controls() {
   const canStepBack = run !== null && run.history.length > 0;
 
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+    <div data-tour="controls" className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
       <ControlButton icon={RotateCcw} label={t('reset')} keyLabel="R" shortcut="r" onClick={actions.reset} disabled={run === null} />
       <ControlButton icon={StepBack} label={t('stepBack')} keyLabel="←" shortcut="ArrowLeft" onClick={actions.stepBack} disabled={!canStepBack} />
       <ControlButton
