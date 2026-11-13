@@ -7,7 +7,7 @@
 press Run, and watch the head read, write and move, one square at a time. Every step is explained
 in a plain sentence.
 
-> **Status: release 1 is live.** This repo held a 2016 capstone project built with jQuery. It is
+> **Status: release 1 is live at https://computable-lac.vercel.app.** This repo held a 2016 capstone project built with jQuery. It is
 > now Computable, built release by release. Release 1 is the simulator; the roadmap below lists
 > the rest. The 2016 version stays available at the git tag `v1.0-tcc-2016`.
 
