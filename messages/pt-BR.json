@@ -1,0 +1,289 @@
+{
+  "meta": {
+    "title": "Computable",
+    "titleTemplate": "%s · Computable",
+    "description": "Aprenda a máquina de Turing rodando uma."
+  },
+  "home": {
+    "title": "Computable",
+    "lead": "Computable é um lugar para aprender a máquina de Turing rodando uma, passo a passo.",
+    "openSimulator": "Abrir o simulador",
+    "caption": "Esta é a primeira máquina de Turing, do artigo de 1936. Ela imprime 0 1 0 1 … em casas alternadas e nunca para.",
+    "pause": "Pausar",
+    "play": "Continuar"
+  },
+  "simulator": {
+    "page": {
+      "title": "Simulador"
+    },
+    "header": {
+      "example": "Exemplo",
+      "yourMachine": "Sua máquina",
+      "input": "Entrada"
+    },
+    "examples": {
+      "binary-plus-one": "Binário +1",
+      "palindrome": "Verificador de palíndromos",
+      "turing-1936": "Turing 1936: 0 1 0 1…",
+      "tcc-2016": "Máquina do TCC (2016)"
+    },
+    "share": {
+      "copy": "Copiar link de compartilhamento",
+      "copied": "Link copiado.",
+      "tooLong": "Esta máquina é grande demais para um link. Baixe-a como arquivo.",
+      "copyFailed": "Seu navegador não permitiu copiar. Copie o link do campo abaixo.",
+      "link": "Link de compartilhamento"
+    },
+    "step": {
+      "ready": "Pronto. A cabeça começa na casa {cell}, no estado <b>{state}</b>.",
+      "write": "Em <b>{state}</b> lendo <b>{symbol}</b>: escreve <b>{write}</b>, {move, select, L {move para a esquerda} R {move para a direita} other {fica parada}}, vai para <b>{next}</b>.",
+      "ops": "Em <b>{state}</b> lendo <b>{symbol}</b>: {ops}, vai para <b>{next}</b>.",
+      "noOps": "Em <b>{state}</b> lendo <b>{symbol}</b>: vai para <b>{next}</b>.",
+      "noRule": "Em <b>{state}</b> lendo <b>{symbol}</b>: nenhuma regra serve, então a máquina para.",
+      "back": "Voltou um passo. Estado <b>{state}</b>, cabeça na casa {cell}."
+    },
+    "op": {
+      "print": "imprime {symbol}",
+      "erase": "apaga",
+      "left": "move para a esquerda",
+      "right": "move para a direita",
+      "stay": "fica parada",
+      "separator": ", "
+    },
+    "result": {
+      "accepted": "Aceita após {steps, plural, one {# passo} other {# passos}}. A fita agora diz {tape}.",
+      "acceptedBlank": "Aceita após {steps, plural, one {# passo} other {# passos}}. A fita agora está em branco.",
+      "rejectState": "Rejeitada: a máquina chegou a {state} após {steps, plural, one {# passo} other {# passos}}.",
+      "noRule": "Rejeitada: não há regra para {state} lendo {symbol}.",
+      "leftEdge": "Rejeitada: a cabeça tentou ir à esquerda da casa 0 em {state}.",
+      "limit": "Pausada após {limit, number} passos. Esta máquina pode nunca parar. Continuar?"
+    },
+    "issue": {
+      "badBlank": "O branco deve ser exatamente um símbolo.",
+      "emptyStart": "O estado inicial está vazio.",
+      "acceptAndReject": "{state} é ao mesmo tempo estado de aceitação e de rejeição. Um estado só pode ser um dos dois.",
+      "emptyState": "Regra {rule}: {field, select, state {o estado} other {o próximo estado}} está vazio.",
+      "badSymbol": "Regra {rule}: {field, select, read {o símbolo lido} other {o símbolo escrito}} deve ser exatamente um símbolo.",
+      "badOp": "Regra {rule}: “{op}” não é uma operação. Use P e um símbolo, E, L ou R.",
+      "duplicateRule": "Regras {first} e {rule}: duas regras para {state} lendo {symbol}. Uma máquina de Turing precisa de exatamente uma."
+    },
+    "warning": {
+      "stateWithoutRules": "{state} ainda não tem regras. A máquina vai parar lá e rejeitar.",
+      "legacyDuplicateRow": "As linhas {row} e {keptRow} dão regras para {state} lendo {symbol}. A máquina usa a linha {keptRow}, como o app de 2016 fazia."
+    },
+    "tape": {
+      "label": "Fita",
+      "summary": "Cabeça na casa {cell}, no estado {state}, lendo {symbol}.",
+      "edit": "Editar a fita",
+      "editor": "Entrada da fita",
+      "cursor": "Casa {cell}: {symbol}",
+      "editHelp": "Editando a fita. As setas movem o cursor. Digite um símbolo para escrevê-lo. Backspace escreve o branco. Esc termina a edição."
+    },
+    "controls": {
+      "reset": "Reiniciar",
+      "stepBack": "Voltar",
+      "run": "Rodar",
+      "pause": "Pausar",
+      "step": "Passo",
+      "spaceKey": "Espaço",
+      "speed": "Velocidade",
+      "slower": "Mais devagar",
+      "faster": "Mais rápido",
+      "speedValue": "{level} de 5",
+      "continue": "Continuar"
+    },
+    "notes": {
+      "storageBlocked": "Este navegador não vai guardar sua máquina depois que você fechá-lo.",
+      "badLink": "Este link não contém uma máquina do Computable. O simulador manteve a máquina atual.",
+      "leftEdge": "A cabeça tentou ir à esquerda da casa 0, a ponta esquerda desta fita. Ela fica na casa 0, como no livro do Sipser.",
+      "gotIt": "Entendi",
+      "tapeReset": "A execução voltou ao início, para você editar a entrada na fita."
+    },
+    "table": {
+      "title": "Regras",
+      "hint": "Cada linha é uma regra. A máquina procura a linha do seu estado e do símbolo sob a cabeça. Digite numa célula para mudar uma regra.",
+      "state": "Se no estado",
+      "read": "e lendo",
+      "write": "escreve",
+      "move": "move",
+      "ops": "operações",
+      "next": "então vai para",
+      "any": "qualquer símbolo",
+      "blank": "branco",
+      "empty": "Sua máquina ainda não tem regras. Adicione a primeira regra ou comece de um exemplo.",
+      "symbol": "um símbolo",
+      "cell": "Regra {rule}: {column}",
+      "readSymbol": "Regra {rule}: símbolo lido",
+      "deleteColumn": "Apagar",
+      "delete": "Apagar a regra {rule}",
+      "add": "Adicionar uma regra",
+      "addFirst": "Adicionar a primeira regra",
+      "openExample": "Abrir um exemplo",
+      "fieldHint": {
+        "emptyState": "Digite um estado.",
+        "badSymbol": "Digite exatamente um símbolo.",
+        "badOp": "Use P e um símbolo, E, L ou R."
+      },
+      "duplicate": "Duas regras para {state} lendo {symbol}. Uma máquina de Turing precisa de exatamente uma."
+    },
+    "settings": {
+      "legend": "Configuração da máquina",
+      "start": "Estado inicial",
+      "accept": "Estados de aceitação",
+      "reject": "Estados de rejeição",
+      "listHint": "Separe os estados com vírgulas.",
+      "acceptAndReject": "Um estado não pode aceitar e rejeitar ao mesmo tempo.",
+      "blank": "Branco",
+      "tape": "Fita",
+      "oneSided": "Limitada à esquerda",
+      "twoWay": "Infinita nos dois lados",
+      "leftEdgeReject": "Nesta fita, ir à esquerda da casa 0 rejeita, como no app de 2016."
+    },
+    "diagram": {
+      "title": "Diagrama de estados",
+      "hint": "As mesmas regras desenhadas como setas. Os círculos são estados. Um círculo duplo aceita, um círculo tracejado rejeita, e a seta da esquerda aponta para o estado inicial. A tabela de regras lista as mesmas regras em texto.",
+      "label": "Diagrama de estados de {name}",
+      "any": "qualquer",
+      "blank": "branco",
+      "view": "Visão do diagrama",
+      "zoomIn": "Aproximar",
+      "zoomOut": "Afastar",
+      "wholeMachine": "Máquina inteira",
+      "follow": "Seguir a execução"
+    },
+    "file": {
+      "title": "Arquivo da máquina",
+      "hint": "A máquina como um arquivo JSON. Baixe-o para guardar, ou abra um arquivo que você salvou antes. Abrir arquivo também lê arquivos .txt do app de 2016.",
+      "name": "Nome",
+      "json": "O arquivo da máquina, em JSON",
+      "download": "Baixar",
+      "open": "Abrir arquivo",
+      "newMachine": "Nova máquina",
+      "newName": "Minha máquina",
+      "opened": "{name} aberta.",
+      "error": {
+        "notJson": "Este arquivo não é uma máquina do Computable (não é JSON).",
+        "notAMachine": "Este arquivo não é uma máquina do Computable (o formato não é computable/machine@1).",
+        "missingField": "Este arquivo não é uma máquina do Computable (falta `{field}`).",
+        "badField": "Este arquivo não é uma máquina do Computable (`{field}` tem um valor errado).",
+        "legacyTooShort": "Este arquivo de 2016 é curto demais. A linha 1 deve ser o estado inicial e a linha 2, a entrada.",
+        "legacyBadRow": "Este arquivo de 2016 tem uma regra quebrada na linha {row}.",
+        "unreadable": "O navegador não conseguiu ler este arquivo. Tente abri-lo de novo."
+      }
+    },
+    "shortcuts": {
+      "open": "Atalhos de teclado",
+      "title": "Atalhos de teclado",
+      "close": "Fechar",
+      "toggleRun": "Rodar ou pausar",
+      "stepForward": "Passo",
+      "stepBack": "Voltar",
+      "reset": "Reiniciar",
+      "faster": "Mais rápido",
+      "slower": "Mais devagar",
+      "help": "Mostrar esta lista",
+      "off": "Os atalhos ficam desligados enquanto você digita num campo de texto.",
+      "startTapeEdit": "Editar a fita"
+    }
+  },
+  "shell": {
+    "theme": {
+      "label": "Papel noturno"
+    },
+    "menu": {
+      "label": "Menu principal",
+      "wordmark": "Computable",
+      "learn": "Aprender",
+      "simulator": "Simulador",
+      "enigma": "Enigma",
+      "bombe": "Bombe",
+      "support": "Apoie o dev",
+      "soon": "em breve",
+      "comingSoon": "em breve"
+    },
+    "skip": "Pular para a página",
+    "footer": {
+      "label": "Site",
+      "tagline": "Aprenda a máquina de Turing rodando uma.",
+      "about": "Sobre",
+      "privacy": "Privacidade",
+      "source": "Código-fonte",
+      "license": "Código sob a licença MIT. Textos sob CC BY 4.0."
+    }
+  },
+  "about": {
+    "pageTitle": "Sobre",
+    "title": "Sobre o Computable",
+    "lead": "O Computable começou em 2016 como trabalho de conclusão de curso em Ciência da Computação no UNASP: um simulador de máquina de Turing para a web.",
+    "rebuilt": "Em 2026 o autor o refez do zero como Computable. O simulador ainda abre as máquinas salvas pelo app de 2016.",
+    "record": "O projeto de 2016",
+    "projectLabel": "Título",
+    "project": "Simulador de Máquina de Turing, Uma Aplicação Web para o Ensino",
+    "projectEnglish": "(o título original)",
+    "schoolLabel": "Instituição",
+    "school": "UNASP, Ciência da Computação",
+    "yearLabel": "Ano",
+    "year": "2016",
+    "authorLabel": "Autor",
+    "author": "Wellmmer Lucas de Oliveira Pinto",
+    "advisorLabel": "Orientador",
+    "advisor": "Prof. Laercio Martins Carpes",
+    "paper": "Ler o trabalho de 2016 (PDF)",
+    "tag": "Veja o código do app de 2016 na tag git <code>v1.0-tcc-2016</code>"
+  },
+  "privacy": {
+    "pageTitle": "Privacidade",
+    "title": "Privacidade",
+    "lead": "O Computable não tem contas, não usa cookies e não guarda dados pessoais sobre você.",
+    "browserTitle": "O que fica no seu navegador",
+    "browser": "Seu navegador guarda sua máquina atual e sua escolha entre papel quadriculado e papel noturno. Eles ficam no seu aparelho. O Computable nunca os envia para lugar nenhum.",
+    "shareLink": "Um link de compartilhamento guarda a máquina depois do sinal #. Os navegadores não enviam essa parte do link a nenhum servidor.",
+    "analytics": {
+      "title": "O que o site conta",
+      "summary": "Para saber quais páginas ajudam as pessoas, o site conta visitas com o {service}. Ele não usa cookies.",
+      "counted": "Para cada página vista, ele registra a hora, a página, a página de onde você veio, seu país, região e cidade, seu navegador, seu sistema e o tipo de aparelho.",
+      "visitor": "Ele distingue as visitas com um código feito a partir da requisição e joga o código fora depois de 24 horas. Ele não liga as visitas a você nem ao seu endereço IP.",
+      "source": "Como o {service} trata a privacidade"
+    },
+    "donationsTitle": "Doações",
+    "donations": "A página de apoio só tem links para serviços de pagamento, como PayPal e Ko-fi. Você paga nas páginas deles, sob as regras de privacidade deles. Nenhum dado de pagamento passa pelo Computable.",
+    "questions": "Dúvidas? <link>Abra uma issue no GitHub</link>."
+  },
+  "support": {
+    "pageTitle": "Apoie o dev",
+    "title": "Pague um café para o dev",
+    "lead": "O Computable é gratuito, sem anúncios e sem contas. Se ele ajudou você a aprender, um café me ajuda a continuar construindo.",
+    "notReady": "Os links de pagamento ainda não estão prontos. Obrigado por querer ajudar.",
+    "notReadyShare": "Até lá, compartilhar o Computable com um amigo ou uma turma também ajuda.",
+    "amount": "Valor, em dólares americanos",
+    "preset": "US${amount}",
+    "other": "Outro",
+    "otherField": "Outro valor, em dólares americanos",
+    "otherHint": "Digite um valor de US$1 a US$10.000, com até 2 casas decimais, como 7 ou 7,50.",
+    "payWith": "Pagar com",
+    "provider": {
+      "pix": "Pix",
+      "paypal": "PayPal",
+      "kofi": "Ko-fi",
+      "revolut": "Revolut",
+      "wise": "Wise",
+      "github": "GitHub Sponsors"
+    },
+    "pay": "Pagar US${amount} com {provider}",
+    "payNoAmount": "Pagar com {provider}",
+    "open": "Abrir {provider}",
+    "carries": "O link já preenche US${amount}.",
+    "typeIt": "Digite US${amount} na próxima página.",
+    "typeAny": "Digite o valor na próxima página.",
+    "more": "Outras formas de pagar",
+    "pixHint": "O Pix movimenta reais. Escaneie o código ou copie-o e digite o valor no app do seu banco.",
+    "pixKey": "Chave Pix: {key}",
+    "pixQr": "QR code do Pix",
+    "pixCode": "Código Pix",
+    "copyPix": "Copiar o código Pix",
+    "copied": "Copiado.",
+    "copyFailed": "Seu navegador não permitiu copiar. Copie o código do campo.",
+    "thanks": "Obrigado. Cada café vira mais lições e máquinas.",
+    "noData": "O Computable nunca vê o seu pagamento. Cada link abre a página do próprio serviço."
+  }
+}

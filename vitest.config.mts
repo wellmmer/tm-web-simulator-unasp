@@ -3,5 +3,11 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
-  test: { include: ['src/**/*.test.ts', 'src/**/*.test.tsx'], environment: 'node', setupFiles: ['src/test/jsdom-setup.ts'] },
+  test: {
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    environment: 'node',
+    setupFiles: ['src/test/jsdom-setup.ts'],
+    // next-intl imports "next/server" without ".js", which Node cannot find. Vite resolves it.
+    server: { deps: { inline: ['next-intl'] } },
+  },
 });
