@@ -64,7 +64,10 @@ export function HomeMachine() {
   return (
     <SimulatorStoreProvider store={store}>
       <TapeStage editable={false} />
-      <StepSentence />
+      {/* The tape runs to the window's edge; the sentence keeps the page's 16 px margin, like the caption. */}
+      <div className="px-4">
+        <StepSentence />
+      </div>
       <div className="mx-auto mt-3 flex max-w-[60ch] flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 text-center text-sm text-muted">
         <p>{t('caption')}</p>
         <button

@@ -48,3 +48,12 @@ test('on a phone, the text under Home\'s tape stays still while the machine runs
     expect([...tops], path).toHaveLength(1);
   }
 });
+
+test("on a phone, Home's step sentence keeps the page's 16 px side margin", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openPage(page, '/en');
+  const box = await page.getByTestId('step-sentence').boundingBox();
+  if (box === null) throw new Error('no step sentence');
+  expect(box.x).toBeGreaterThanOrEqual(16);
+  expect(box.x + box.width).toBeLessThanOrEqual(390 - 16);
+});
