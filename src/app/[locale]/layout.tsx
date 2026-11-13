@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { SiteAnalytics } from '@/analytics/SiteAnalytics';
+import { analyticsOn } from '@/config/analytics';
 import { languageBarScript } from '@/i18n/language-choice';
 import { routing } from '@/i18n/routing';
 import { LanguageBar } from '@/shell/LanguageBar';
@@ -49,6 +51,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
             <SiteFooter />
           </div>
         </NextIntlClientProvider>
+        {analyticsOn(process.env.VERCEL_ENV) && <SiteAnalytics />}
       </body>
     </html>
   );
