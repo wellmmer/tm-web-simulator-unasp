@@ -1,5 +1,5 @@
 /** The public repo. The footer, About and Privacy link to it. */
-export const REPO_URL = 'https://github.com/wellmmer/tm-web-simulator-unasp';
+export const REPO_URL = 'https://github.com/wellmmer/computable';
 
 /** Questions and bug reports. */
 export const ISSUES_URL = `${REPO_URL}/issues`;

@@ -85,7 +85,7 @@ test.describe('pages in other languages', () => {
     await openPage(page, '/fr/about');
     await expect(page.getByRole('link', { name: 'Aidez à améliorer la traduction' })).toHaveAttribute(
       'href',
-      'https://github.com/wellmmer/tm-web-simulator-unasp/edit/master/messages/fr.json',
+      'https://github.com/wellmmer/computable/edit/master/messages/fr.json',
     );
     await openPage(page, '/pt-br/about');
     await expect(page.getByRole('contentinfo').getByRole('link', { name: /tradução/ })).toHaveCount(0);

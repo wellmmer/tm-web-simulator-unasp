@@ -39,7 +39,7 @@ describe('Privacy (spec 4.2)', () => {
       'https://vercel.com/docs/analytics/privacy-policy',
     );
     expect(screen.getByRole('link', { name: 'Open an issue on GitHub' }).getAttribute('href')).toBe(
-      'https://github.com/wellmmer/tm-web-simulator-unasp/issues',
+      'https://github.com/wellmmer/computable/issues',
     );
   });
 });
