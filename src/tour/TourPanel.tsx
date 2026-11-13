@@ -2,7 +2,7 @@
 
 import { StepForward } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 import { Kbd } from '@/simulator/components/Controls';
 import { useSimulatorStore } from '@/simulator/components/store-context';
@@ -114,6 +114,20 @@ export function TourPanel() {
     back(opener.current)?.focus();
   }, [step]);
 
+  // Esc anywhere on the page closes the tour, as Skip does. Esc that another part already used is left
+  // alone: the tape editor ends editing with it, and the language list closes with it. While a modal
+  // dialog such as the keyboard shortcuts list is open, Esc closes that dialog only.
+  const open = step !== null;
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || event.defaultPrevented || document.querySelector('dialog[open]') !== null) return;
+      tourStore.getState().close();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
   if (step === null || id === null) return null;
   const last = step === TOUR_STEPS.length - 1;
 
@@ -122,10 +136,6 @@ export function TourPanel() {
     const { run, reset, stepForward } = simulator.getState();
     if (run !== null && run.status !== 'running') reset();
     stepForward();
-  };
-
-  const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') tourStore.getState().close();
   };
 
   const button = 'inline-flex items-center gap-2 border-2 border-ink px-3 py-1.5 font-semibold disabled:cursor-not-allowed disabled:opacity-50';
@@ -152,7 +162,6 @@ export function TourPanel() {
         role="dialog"
         aria-label={t('label')}
         aria-describedby={textId}
-        onKeyDown={onKeyDown}
         className="fixed inset-x-2 bottom-2 z-50 mx-auto max-h-[60dvh] max-w-[32rem] overflow-y-auto border-2 border-ink bg-cell p-4 text-ink shadow-[4px_4px_0_var(--ink)] sm:bottom-4"
       >
         <div className="flex items-baseline justify-between gap-4">

@@ -79,6 +79,42 @@ test.describe('the tour (spec 5.5)', () => {
     await expect(tour).toBeFocused();
   });
 
+  test('Esc closes the tour after the visitor uses the page, but first ends tape editing or closes the shortcuts or language list', async ({ page }) => {
+    await openSimulator(page);
+    const tour = page.getByRole('button', { name: 'Tour', exact: true });
+    await tour.click();
+    for (let step = 1; step < 4; step++) await panel(page).getByRole('button', { name: 'Next' }).click();
+    await expect(panel(page).getByRole('heading', { name: 'The controls' })).toBeVisible();
+
+    // The focus is in the tape editor: Esc ends editing only.
+    await page.keyboard.press('e');
+    await expect(page.getByRole('textbox', { name: 'Tape input' })).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('textbox', { name: 'Tape input' })).toHaveCount(0);
+    await expect(panel(page)).toBeVisible();
+
+    // The shortcuts list is open: Esc closes the list only.
+    await page.keyboard.press('?');
+    await expect(page.getByRole('dialog', { name: 'Keyboard shortcuts' })).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('dialog', { name: 'Keyboard shortcuts' })).toBeHidden();
+    await expect(panel(page)).toBeVisible();
+
+    // The language list is open: Esc closes the list only.
+    await page.getByRole('button', { name: 'Language: English' }).click();
+    await expect(page.getByRole('link', { name: 'Français' })).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('link', { name: 'Français' })).toBeHidden();
+    await expect(panel(page)).toBeVisible();
+
+    // The focus is on the page's Step button, outside the panel: Esc closes the tour.
+    await page.locator('[data-tour="controls"]').getByRole('button', { name: 'Step', exact: true }).click();
+    await expect(page.getByTestId('step-sentence')).toHaveText('In q0 reading 1: write 1, move right, go to q0.');
+    await page.keyboard.press('Escape');
+    await expect(panel(page)).toBeHidden();
+    await expect(tour).toBeFocused();
+  });
+
   test('"Tour" on another page opens the simulator and starts the tour', async ({ page }) => {
     await openPage(page, '/en/about');
     await page.getByRole('button', { name: 'Tour', exact: true }).click();

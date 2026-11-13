@@ -33,6 +33,8 @@ export function LanguageSwitcher() {
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key !== 'Escape' || !open) return;
+    // The Esc is used here, so the tour stays open.
+    event.preventDefault();
     setOpen(false);
     button.current?.focus();
   };
