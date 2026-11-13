@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t('pageTitle') };
 }
 
-/** Privacy (spec 4.2): what stays in the browser, what the cookieless analytics counts, and donations. */
+/** Privacy (spec 4.2): what stays in the browser, the one language cookie, what the cookieless analytics counts, and donations. */
 export default function PrivacyPage() {
   const t = useTranslations('privacy');
   return (
@@ -24,6 +24,7 @@ export default function PrivacyPage() {
             {t('browserTitle')}
           </h2>
           <p>{t('browser')}</p>
+          <p>{t('language')}</p>
           <p>{t('shareLink')}</p>
         </section>
 

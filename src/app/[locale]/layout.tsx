@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { languageBarScript } from '@/i18n/language-choice';
 import { routing } from '@/i18n/routing';
+import { LanguageBar } from '@/shell/LanguageBar';
 import { SiteFooter } from '@/shell/SiteFooter';
 import { SiteHeader } from '@/shell/SiteHeader';
 import { THEME_SCRIPT } from '@/theme/theme';
+import { TOUR_PROMPT_SCRIPT } from '@/tour/tour';
 import { fontVariables } from '../fonts';
 import '../globals.css';
 
@@ -25,6 +28,8 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
     <html lang={locale} className={`${fontVariables} antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: TOUR_PROMPT_SCRIPT }} />
+        {locale !== routing.defaultLocale && <script dangerouslySetInnerHTML={{ __html: languageBarScript(locale) }} />}
       </head>
       <body className="font-sans">
         <NextIntlClientProvider>
@@ -36,6 +41,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
             >
               {t('skip')}
             </a>
+            <LanguageBar />
             <SiteHeader />
             <div id="main" className="flex-1">
               {children}

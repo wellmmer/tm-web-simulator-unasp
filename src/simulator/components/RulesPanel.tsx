@@ -9,7 +9,7 @@ import { RuleTable } from './RuleTable';
 export function RulesPanel() {
   const t = useTranslations('simulator.table');
   return (
-    <section aria-labelledby="rules-title" className="min-w-0 bg-cell px-4 pt-4 pb-5">
+    <section aria-labelledby="rules-title" data-tour="rules" className="min-w-0 bg-cell px-4 pt-4 pb-5">
       <h2 id="rules-title" className="font-display text-xl font-semibold">
         {t('title')}
       </h2>

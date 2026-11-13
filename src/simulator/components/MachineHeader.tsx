@@ -20,7 +20,7 @@ export function MachineHeader() {
     <header className="flex flex-wrap items-end justify-between gap-5">
       <h1 className="font-display text-[34px]/none font-extrabold tracking-tight break-words">{machine.name}</h1>
       <div className="flex flex-wrap items-center gap-2.5">
-        <label className="flex items-center gap-2">
+        <label data-tour="keys" className="flex items-center gap-2">
           {t('example')}
           <select
             value={exampleId ?? ''}

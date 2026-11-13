@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useId, useState } from 'react';
 import type { SupportHandles } from '@/config/support';
-import { amountText, DEFAULT_AMOUNT, parseAmount, PRESET_AMOUNTS } from './amount';
+import { AMOUNTS, amountExamples, currencyOf, currencySymbol, formatAmount, formatLimit, parseAmount, type Currency } from './amount';
 import { PixPanel } from './PixPanel';
 import { providerLink, supportOptions, type ProviderId } from './providers';
 
@@ -15,7 +15,7 @@ function AmountCell({ label, checked, onChange }: { label: string; checked: bool
   return (
     <label className="relative -ml-0.5 cursor-pointer first:ml-0">
       <input type="radio" name="amount" checked={checked} onChange={onChange} className="peer sr-only" />
-      <span className="grid h-[58px] min-w-[58px] place-items-center border-2 border-ink bg-cell px-3 font-mono text-lg font-bold text-ink peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-4 peer-focus-visible:outline-pencil">
+      <span className="grid h-[58px] min-w-[58px] place-items-center border-2 border-ink bg-cell px-3 font-mono text-lg font-bold whitespace-nowrap text-ink peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-4 peer-focus-visible:outline-pencil">
         {label}
       </span>
       <span aria-hidden className="pointer-events-none absolute -inset-1.5 z-10 hidden rounded-full border-4 border-pencil peer-checked:block" />
@@ -23,19 +23,30 @@ function AmountCell({ label, checked, onChange }: { label: string; checked: bool
   );
 }
 
-function ProviderRow({ id, handles, amount }: { id: ProviderId; handles: SupportHandles; amount: number | null }) {
+interface ProviderRowProps {
+  id: ProviderId;
+  handles: SupportHandles;
+  /** The valid amount, or null while the "Other" field holds a wrong one. */
+  amount: number | null;
+  currency: Currency;
+}
+
+function ProviderRow({ id, handles, amount, currency }: ProviderRowProps) {
   const t = useTranslations('support');
+  const locale = useLocale();
   const name = t(`provider.${id}`);
+  const shown = amount === null ? null : formatAmount(amount, currency, locale);
   if (id === 'pix') {
+    // Pix moves reais only, so the code carries the amount only when the page asks for reais.
+    const reais = currency === 'BRL' ? amount : null;
     return (
       <li className="py-5">
         <p className="mb-3 font-semibold">{name}</p>
-        <PixPanel pix={handles.pix} />
+        <PixPanel pix={handles.pix} amount={reais} amountLabel={shown ?? ''} />
       </li>
     );
   }
-  const link = providerLink(id, handles, amount ?? DEFAULT_AMOUNT);
-  const shown = amount === null ? null : amountText(amount);
+  const link = providerLink(id, handles, amount ?? AMOUNTS[currency].preset, currency);
   const note = link.carriesAmount && shown !== null ? t('carries', { amount: shown }) : shown === null ? t('typeAny') : t('typeIt', { amount: shown });
   const label = !link.carriesAmount ? t('open', { provider: name }) : shown === null ? t('payNoAmount', { provider: name }) : t('pay', { amount: shown, provider: name });
   const button = 'inline-flex items-center gap-2 border-2 border-ink px-4 py-2 font-semibold';
@@ -62,14 +73,17 @@ function ProviderRow({ id, handles, amount }: { id: ProviderId; handles: Support
 
 /**
  * Support the dev below the title (spec 7): the amount, then the providers that have a handle, in
- * the order for the visitor's language. With no handle filled in, one honest line and no links.
+ * the order for the visitor's language. Brazilian Portuguese asks for reais, the other languages
+ * for US dollars (spec 3, "Pix amounts"). With no handle filled in, one honest line and no links.
  */
 export function SupportView({ handles }: { handles: SupportHandles }) {
   const t = useTranslations('support');
   const locale = useLocale();
+  const currency = currencyOf(locale);
+  const rules = AMOUNTS[currency];
   const otherId = useId();
   const otherHintId = useId();
-  const [choice, setChoice] = useState<Choice>(DEFAULT_AMOUNT);
+  const [choice, setChoice] = useState<Choice>(rules.preset);
   const [otherText, setOtherText] = useState('');
   const { first, more } = supportOptions(locale, handles);
 
@@ -82,29 +96,33 @@ export function SupportView({ handles }: { handles: SupportHandles }) {
     );
   }
 
-  const amount = choice === 'other' ? parseAmount(otherText) : choice;
+  const amount = choice === 'other' ? parseAmount(otherText, currency) : choice;
   const otherInvalid = choice === 'other' && otherText.trim() !== '' && amount === null;
-  const rows = (ids: ProviderId[]) => ids.map((id) => <ProviderRow key={id} id={id} handles={handles} amount={amount} />);
+  const sign = currencySymbol(currency, locale);
+  const signMark = (
+    <span aria-hidden className="font-mono text-lg font-bold">
+      {sign.symbol}
+    </span>
+  );
+  const rows = (ids: ProviderId[]) => ids.map((id) => <ProviderRow key={id} id={id} handles={handles} amount={amount} currency={currency} />);
 
   return (
     <div className="mt-10 space-y-8">
       <fieldset>
-        <legend className="font-semibold">{t('amount')}</legend>
+        <legend className="font-semibold">{t('amount', { currency })}</legend>
         <div className="mt-4 flex flex-wrap gap-y-4 pl-1.5">
-          {PRESET_AMOUNTS.map((preset) => (
-            <AmountCell key={preset} label={t('preset', { amount: preset })} checked={choice === preset} onChange={() => setChoice(preset)} />
+          {rules.presets.map((preset) => (
+            <AmountCell key={preset} label={formatAmount(preset, currency, locale)} checked={choice === preset} onChange={() => setChoice(preset)} />
           ))}
           <AmountCell label={t('other')} checked={choice === 'other'} onChange={() => setChoice('other')} />
         </div>
         {choice === 'other' && (
           <div className="mt-5">
             <label htmlFor={otherId} className="block text-sm font-medium">
-              {t('otherField')}
+              {t('otherField', { currency })}
             </label>
             <div className="mt-1 flex items-center gap-2">
-              <span aria-hidden className="font-mono text-lg font-bold">
-                $
-              </span>
+              {sign.before && signMark}
               <input
                 id={otherId}
                 inputMode="decimal"
@@ -115,9 +133,14 @@ export function SupportView({ handles }: { handles: SupportHandles }) {
                 aria-describedby={otherHintId}
                 className="w-32 border-2 border-ink bg-cell px-2.5 py-1.5 font-mono text-lg text-ink aria-invalid:border-pencil"
               />
+              {!sign.before && signMark}
             </div>
             <p id={otherHintId} className={`mt-1 text-sm ${otherInvalid ? 'text-pencil' : 'text-muted'}`}>
-              {t('otherHint')}
+              {t('otherHint', {
+                min: formatLimit(rules.min, currency, locale),
+                max: formatLimit(rules.max, currency, locale),
+                ...amountExamples(currency, locale),
+              })}
             </p>
           </div>
         )}

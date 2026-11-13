@@ -55,8 +55,14 @@ export const PAGES = [
   { name: 'privacy', path: '/en/privacy', heading: 'Privacy' },
 ] as const;
 
-/** Opens a page and waits until React has hydrated it: the theme switch gets aria-pressed only then. */
+/**
+ * Opens a page and waits until React has hydrated it: the theme switch gets aria-pressed only then.
+ * The switch's name changes with the language, so this finds it by aria-pressed in the menu bar.
+ */
 export async function openPage(page: Page, path: string) {
   await page.goto(path);
-  await expect(page.getByRole('button', { name: 'Night paper' })).toHaveAttribute('aria-pressed', /^(true|false)$/);
+  await expect(page.getByRole('banner').locator('button[aria-pressed]')).toHaveAttribute('aria-pressed', /^(true|false)$/);
 }
+
+/** The URL prefix of each language. Brazilian Portuguese is in lower case in URLs. */
+export const LOCALE_PATHS = ['/en', '/pt-br', '/es', '/fr', '/de'] as const;

@@ -10,13 +10,14 @@ import { PixQr } from './PixQr';
 type CopyStatus = 'copied' | 'copyFailed';
 
 /**
- * Pix (spec 7): the QR code and the copy-paste code. Pix moves reais and the amounts are in US
- * dollars, so the code holds no amount: the donor types it in the bank app.
+ * Pix (spec 7): the QR code and the copy-paste code. `amount` is in reais, and `amountLabel` is the
+ * same amount as the page writes it. With no amount (US dollars, or a wrong "Other" amount), the
+ * code holds none, and the donor types it in the bank app.
  */
-export function PixPanel({ pix }: { pix: SupportHandles['pix'] }) {
+export function PixPanel({ pix, amount, amountLabel }: { pix: SupportHandles['pix']; amount: number | null; amountLabel: string }) {
   const t = useTranslations('support');
   const [status, setStatus] = useState<CopyStatus | null>(null);
-  const code = pixCode(pix);
+  const code = pixCode(pix, amount ?? undefined);
 
   const copy = async () => {
     try {
@@ -31,7 +32,7 @@ export function PixPanel({ pix }: { pix: SupportHandles['pix'] }) {
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
       <PixQr code={code} label={t('pixQr')} />
       <div className="min-w-0 flex-1 space-y-2 text-sm">
-        <p>{t('pixHint')}</p>
+        <p>{amount === null ? t('pixHint') : t('pixHintAmount', { amount: amountLabel })}</p>
         <p className="break-all text-muted">{t('pixKey', { key: pix.key })}</p>
         <label className="block">
           <span className="sr-only">{t('pixCode')}</span>

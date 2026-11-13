@@ -202,13 +202,20 @@
       "comingSoon": "coming soon"
     },
     "skip": "Skip to the page",
+    "languageSwitcher": "Language",
+    "languageBar": {
+      "label": "Language",
+      "showing": "Showing in {language}. Switch to English?",
+      "keep": "Keep {language}"
+    },
     "footer": {
       "label": "Site",
       "tagline": "Learn the Turing machine by running one.",
       "about": "About",
       "privacy": "Privacy",
       "source": "Source code",
-      "license": "Code under the MIT license. Texts under CC BY 4.0."
+      "license": "Code under the MIT license. Texts under CC BY 4.0.",
+      "machineTranslated": "An AI translated this page, and no native speaker has checked it yet. <link>Help improve the translation</link>."
     }
   },
   "about": {
@@ -234,9 +241,10 @@
   "privacy": {
     "pageTitle": "Privacy",
     "title": "Privacy",
-    "lead": "Computable has no accounts, sets no cookies and keeps no personal data about you.",
+    "lead": "Computable has no accounts and keeps no personal data about you. It sets one cookie, only to remember your language.",
     "browserTitle": "What stays in your browser",
-    "browser": "Your browser keeps your current machine and your choice of squared or night paper. They stay on your device. Computable never sends them anywhere.",
+    "browser": "Your browser keeps your current machine, your choice of squared or night paper, your language, and whether you saw the tour. They stay on your device.",
+    "language": "The language is also in a cookie named NEXT_LOCALE, for one year. The site sets it when you choose a language, or when you open a page in a language other than your browser's. Your browser sends it with each page request, so the site's main address opens your language. It holds only the language code, such as pt-BR.",
     "shareLink": "A share link holds the machine after the # sign. Browsers do not send that part of a link to any server.",
     "analytics": {
       "title": "What the site counts",
@@ -255,11 +263,10 @@
     "lead": "Computable is free, with no ads and no accounts. If it helped you learn, a coffee helps me keep building it.",
     "notReady": "The payment links are not ready yet. Thank you for wanting to help.",
     "notReadyShare": "Until then, sharing Computable with a friend or a class helps too.",
-    "amount": "Amount, in US dollars",
-    "preset": "${amount}",
+    "amount": "Amount, in {currency, select, BRL {Brazilian reais} other {US dollars}}",
     "other": "Other",
-    "otherField": "Other amount, in US dollars",
-    "otherHint": "Type an amount from $1 to $10,000, with up to 2 decimals, like 7 or 7.50.",
+    "otherField": "Other amount, in {currency, select, BRL {Brazilian reais} other {US dollars}}",
+    "otherHint": "Type an amount from {min} to {max}, with up to 2 decimals and no thousands separator, like {whole} or {cents}.",
     "payWith": "Pay with",
     "provider": {
       "pix": "Pix",
@@ -269,14 +276,15 @@
       "wise": "Wise",
       "github": "GitHub Sponsors"
     },
-    "pay": "Pay ${amount} with {provider}",
+    "pay": "Pay {amount} with {provider}",
     "payNoAmount": "Pay with {provider}",
     "open": "Open {provider}",
-    "carries": "The link fills in ${amount}.",
-    "typeIt": "Type ${amount} on the next page.",
+    "carries": "The link fills in {amount}.",
+    "typeIt": "Type {amount} on the next page.",
     "typeAny": "Type the amount on the next page.",
     "more": "More ways to pay",
     "pixHint": "Pix moves Brazilian reais. Scan the code or copy it, then type the amount in your bank app.",
+    "pixHintAmount": "The code holds {amount}. Scan it or copy it, then confirm the payment in your bank app.",
     "pixKey": "Pix key: {key}",
     "pixQr": "Pix QR code",
     "pixCode": "Pix code",
@@ -285,5 +293,56 @@
     "copyFailed": "Your browser did not allow copying. Copy the code from the field.",
     "thanks": "Thank you. Every coffee turns into more lessons and machines.",
     "noData": "Computable never sees your payment. Each link opens the provider's own page."
+  },
+  "tour": {
+    "button": "Tour",
+    "label": "Tour of the simulator",
+    "progress": "Step {step} of {total}",
+    "skip": "Skip tour",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "prompt": {
+      "text": "New here? Take the 1-minute tour.",
+      "take": "Take the tour",
+      "dismiss": "No, thanks"
+    },
+    "steps": {
+      "tape": {
+        "title": "The tape",
+        "text": "The tape is a row of cells. Each cell holds one symbol. The number under a cell is its place.",
+        "task": "Find cell 0: the input starts there."
+      },
+      "head": {
+        "title": "The head and its state",
+        "text": "The red circle is the head. It reads the cell inside it. The tag above it shows the machine's state.",
+        "task": "Press Step and watch the head move one cell."
+      },
+      "sentence": {
+        "title": "The step sentence",
+        "text": "This sentence says in words what the last step did.",
+        "task": "Press Step and read the new sentence."
+      },
+      "controls": {
+        "title": "The controls",
+        "text": "Step does one step, and Step back undoes it. Run plays the machine until it stops. Reset starts again. Each button shows its key.",
+        "task": "Press Run and watch the machine work."
+      },
+      "rules": {
+        "title": "The rule table",
+        "text": "Each row is one rule: in this state, reading this symbol, write, move, then go to the next state.",
+        "task": "Press Step and watch which row lights up."
+      },
+      "diagram": {
+        "title": "The state diagram",
+        "text": "The same rules as circles and arrows. Each circle is a state. The arrow of the last rule turns red.",
+        "task": "Press Step and watch the red arrow."
+      },
+      "keys": {
+        "title": "Keyboard and examples",
+        "text": "Pick another machine from the Example list. Press ? at any time to see every keyboard shortcut.",
+        "task": "Pick an example, then press Finish."
+      }
+    }
   }
 }

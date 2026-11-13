@@ -1,0 +1,348 @@
+{
+  "meta": {
+    "title": "Computable",
+    "titleTemplate": "%s · Computable",
+    "description": "Lerne die Turingmaschine, indem du eine laufen lässt."
+  },
+  "home": {
+    "title": "Computable",
+    "lead": "Computable ist ein Ort, um die Turingmaschine kennenzulernen, indem du eine Schritt für Schritt laufen lässt.",
+    "openSimulator": "Simulator öffnen",
+    "caption": "Das ist Turings erste Maschine aus seinem Aufsatz von 1936. Sie druckt 0 1 0 1 … in jedes zweite Feld und hält nie an.",
+    "pause": "Pause",
+    "play": "Abspielen"
+  },
+  "simulator": {
+    "page": {
+      "title": "Simulator"
+    },
+    "header": {
+      "example": "Beispiel",
+      "yourMachine": "Deine Maschine",
+      "input": "Eingabe"
+    },
+    "examples": {
+      "binary-plus-one": "Binär +1",
+      "palindrome": "Palindrom-Prüfer",
+      "turing-1936": "Turing 1936: 0 1 0 1…",
+      "tcc-2016": "TCC-Maschine (2016)"
+    },
+    "share": {
+      "copy": "Link zum Teilen kopieren",
+      "copied": "Link kopiert.",
+      "tooLong": "Diese Maschine ist zu groß für einen Link. Lade sie stattdessen als Datei herunter.",
+      "copyFailed": "Dein Browser hat das Kopieren nicht erlaubt. Kopiere den Link aus dem Feld unten.",
+      "link": "Link zum Teilen"
+    },
+    "step": {
+      "ready": "Bereit. Der Kopf beginnt auf Feld {cell} im Zustand <b>{state}</b>.",
+      "write": "In <b>{state}</b> beim Lesen von <b>{symbol}</b>: schreibe <b>{write}</b>, {move, select, L {gehe nach links} R {gehe nach rechts} other {bleibe stehen}}, wechsle zu <b>{next}</b>.",
+      "ops": "In <b>{state}</b> beim Lesen von <b>{symbol}</b>: {ops}, wechsle zu <b>{next}</b>.",
+      "noOps": "In <b>{state}</b> beim Lesen von <b>{symbol}</b>: wechsle zu <b>{next}</b>.",
+      "noRule": "In <b>{state}</b> beim Lesen von <b>{symbol}</b>: Keine Regel passt, also hält die Maschine an.",
+      "back": "Einen Schritt zurück. Zustand <b>{state}</b>, Kopf auf Feld {cell}."
+    },
+    "op": {
+      "print": "drucke {symbol}",
+      "erase": "lösche",
+      "left": "gehe nach links",
+      "right": "gehe nach rechts",
+      "stay": "bleibe stehen",
+      "separator": ", "
+    },
+    "result": {
+      "accepted": "Akzeptiert nach {steps, plural, one {# Schritt} other {# Schritten}}. Auf dem Band steht jetzt {tape}.",
+      "acceptedBlank": "Akzeptiert nach {steps, plural, one {# Schritt} other {# Schritten}}. Das Band ist jetzt leer.",
+      "rejectState": "Abgelehnt: Die Maschine hat {state} nach {steps, plural, one {# Schritt} other {# Schritten}} erreicht.",
+      "noRule": "Abgelehnt: keine Regel für {state} beim Lesen von {symbol}.",
+      "leftEdge": "Abgelehnt: Der Kopf wollte in {state} links über Feld 0 hinaus.",
+      "limit": "Pausiert nach {limit, number} Schritten. Diese Maschine hält vielleicht nie an. Weitermachen?"
+    },
+    "issue": {
+      "badBlank": "Das Leerzeichen muss genau ein Symbol sein.",
+      "emptyStart": "Der Startzustand ist leer.",
+      "acceptAndReject": "{state} ist zugleich ein akzeptierender und ein ablehnender Zustand. Ein Zustand kann nur eines davon sein.",
+      "emptyState": "Regel {rule}: {field, select, state {Der Zustand} other {Der Folgezustand}} ist leer.",
+      "badSymbol": "Regel {rule}: {field, select, read {Das gelesene Symbol} other {Das geschriebene Symbol}} muss genau ein Symbol sein.",
+      "badOp": "Regel {rule}: „{op}“ ist keine Operation. Verwende P und ein Symbol, E, L oder R.",
+      "duplicateRule": "Regeln {first} und {rule}: zwei Regeln für {state} beim Lesen von {symbol}. Eine Turingmaschine braucht genau eine."
+    },
+    "warning": {
+      "stateWithoutRules": "{state} hat noch keine Regeln. Die Maschine hält dort an und lehnt ab.",
+      "legacyDuplicateRow": "Die Zeilen {row} und {keptRow} geben beide eine Regel für {state} beim Lesen von {symbol}. Die Maschine nimmt Zeile {keptRow}, wie die App von 2016."
+    },
+    "tape": {
+      "label": "Band",
+      "summary": "Kopf auf Feld {cell}, im Zustand {state}, liest {symbol}.",
+      "edit": "Band bearbeiten",
+      "editor": "Bandeingabe",
+      "cursor": "Feld {cell}: {symbol}",
+      "editHelp": "Du bearbeitest das Band. Die Pfeiltasten bewegen den Cursor. Tippe ein Symbol, um es zu schreiben. Rücktaste schreibt das Leerzeichen. Esc beendet das Bearbeiten."
+    },
+    "controls": {
+      "reset": "Zurücksetzen",
+      "stepBack": "Schritt zurück",
+      "run": "Starten",
+      "pause": "Pause",
+      "step": "Schritt",
+      "spaceKey": "Leertaste",
+      "speed": "Tempo",
+      "slower": "Langsamer",
+      "faster": "Schneller",
+      "speedValue": "{level} von 5",
+      "continue": "Weiter"
+    },
+    "notes": {
+      "storageBlocked": "Dieser Browser behält deine Maschine nicht, wenn du ihn schließt.",
+      "badLink": "Dieser Link enthält keine Computable-Maschine. Der Simulator hat die aktuelle Maschine behalten.",
+      "leftEdge": "Der Kopf wollte links über Feld 0 hinaus, das linke Ende dieses Bandes. Er bleibt stattdessen auf Feld 0, wie im Buch von Sipser.",
+      "gotIt": "Verstanden",
+      "tapeReset": "Der Lauf ist zum Anfang zurückgekehrt, damit du die Eingabe auf dem Band bearbeitest."
+    },
+    "table": {
+      "title": "Regeln",
+      "hint": "Jede Zeile ist eine Regel. Die Maschine sucht die Zeile für ihren Zustand und das Symbol unter dem Kopf. Tippe in eine Zelle, um eine Regel zu ändern.",
+      "state": "Wenn im Zustand",
+      "read": "und liest",
+      "write": "schreibe",
+      "move": "bewege",
+      "ops": "Operationen",
+      "next": "dann wechsle zu",
+      "any": "jedes Symbol",
+      "blank": "leer",
+      "empty": "Deine Maschine hat noch keine Regeln. Füge die erste Regel hinzu oder beginne mit einem Beispiel.",
+      "symbol": "ein Symbol",
+      "cell": "Regel {rule}: {column}",
+      "readSymbol": "Regel {rule}: gelesenes Symbol",
+      "deleteColumn": "Löschen",
+      "delete": "Regel {rule} löschen",
+      "add": "Regel hinzufügen",
+      "addFirst": "Erste Regel hinzufügen",
+      "openExample": "Beispiel öffnen",
+      "fieldHint": {
+        "emptyState": "Tippe einen Zustand.",
+        "badSymbol": "Tippe genau ein Symbol.",
+        "badOp": "Verwende P und ein Symbol, E, L oder R."
+      },
+      "duplicate": "Zwei Regeln für {state} beim Lesen von {symbol}. Eine Turingmaschine braucht genau eine."
+    },
+    "settings": {
+      "legend": "Einstellungen der Maschine",
+      "start": "Startzustand",
+      "accept": "Akzeptierende Zustände",
+      "reject": "Ablehnende Zustände",
+      "listHint": "Trenne Zustände mit Kommas.",
+      "acceptAndReject": "Ein Zustand kann nicht zugleich akzeptieren und ablehnen.",
+      "blank": "Leerzeichen",
+      "tape": "Band",
+      "oneSided": "Einseitig",
+      "twoWay": "Beidseitig",
+      "leftEdgeReject": "Auf diesem Band führt ein Schritt links über Feld 0 hinaus zur Ablehnung, wie in der App von 2016."
+    },
+    "diagram": {
+      "title": "Zustandsdiagramm",
+      "hint": "Dieselben Regeln als Pfeile gezeichnet. Kreise sind Zustände. Ein Doppelkreis akzeptiert, ein gestrichelter Kreis lehnt ab, und der Pfeil links zeigt auf den Startzustand. Die Regeltabelle listet dieselben Regeln als Text.",
+      "label": "Zustandsdiagramm von {name}",
+      "any": "jedes",
+      "blank": "leer",
+      "view": "Diagrammansicht",
+      "zoomIn": "Vergrößern",
+      "zoomOut": "Verkleinern",
+      "wholeMachine": "Ganze Maschine",
+      "follow": "Dem Lauf folgen"
+    },
+    "file": {
+      "title": "Maschinendatei",
+      "hint": "Die Maschine als JSON-Datei. Lade sie herunter, um sie zu behalten, oder öffne eine Datei, die du vorher gespeichert hast. Datei öffnen liest auch .txt-Dateien der App von 2016.",
+      "name": "Name",
+      "json": "Die Maschinendatei als JSON",
+      "download": "Herunterladen",
+      "open": "Datei öffnen",
+      "newMachine": "Neue Maschine",
+      "newName": "Meine Maschine",
+      "opened": "{name} geöffnet.",
+      "error": {
+        "notJson": "Diese Datei ist keine Computable-Maschine (sie ist kein JSON).",
+        "notAMachine": "Diese Datei ist keine Computable-Maschine (ihr Format ist nicht computable/machine@1).",
+        "missingField": "Diese Datei ist keine Computable-Maschine (`{field}` fehlt).",
+        "badField": "Diese Datei ist keine Computable-Maschine (`{field}` hat einen falschen Wert).",
+        "legacyTooShort": "Diese Datei von 2016 ist zu kurz. Zeile 1 muss der Startzustand sein und Zeile 2 die Eingabe.",
+        "legacyBadRow": "Diese Datei von 2016 hat in Zeile {row} eine kaputte Regel.",
+        "unreadable": "Der Browser konnte diese Datei nicht lesen. Versuche, sie noch einmal zu öffnen."
+      }
+    },
+    "shortcuts": {
+      "open": "Tastenkürzel",
+      "title": "Tastenkürzel",
+      "close": "Schließen",
+      "toggleRun": "Starten oder pausieren",
+      "stepForward": "Schritt",
+      "stepBack": "Schritt zurück",
+      "reset": "Zurücksetzen",
+      "faster": "Schneller",
+      "slower": "Langsamer",
+      "help": "Diese Liste zeigen",
+      "off": "Die Tastenkürzel sind aus, solange du in einem Textfeld tippst.",
+      "startTapeEdit": "Band bearbeiten"
+    }
+  },
+  "shell": {
+    "theme": {
+      "label": "Nachtpapier"
+    },
+    "menu": {
+      "label": "Hauptmenü",
+      "wordmark": "Computable",
+      "learn": "Lernen",
+      "simulator": "Simulator",
+      "enigma": "Enigma",
+      "bombe": "Bombe",
+      "support": "Dev unterstützen",
+      "soon": "bald",
+      "comingSoon": "kommt bald"
+    },
+    "skip": "Zur Seite springen",
+    "languageSwitcher": "Sprache",
+    "languageBar": {
+      "label": "Sprache",
+      "showing": "Angezeigt auf Deutsch. Zu Englisch wechseln?",
+      "keep": "Auf Deutsch bleiben"
+    },
+    "footer": {
+      "label": "Website",
+      "tagline": "Lerne die Turingmaschine, indem du eine laufen lässt.",
+      "about": "Über",
+      "privacy": "Datenschutz",
+      "source": "Quellcode",
+      "license": "Code unter der MIT-Lizenz. Texte unter CC BY 4.0.",
+      "machineTranslated": "Eine KI hat diese Seite übersetzt, und noch kein Muttersprachler hat sie geprüft. <link>Hilf mit, die Übersetzung zu verbessern</link>."
+    }
+  },
+  "about": {
+    "pageTitle": "Über",
+    "title": "Über Computable",
+    "lead": "Computable begann 2016 als Abschlussarbeit im Informatikstudium an der UNASP: ein Turingmaschinen-Simulator für das Web.",
+    "rebuilt": "2026 hat der Autor es als Computable von Grund auf neu gebaut. Der Simulator öffnet weiterhin die Maschinen, die die App von 2016 gespeichert hat.",
+    "record": "Das Projekt von 2016",
+    "projectLabel": "Titel",
+    "project": "Simulador de Máquina de Turing, Uma Aplicação Web para o Ensino",
+    "projectEnglish": "(Ein Turingmaschinen-Simulator: eine Web-App für den Unterricht)",
+    "schoolLabel": "Hochschule",
+    "school": "UNASP, Informatik",
+    "yearLabel": "Jahr",
+    "year": "2016",
+    "authorLabel": "Autor",
+    "author": "Wellmmer Lucas de Oliveira Pinto",
+    "advisorLabel": "Betreuer",
+    "advisor": "Prof. Laercio Martins Carpes",
+    "paper": "Die Arbeit von 2016 lesen (PDF, auf Portugiesisch)",
+    "tag": "Den Code der App von 2016 am Git-Tag <code>v1.0-tcc-2016</code> ansehen"
+  },
+  "privacy": {
+    "pageTitle": "Datenschutz",
+    "title": "Datenschutz",
+    "lead": "Computable hat keine Konten und speichert keine persönlichen Daten über dich. Es setzt ein einziges Cookie, nur um deine Sprache zu behalten.",
+    "browserTitle": "Was in deinem Browser bleibt",
+    "browser": "Dein Browser behält deine aktuelle Maschine, deine Wahl zwischen Karopapier und Nachtpapier, deine Sprache und ob du die Tour gesehen hast. Sie bleiben auf deinem Gerät.",
+    "language": "Die Sprache steht außerdem ein Jahr lang in einem Cookie namens NEXT_LOCALE. Die Website setzt es, wenn du eine Sprache wählst oder eine Seite in einer anderen Sprache als der deines Browsers öffnest. Dein Browser sendet es bei jedem Seitenabruf mit, damit die Hauptadresse der Website in deiner Sprache öffnet. Es enthält nur den Sprachcode, etwa pt-BR.",
+    "shareLink": "Ein Link zum Teilen enthält die Maschine hinter dem Zeichen #. Browser senden diesen Teil eines Links an keinen Server.",
+    "analytics": {
+      "title": "Was die Website zählt",
+      "summary": "Um zu erfahren, welche Seiten Menschen helfen, zählt die Website Besuche mit {service}. Es setzt keine Cookies.",
+      "counted": "Für jeden Seitenaufruf speichert es die Zeit, die Seite, die Seite, von der du kommst, dein Land, deine Region und deine Stadt, deinen Browser, dein System und die Art des Geräts.",
+      "visitor": "Es unterscheidet Besuche mit einem Code aus der Anfrage und verwirft den Code nach 24 Stunden. Es verbindet die Besuche weder mit dir noch mit deiner IP-Adresse.",
+      "source": "Wie {service} mit Datenschutz umgeht"
+    },
+    "donationsTitle": "Spenden",
+    "donations": "Die Unterstützungsseite verlinkt nur auf Zahlungsdienste wie PayPal und Ko-fi. Du bezahlst auf deren Seiten, nach deren Datenschutzregeln. Keine Zahlungsdaten laufen über Computable.",
+    "questions": "Fragen? <link>Eröffne ein Issue auf GitHub</link>."
+  },
+  "support": {
+    "pageTitle": "Dev unterstützen",
+    "title": "Spendiere dem Dev einen Kaffee",
+    "lead": "Computable ist kostenlos, ohne Werbung und ohne Konten. Wenn es dir beim Lernen geholfen hat, hilft mir ein Kaffee, weiterzubauen.",
+    "notReady": "Die Zahlungslinks sind noch nicht fertig. Danke, dass du helfen möchtest.",
+    "notReadyShare": "Bis dahin hilft es auch, Computable mit Freunden oder einer Klasse zu teilen.",
+    "amount": "Betrag in {currency, select, BRL {brasilianischen Real} other {US-Dollar}}",
+    "other": "Anderer",
+    "otherField": "Anderer Betrag in {currency, select, BRL {brasilianischen Real} other {US-Dollar}}",
+    "otherHint": "Gib einen Betrag von {min} bis {max} ein, mit höchstens 2 Nachkommastellen und ohne Tausendertrennzeichen, etwa {whole} oder {cents}.",
+    "payWith": "Bezahlen mit",
+    "provider": {
+      "pix": "Pix",
+      "paypal": "PayPal",
+      "kofi": "Ko-fi",
+      "revolut": "Revolut",
+      "wise": "Wise",
+      "github": "GitHub Sponsors"
+    },
+    "pay": "{amount} mit {provider} bezahlen",
+    "payNoAmount": "Mit {provider} bezahlen",
+    "open": "{provider} öffnen",
+    "carries": "Der Link trägt {amount} ein.",
+    "typeIt": "Gib auf der nächsten Seite {amount} ein.",
+    "typeAny": "Gib den Betrag auf der nächsten Seite ein.",
+    "more": "Weitere Zahlungswege",
+    "pixHint": "Pix überweist brasilianische Real. Scanne den Code oder kopiere ihn und gib dann den Betrag in deiner Banking-App ein.",
+    "pixHintAmount": "Der Code enthält {amount}. Scanne oder kopiere ihn und bestätige die Zahlung in deiner Banking-App.",
+    "pixKey": "Pix-Schlüssel: {key}",
+    "pixQr": "Pix-QR-Code",
+    "pixCode": "Pix-Code",
+    "copyPix": "Pix-Code kopieren",
+    "copied": "Kopiert.",
+    "copyFailed": "Dein Browser hat das Kopieren nicht erlaubt. Kopiere den Code aus dem Feld.",
+    "thanks": "Danke. Jeder Kaffee wird zu mehr Lektionen und Maschinen.",
+    "noData": "Computable sieht deine Zahlung nie. Jeder Link öffnet die Seite des Dienstes selbst."
+  },
+  "tour": {
+    "button": "Tour",
+    "label": "Tour durch den Simulator",
+    "progress": "Schritt {step} von {total}",
+    "skip": "Tour überspringen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Fertig",
+    "prompt": {
+      "text": "Neu hier? Mach die 1-Minuten-Tour.",
+      "take": "Tour starten",
+      "dismiss": "Nein, danke"
+    },
+    "steps": {
+      "tape": {
+        "title": "Das Band",
+        "text": "Das Band ist eine Reihe von Feldern. Jedes Feld enthält ein Symbol. Die Zahl unter einem Feld ist seine Position.",
+        "task": "Finde Feld 0: Dort beginnt die Eingabe."
+      },
+      "head": {
+        "title": "Der Kopf und sein Zustand",
+        "text": "Der rote Kreis ist der Kopf. Er liest das Feld in seiner Mitte. Das Schild darüber zeigt den Zustand der Maschine.",
+        "task": "Drücke Schritt und sieh zu, wie der Kopf ein Feld weitergeht."
+      },
+      "sentence": {
+        "title": "Der Schrittsatz",
+        "text": "Dieser Satz sagt in Worten, was der letzte Schritt getan hat.",
+        "task": "Drücke Schritt und lies den neuen Satz."
+      },
+      "controls": {
+        "title": "Die Steuerung",
+        "text": "Schritt macht einen Schritt, und Schritt zurück macht ihn rückgängig. Starten lässt die Maschine laufen, bis sie anhält. Zurücksetzen beginnt von vorn. Jeder Knopf zeigt seine Taste.",
+        "task": "Drücke Starten und sieh der Maschine bei der Arbeit zu."
+      },
+      "rules": {
+        "title": "Die Regeltabelle",
+        "text": "Jede Zeile ist eine Regel: in diesem Zustand, beim Lesen dieses Symbols, schreibe, bewege, dann wechsle zum nächsten Zustand.",
+        "task": "Drücke Schritt und sieh, welche Zeile aufleuchtet."
+      },
+      "diagram": {
+        "title": "Das Zustandsdiagramm",
+        "text": "Dieselben Regeln als Kreise und Pfeile. Jeder Kreis ist ein Zustand. Der Pfeil der letzten Regel wird rot.",
+        "task": "Drücke Schritt und achte auf den roten Pfeil."
+      },
+      "keys": {
+        "title": "Tastatur und Beispiele",
+        "text": "Wähle eine andere Maschine in der Liste Beispiel. Drücke jederzeit ?, um alle Tastenkürzel zu sehen.",
+        "task": "Wähle ein Beispiel und drücke dann Fertig."
+      }
+    }
+  }
+}

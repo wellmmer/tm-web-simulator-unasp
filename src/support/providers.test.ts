@@ -61,15 +61,17 @@ describe('supportOptions (spec 7)', () => {
 });
 
 describe('providerLink', () => {
-  it('puts the amount in US dollars in the PayPal.me link', () => {
-    expect(providerLink('paypal', ALL, 5)).toEqual({ href: 'https://paypal.me/devname/5USD', carriesAmount: true });
-    expect(providerLink('paypal', ALL, 12.5).href).toBe('https://paypal.me/devname/12.50USD');
+  it('puts the amount and its currency in the PayPal.me link', () => {
+    expect(providerLink('paypal', ALL, 5, 'USD')).toEqual({ href: 'https://paypal.me/devname/5USD', carriesAmount: true });
+    expect(providerLink('paypal', ALL, 12.5, 'USD').href).toBe('https://paypal.me/devname/12.50USD');
+    expect(providerLink('paypal', ALL, 25, 'BRL').href).toBe('https://paypal.me/devname/25BRL');
+    expect(providerLink('paypal', ALL, 30.5, 'BRL').href).toBe('https://paypal.me/devname/30.50BRL');
   });
 
   it('links Ko-fi, Revolut, Wise and GitHub Sponsors without the amount', () => {
-    expect(providerLink('kofi', ALL, 5)).toEqual({ href: 'https://ko-fi.com/devname', carriesAmount: false });
-    expect(providerLink('revolut', ALL, 5)).toEqual({ href: 'https://revolut.me/devname', carriesAmount: false });
-    expect(providerLink('wise', ALL, 5)).toEqual({ href: 'https://wise.com/pay/me/devname', carriesAmount: false });
-    expect(providerLink('github', ALL, 5)).toEqual({ href: 'https://github.com/sponsors/devname', carriesAmount: false });
+    expect(providerLink('kofi', ALL, 5, 'USD')).toEqual({ href: 'https://ko-fi.com/devname', carriesAmount: false });
+    expect(providerLink('revolut', ALL, 5, 'USD')).toEqual({ href: 'https://revolut.me/devname', carriesAmount: false });
+    expect(providerLink('wise', ALL, 5, 'USD')).toEqual({ href: 'https://wise.com/pay/me/devname', carriesAmount: false });
+    expect(providerLink('github', ALL, 5, 'USD')).toEqual({ href: 'https://github.com/sponsors/devname', carriesAmount: false });
   });
 });

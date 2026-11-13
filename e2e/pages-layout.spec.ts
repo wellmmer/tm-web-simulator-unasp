@@ -13,7 +13,7 @@ for (const width of [390, 768, 1440]) {
         const scroll = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
         expect(scroll, name).toBe(0);
 
-        // Every menu entry sits inside the window, and on one row from 1024 px.
+        // Every menu entry sits inside the window, and on one row from 1280 px.
         const entries = page.getByRole('navigation', { name: 'Main menu' }).getByRole('listitem');
         const boxes = await entries.evaluateAll((items) => items.map((item) => item.getBoundingClientRect().toJSON()));
         expect(boxes).toHaveLength(4);
@@ -21,7 +21,7 @@ for (const width of [390, 768, 1440]) {
         const wordmark = await page.getByRole('link', { name: 'Computable', exact: true }).boundingBox();
         if (wordmark === null) throw new Error('no wordmark');
         const sameRow = boxes.every((box) => Math.abs(box.y + box.height / 2 - (wordmark.y + wordmark.height / 2)) < 12);
-        expect(sameRow, name).toBe(width >= 1024);
+        expect(sameRow, name).toBe(width >= 1280);
 
         // The footer stays at the bottom of the window on short pages.
         const footer = await page.getByRole('contentinfo').boundingBox();

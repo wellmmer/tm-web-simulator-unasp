@@ -18,6 +18,12 @@ describe('Privacy (spec 4.2)', () => {
     expect(screen.getByText(/the site counts visits with Vercel Web Analytics\. It sets no cookies\./)).toBeTruthy();
   });
 
+  it('names the one cookie, which keeps the language for a year (spec 3, "Language on first visit")', () => {
+    renderWithIntl(<PrivacyPage />);
+    expect(screen.getByText('Computable has no accounts and keeps no personal data about you. It sets one cookie, only to remember your language.')).toBeTruthy();
+    expect(screen.getByText(/The language is also in a cookie named NEXT_LOCALE, for one year\./)).toBeTruthy();
+  });
+
   it("links the analytics service's privacy notes and the repo's issues", () => {
     renderWithIntl(<PrivacyPage />);
     expect(screen.getByRole('link', { name: 'How Vercel Web Analytics handles privacy' }).getAttribute('href')).toBe(

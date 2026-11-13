@@ -35,7 +35,7 @@ test.describe('the menu and the footer (spec 4.2)', () => {
     }
   });
 
-  test('works from the keyboard: the skip link, the menu and the theme switch', async ({ page }) => {
+  test('works from the keyboard: the skip link, the menu, the language switcher, Tour and the theme switch', async ({ page }) => {
     await openPage(page, '/en/privacy');
     await page.keyboard.press('Tab');
     const skip = page.getByRole('link', { name: 'Skip to the page' });
@@ -49,9 +49,17 @@ test.describe('the menu and the footer (spec 4.2)', () => {
     await expect(page.getByRole('link', { name: 'How Vercel Web Analytics handles privacy' })).toBeFocused();
 
     // Back up through the menu bar, from its last stop to its first.
-    for (const name of ['Night paper', 'Support the dev', 'Simulator', 'Computable']) {
+    const stops = [
+      ['button', 'Night paper'],
+      ['link', 'Support the dev'],
+      ['button', 'Tour'],
+      ['button', 'Language: English'],
+      ['link', 'Simulator'],
+      ['link', 'Computable'],
+    ] as const;
+    for (const [role, name] of stops) {
       await page.keyboard.press('Shift+Tab');
-      await expect(page.getByRole('banner').getByRole(name === 'Night paper' ? 'button' : 'link', { name, exact: true })).toBeFocused();
+      await expect(page.getByRole('banner').getByRole(role, { name, exact: true })).toBeFocused();
     }
 
     await page.keyboard.press('Tab');

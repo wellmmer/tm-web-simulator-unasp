@@ -3,7 +3,9 @@
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { ThemeSwitch } from '@/theme/ThemeSwitch';
+import { TourButton } from '@/tour/TourButton';
 import { BombeIcon, BookIcon, CupIcon, RotorIcon, TapeIcon } from './icons';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { isCurrentPage, MENU_ITEMS, type MenuId, type MenuItem } from './menu';
 
 const ICONS: Record<MenuId, typeof BookIcon> = { learn: BookIcon, simulator: TapeIcon, enigma: RotorIcon, bombe: BombeIcon };
@@ -22,7 +24,7 @@ function MenuEntry({ item, pathname }: { item: MenuItem; pathname: string }) {
           {t(item.id)}
           <span className="sr-only">, {t('comingSoon')}</span>
         </span>
-        <span aria-hidden className="font-display text-[12px] italic sm:text-[13px]">
+        <span aria-hidden className="font-display text-[12px] whitespace-nowrap italic sm:text-[13px]">
           {t('soon')}
         </span>
       </span>
@@ -42,8 +44,9 @@ function MenuEntry({ item, pathname }: { item: MenuItem; pathname: string }) {
 }
 
 /**
- * The menu bar from the approved mockup (simulator-v4.html): the wordmark, the four sections,
- * Support the dev and the theme switch. One row from 1024px; below, the sections get a row of their own.
+ * The menu bar from the approved mockup (simulator-v4.html): the wordmark, the four sections, the
+ * language switcher, "? Tour", Support the dev and the theme switch. One row from 1280px. Below, the
+ * sections get a row of their own, and below 768px the language switcher and Tour get a third row.
  */
 export function SiteHeader() {
   const t = useTranslations('shell.menu');
@@ -52,11 +55,11 @@ export function SiteHeader() {
 
   return (
     <header className="border-b-2 border-ink bg-cell">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto] items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-7 lg:grid-cols-[auto_1fr_auto]">
-        <Link href="/" className="justify-self-start font-display text-[22px]/none font-extrabold tracking-tight text-ink">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 px-4 py-3 sm:px-7 md:grid-cols-[1fr_auto_auto] xl:grid-cols-[auto_1fr_auto_auto] xl:gap-x-6">
+        <Link href="/" className="col-start-1 row-start-1 justify-self-start font-display text-[22px]/none font-extrabold tracking-tight text-ink">
           {t('wordmark')}
         </Link>
-        <nav aria-label={t('label')} className="col-span-2 row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1">
+        <nav aria-label={t('label')} className="col-span-2 row-start-2 md:col-span-3 xl:col-span-1 xl:col-start-2 xl:row-start-1">
           <ul className="grid grid-cols-4 gap-1 sm:flex sm:gap-7">
             {MENU_ITEMS.map((item) => (
               <li key={item.id}>
@@ -65,11 +68,15 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
-        <div className="col-start-2 row-start-1 flex items-center gap-4 lg:col-start-3">
+        <div className="col-span-2 row-start-3 flex justify-end gap-2 md:col-span-1 md:col-start-2 md:row-start-1 xl:col-start-3">
+          <LanguageSwitcher />
+          <TourButton />
+        </div>
+        <div className="col-start-2 row-start-1 flex items-center gap-4 md:col-start-3 xl:col-start-4">
           <Link
             href="/support"
             aria-current={supportCurrent ? 'page' : undefined}
-            className="inline-flex items-center gap-2 py-1 font-semibold text-ink"
+            className="inline-flex items-center gap-2 py-1 font-semibold text-ink md:whitespace-nowrap"
           >
             <CupIcon className={`size-[19px] shrink-0 ${supportCurrent ? 'text-pencil' : 'text-coffee'}`} />
             {t('support')}
