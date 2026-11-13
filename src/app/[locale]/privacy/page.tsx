@@ -34,6 +34,7 @@ export default function PrivacyPage() {
           </h2>
           <p>{t('analytics.summary', { service: ANALYTICS.service })}</p>
           <p>{t('analytics.counted')}</p>
+          <p>{t('analytics.address')}</p>
           <p>{t('analytics.visitor')}</p>
           <p>
             <a href={ANALYTICS.privacyUrl} className={textLink}>

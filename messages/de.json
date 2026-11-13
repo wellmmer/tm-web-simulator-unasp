@@ -250,6 +250,7 @@
       "title": "Was die Website zählt",
       "summary": "Um zu erfahren, welche Seiten Menschen helfen, zählt die Website Besuche mit {service}. Es setzt keine Cookies.",
       "counted": "Für jeden Seitenaufruf speichert es die Zeit, die Seite, die Seite, von der du kommst, dein Land, deine Region und deine Stadt, deinen Browser, dein System und die Art des Geräts.",
+      "address": "Es zählt die Adresse der Seite ohne den Teil hinter dem Zeichen #. So erhält es nie die Maschine aus einem Link zum Teilen.",
       "visitor": "Es unterscheidet Besuche mit einem Code aus der Anfrage und verwirft den Code nach 24 Stunden. Es verbindet die Besuche weder mit dir noch mit deiner IP-Adresse.",
       "source": "Wie {service} mit Datenschutz umgeht"
     },

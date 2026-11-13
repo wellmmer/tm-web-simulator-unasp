@@ -38,7 +38,7 @@ function ControlButton({ icon: Icon, label, keyLabel, shortcut, onClick, disable
 
 export function Kbd({ children }: { children: ReactNode }) {
   return (
-    <kbd aria-hidden className="border border-current px-1.5 font-sans text-xs font-medium opacity-80">
+    <kbd aria-hidden className="border border-current px-1.5 font-sans text-xs font-medium">
       {children}
     </kbd>
   );

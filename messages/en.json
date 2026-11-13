@@ -250,6 +250,7 @@
       "title": "What the site counts",
       "summary": "To learn which pages help people, the site counts visits with {service}. It sets no cookies.",
       "counted": "For each page view it records the time, the page, the page you came from, your country, region and city, your browser, your system and the kind of device.",
+      "address": "It counts the page address without the part after the # sign. So it never receives the machine from a share link.",
       "visitor": "It tells visits apart with a code made from the request, and throws the code away after 24 hours. It does not tie the visits to you or to your IP address.",
       "source": "How {service} handles privacy"
     },

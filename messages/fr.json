@@ -250,6 +250,7 @@
       "title": "Ce que le site compte",
       "summary": "Pour savoir quelles pages aident les gens, le site compte les visites avec {service}. Il ne pose aucun cookie.",
       "counted": "Pour chaque page vue, il enregistre l’heure, la page, la page d’où vous venez, votre pays, votre région et votre ville, votre navigateur, votre système et le type d’appareil.",
+      "address": "Il compte l’adresse de la page sans la partie après le signe #. Il ne reçoit donc jamais la machine d’un lien de partage.",
       "visitor": "Il distingue les visites avec un code tiré de la requête et efface ce code après 24 heures. Il ne relie pas les visites à vous ni à votre adresse IP.",
       "source": "Comment {service} traite la confidentialité"
     },

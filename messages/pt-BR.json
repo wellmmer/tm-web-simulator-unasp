@@ -250,6 +250,7 @@
       "title": "O que o site conta",
       "summary": "Para saber quais páginas ajudam as pessoas, o site conta visitas com o {service}. Ele não usa cookies.",
       "counted": "Para cada página vista, ele registra a hora, a página, a página de onde você veio, seu país, região e cidade, seu navegador, seu sistema e o tipo de aparelho.",
+      "address": "Ele conta o endereço da página sem a parte depois do sinal #. Assim, ele nunca recebe a máquina de um link de compartilhamento.",
       "visitor": "Ele distingue as visitas com um código feito a partir da requisição e joga o código fora depois de 24 horas. Ele não liga as visitas a você nem ao seu endereço IP.",
       "source": "Como o {service} trata a privacidade"
     },

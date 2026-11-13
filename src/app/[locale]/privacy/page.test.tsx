@@ -24,13 +24,22 @@ describe('Privacy (spec 4.2)', () => {
     expect(screen.getByText(/The language is also in a cookie named NEXT_LOCALE, for one year\./)).toBeTruthy();
   });
 
+  it('says the counter never receives the machine from a share link (spec 5.6)', () => {
+    renderWithIntl(<PrivacyPage />);
+    expect(
+      screen.getByText(
+        'It counts the page address without the part after the # sign. So it never receives the machine from a share link.',
+      ),
+    ).toBeTruthy();
+  });
+
   it("links the analytics service's privacy notes and the repo's issues", () => {
     renderWithIntl(<PrivacyPage />);
     expect(screen.getByRole('link', { name: 'How Vercel Web Analytics handles privacy' }).getAttribute('href')).toBe(
       'https://vercel.com/docs/analytics/privacy-policy',
     );
     expect(screen.getByRole('link', { name: 'Open an issue on GitHub' }).getAttribute('href')).toBe(
-      'https://github.com/wellmmer/tm-web-simulator-unasp/issues',
+      'https://github.com/wellmmer/computable/issues',
     );
   });
 });

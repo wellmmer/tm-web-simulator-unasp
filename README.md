@@ -7,9 +7,9 @@
 press Run, and watch the head read, write and move, one square at a time. Every step is explained
 in a plain sentence.
 
-> **Status: being rebuilt.** This repo held a 2016 capstone project built with jQuery. It is now
-> becoming Computable, release by release. Nothing below is live yet unless its status says so.
-> The 2016 version will stay available at the git tag `v1.0-tcc-2016`.
+> **Status: release 1 is live at https://computable-lac.vercel.app.** This repo held a 2016 capstone project built with jQuery. It is
+> now Computable, built release by release. Release 1 is the simulator; the roadmap below lists
+> the rest. The 2016 version stays available at the git tag `v1.0-tcc-2016`.
 
 ---
 
@@ -34,7 +34,7 @@ machine could do the same work.
 
 | Release | What you get | Status |
 | --- | --- | --- |
-| **R1** | The simulator, the guided tour, 5 languages, light and dark themes, About, Support the dev | In design |
+| **R1** | The simulator, the guided tour, 5 languages, light and dark themes, About, Support the dev | Live. Support the dev shows its payment links once they are set. |
 | **R2** | Lessons: the formal definition, the Entscheidungsproblem, the halting problem, Church–Turing, the universal machine, and Turing's 1936 paper read alongside a running tape. Quizzes. | Planned |
 | **R3** | Enigma lab: a working Enigma I with plugboard, real and practice messages | Planned |
 | **R4** | Bombe lab: break your own Enigma message with a crib and a wall of drums | Planned |
@@ -57,7 +57,10 @@ machine could do the same work.
 - **Keyboard first.** `Space` runs, `→` steps, `←` steps back, `?` lists every shortcut.
 - **English, Português (Brasil), Español, Français, Deutsch.** The app picks your browser's
   language and lets you switch back.
-- **Squared paper by day, night paper by night.** Follows your system theme.
+- **Squared paper by day, night paper by night.** Follows your system theme, and a switch in the
+  menu overrides it.
+- **No accounts, no ads.** The site counts visits with Vercel Web Analytics, which sets no cookies.
+  The only cookie keeps your language. The Privacy page lists what is counted.
 
 ## The machine format
 
@@ -88,9 +91,9 @@ Input `1011` ends as `1100` and the machine accepts.
 
 ## Built with
 
-Next.js and TypeScript, Tailwind CSS, next-intl for languages, MDX for lessons, React Flow for the
-state diagram, Motion for animation. The Turing machine, Enigma and Bombe logic live in plain
-TypeScript with no UI code, tested with Vitest and Playwright. Hosted on Vercel.
+Next.js and TypeScript, Tailwind CSS, next-intl for languages, React Flow for the state diagram,
+and Zustand for the simulator's state. The Turing machine logic lives in plain TypeScript with no
+UI code, tested with Vitest and Playwright. Hosted on Vercel, with Vercel Web Analytics.
 
 ## Where this came from
 
@@ -105,7 +108,8 @@ animation) is the starting point for R1.
 
 ## Support
 
-Computable is free and has no ads. A "Buy the dev a coffee" page arrives with R1.
+Computable is free and has no ads. The "Buy the dev a coffee" page links to ways to give. Each
+payment link shows there once its handle is set in `src/config/support.ts`.
 
 ## License
 

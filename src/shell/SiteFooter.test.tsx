@@ -24,7 +24,7 @@ describe('SiteFooter', () => {
       ['About', '/about'],
       ['Privacy', '/privacy'],
       ['Support the dev', '/support'],
-      ['Source code', 'https://github.com/wellmmer/tm-web-simulator-unasp'],
+      ['Source code', 'https://github.com/wellmmer/computable'],
     ]);
     expect(screen.getByText('Code under the MIT license. Texts under CC BY 4.0.')).toBeTruthy();
   });
@@ -33,7 +33,7 @@ describe('SiteFooter', () => {
     for (const locale of ['es', 'fr', 'de'] as const) {
       renderWithIntl(<SiteFooter />, locale);
       expect(screen.getByRole('link', { name: 'Help improve the translation' }).getAttribute('href')).toBe(
-        `https://github.com/wellmmer/tm-web-simulator-unasp/edit/master/messages/${locale}.json`,
+        `https://github.com/wellmmer/computable/edit/master/messages/${locale}.json`,
       );
       cleanup();
     }
