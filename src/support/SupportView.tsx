@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useId, useState } from 'react';
 import type { SupportHandles } from '@/config/support';
-import { amountText, DEFAULT_AMOUNT, parseAmount, PRESET_AMOUNTS } from './amount';
+import { AMOUNTS, amountText, parseAmount } from './amount';
 import { PixPanel } from './PixPanel';
 import { providerLink, supportOptions, type ProviderId } from './providers';
 
@@ -34,7 +34,7 @@ function ProviderRow({ id, handles, amount }: { id: ProviderId; handles: Support
       </li>
     );
   }
-  const link = providerLink(id, handles, amount ?? DEFAULT_AMOUNT);
+  const link = providerLink(id, handles, amount ?? AMOUNTS.USD.preset);
   const shown = amount === null ? null : amountText(amount);
   const note = link.carriesAmount && shown !== null ? t('carries', { amount: shown }) : shown === null ? t('typeAny') : t('typeIt', { amount: shown });
   const label = !link.carriesAmount ? t('open', { provider: name }) : shown === null ? t('payNoAmount', { provider: name }) : t('pay', { amount: shown, provider: name });
@@ -69,7 +69,7 @@ export function SupportView({ handles }: { handles: SupportHandles }) {
   const locale = useLocale();
   const otherId = useId();
   const otherHintId = useId();
-  const [choice, setChoice] = useState<Choice>(DEFAULT_AMOUNT);
+  const [choice, setChoice] = useState<Choice>(AMOUNTS.USD.preset);
   const [otherText, setOtherText] = useState('');
   const { first, more } = supportOptions(locale, handles);
 
@@ -82,7 +82,7 @@ export function SupportView({ handles }: { handles: SupportHandles }) {
     );
   }
 
-  const amount = choice === 'other' ? parseAmount(otherText) : choice;
+  const amount = choice === 'other' ? parseAmount(otherText, 'USD') : choice;
   const otherInvalid = choice === 'other' && otherText.trim() !== '' && amount === null;
   const rows = (ids: ProviderId[]) => ids.map((id) => <ProviderRow key={id} id={id} handles={handles} amount={amount} />);
 
@@ -91,7 +91,7 @@ export function SupportView({ handles }: { handles: SupportHandles }) {
       <fieldset>
         <legend className="font-semibold">{t('amount')}</legend>
         <div className="mt-4 flex flex-wrap gap-y-4 pl-1.5">
-          {PRESET_AMOUNTS.map((preset) => (
+          {AMOUNTS.USD.presets.map((preset) => (
             <AmountCell key={preset} label={t('preset', { amount: preset })} checked={choice === preset} onChange={() => setChoice(preset)} />
           ))}
           <AmountCell label={t('other')} checked={choice === 'other'} onChange={() => setChoice('other')} />

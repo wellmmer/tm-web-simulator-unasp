@@ -1,5 +1,5 @@
 import type { SupportHandles } from '@/config/support';
-import { amountText } from './amount';
+import { amountText, isBrazilian } from './amount';
 import { isValidPixPayee } from './pix';
 
 export type ProviderId = 'pix' | 'paypal' | 'kofi' | 'revolut' | 'wise' | 'github';
@@ -14,11 +14,6 @@ export interface ProviderLink {
   href: string;
   /** True when the link fills in the amount. Otherwise the donor types it on the provider's page. */
   carriesAmount: boolean;
-}
-
-/** Spec 7: Brazilian Portuguese visitors see Pix first, everyone else PayPal and Ko-fi. */
-function isBrazilian(locale: string): boolean {
-  return /^pt(-br)?$/i.test(locale);
 }
 
 const filled = (text: string) => text.trim() !== '';
