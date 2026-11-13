@@ -44,6 +44,15 @@ function scrollTopFor(box: DOMRect, panelTop: number): number {
   return Math.max(0, window.scrollY + box.top - offset);
 }
 
+/**
+ * True while the tour is open, read from the store now. Coming back to the simulator, React first
+ * replays the page as it was when the visitor left, with the old step, although the tour has ended.
+ * The effects check this, so that replay neither scrolls nor moves the focus.
+ */
+function tourOpen(): boolean {
+  return tourStore.getState().step !== null;
+}
+
 function sameBox(a: Box | null, b: Box): boolean {
   return a !== null && Math.abs(a.top - b.top) < 0.5 && Math.abs(a.left - b.left) < 0.5 && Math.abs(a.width - b.width) < 0.5 && Math.abs(a.height - b.height) < 0.5;
 }
@@ -80,7 +89,7 @@ export function TourPanel() {
 
   // Each step scrolls its part above the panel and moves the focus to its title.
   useEffect(() => {
-    if (id === null) return;
+    if (id === null || !tourOpen()) return;
     const target = targetOf(id);
     const panelTop = panel.current?.getBoundingClientRect().top ?? window.innerHeight;
     if (target !== null) window.scrollTo({ top: scrollTopFor(target.getBoundingClientRect(), panelTop), behavior: reducedMotion ? 'auto' : 'smooth' });
@@ -103,9 +112,18 @@ export function TourPanel() {
     return () => cancelAnimationFrame(frame);
   }, [id]);
 
+  // The page hides while the visitor is on another page, and the menu's Tour button ends the tour then.
+  // Coming back must not move the focus, so the tour counts as never opened.
+  useEffect(
+    () => () => {
+      wasOpen.current = false;
+    },
+    [],
+  );
+
   // When the tour ends, the focus goes back to where it was, or to the menu's Tour button.
   useEffect(() => {
-    if (step !== null) {
+    if (step !== null && tourOpen()) {
       wasOpen.current = true;
       return;
     }

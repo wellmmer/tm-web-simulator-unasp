@@ -122,6 +122,29 @@ test.describe('the tour (spec 5.5)', () => {
     await expect(panel(page).getByRole('heading', { name: 'The tape' })).toBeVisible();
   });
 
+  test('leaving the simulator ends the tour: coming back shows no tour and keeps the focus where it is', async ({ page }) => {
+    await openSimulator(page);
+    await page.getByRole('button', { name: 'Tour', exact: true }).click();
+    for (let step = 1; step < 3; step++) await panel(page).getByRole('button', { name: 'Next' }).click();
+    await expect(panel(page).getByRole('heading', { name: 'The step sentence' })).toBeVisible();
+
+    const support = page.getByRole('banner').getByRole('link', { name: 'Support the dev' });
+    await support.click();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Buy the dev a coffee');
+    await expect(panel(page)).toBeHidden();
+
+    const simulator = page.getByRole('navigation', { name: 'Main menu' }).getByRole('link', { name: 'Simulator' });
+    await simulator.click();
+    await expect(page).toHaveURL(/\/en\/simulator$/);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Binary +1');
+    await expect(page.getByTestId('step-sentence')).toBeVisible();
+    // Give the page time to rerun its effects, then check that the tour stayed closed.
+    await page.waitForTimeout(500);
+    await expect(panel(page)).toHaveCount(0);
+    await expect(page.getByTestId('tour-spotlight')).toHaveCount(0);
+    await expect(simulator).toBeFocused();
+  });
+
   test('"No, thanks" dismisses the prompt for good', async ({ page }) => {
     await openSimulator(page);
     await page.getByRole('button', { name: 'No, thanks' }).click();

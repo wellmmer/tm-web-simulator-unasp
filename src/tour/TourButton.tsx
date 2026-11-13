@@ -2,6 +2,7 @@
 
 import { CircleHelp } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { isCurrentPage } from '@/shell/menu';
 import { tourStore } from './tour';
@@ -11,10 +12,17 @@ export function TourButton() {
   const t = useTranslations('tour');
   const pathname = usePathname();
   const router = useRouter();
+  const onSimulator = isCurrentPage(pathname, '/simulator');
+
+  // Leaving the simulator ends the tour. The menu is on every page, so it sees the visitor leave.
+  // The simulator page stays alive while hidden, so without this its tour would come back with it.
+  useEffect(() => {
+    if (!onSimulator && tourStore.getState().step !== null) tourStore.getState().close();
+  }, [onSimulator]);
 
   const open = () => {
     tourStore.getState().request();
-    if (!isCurrentPage(pathname, '/simulator')) router.push('/simulator');
+    if (!onSimulator) router.push('/simulator');
   };
 
   return (
