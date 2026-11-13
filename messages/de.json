@@ -241,9 +241,10 @@
   "privacy": {
     "pageTitle": "Datenschutz",
     "title": "Datenschutz",
-    "lead": "Computable hat keine Konten, setzt keine Cookies und speichert keine persönlichen Daten über dich.",
+    "lead": "Computable hat keine Konten und speichert keine persönlichen Daten über dich. Es setzt ein einziges Cookie, nur um deine Sprache zu behalten.",
     "browserTitle": "Was in deinem Browser bleibt",
-    "browser": "Dein Browser behält deine aktuelle Maschine und deine Wahl zwischen Karopapier und Nachtpapier. Sie bleiben auf deinem Gerät. Computable sendet sie nirgendwohin.",
+    "browser": "Dein Browser behält deine aktuelle Maschine, deine Wahl zwischen Karopapier und Nachtpapier, deine Sprache und ob du die Tour gesehen hast. Sie bleiben auf deinem Gerät.",
+    "language": "Die Sprache steht außerdem ein Jahr lang in einem Cookie namens NEXT_LOCALE. Die Website setzt es, wenn du eine Sprache wählst oder eine Seite in einer anderen Sprache als der deines Browsers öffnest. Dein Browser sendet es bei jedem Seitenabruf mit, damit die Hauptadresse der Website in deiner Sprache öffnet. Es enthält nur den Sprachcode, etwa pt-BR.",
     "shareLink": "Ein Link zum Teilen enthält die Maschine hinter dem Zeichen #. Browser senden diesen Teil eines Links an keinen Server.",
     "analytics": {
       "title": "Was die Website zählt",

@@ -241,9 +241,10 @@
   "privacy": {
     "pageTitle": "Confidentialité",
     "title": "Confidentialité",
-    "lead": "Computable n’a pas de comptes, ne pose aucun cookie et ne garde aucune donnée personnelle sur vous.",
+    "lead": "Computable n’a pas de comptes et ne garde aucune donnée personnelle sur vous. Il pose un seul cookie, uniquement pour retenir votre langue.",
     "browserTitle": "Ce qui reste dans votre navigateur",
-    "browser": "Votre navigateur garde votre machine actuelle et votre choix entre papier quadrillé et papier de nuit. Ils restent sur votre appareil. Computable ne les envoie jamais nulle part.",
+    "browser": "Votre navigateur garde votre machine actuelle, votre choix entre papier quadrillé et papier de nuit, votre langue, et si vous avez vu la visite. Ils restent sur votre appareil.",
+    "language": "La langue est aussi dans un cookie nommé NEXT_LOCALE, pendant un an. Le site le pose quand vous choisissez une langue, ou quand vous ouvrez une page dans une autre langue que celle de votre navigateur. Votre navigateur l’envoie avec chaque page demandée, pour que l’adresse principale du site s’ouvre dans votre langue. Il ne contient que le code de la langue, comme pt-BR.",
     "shareLink": "Un lien de partage contient la machine après le signe #. Les navigateurs n’envoient cette partie d’un lien à aucun serveur.",
     "analytics": {
       "title": "Ce que le site compte",

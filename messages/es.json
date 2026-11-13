@@ -241,9 +241,10 @@
   "privacy": {
     "pageTitle": "Privacidad",
     "title": "Privacidad",
-    "lead": "Computable no tiene cuentas, no usa cookies y no guarda datos personales sobre ti.",
+    "lead": "Computable no tiene cuentas y no guarda datos personales sobre ti. Usa una sola cookie, solo para recordar tu idioma.",
     "browserTitle": "Lo que queda en tu navegador",
-    "browser": "Tu navegador guarda tu máquina actual y tu elección entre papel cuadriculado y papel nocturno. Se quedan en tu dispositivo. Computable nunca los envía a ningún sitio.",
+    "browser": "Tu navegador guarda tu máquina actual, tu elección entre papel cuadriculado y papel nocturno, tu idioma y si ya viste el recorrido. Se quedan en tu dispositivo.",
+    "language": "El idioma también se guarda en una cookie llamada NEXT_LOCALE, durante un año. El sitio la crea cuando eliges un idioma, o cuando abres una página en un idioma distinto al de tu navegador. Tu navegador la envía con cada página que pide, para que la dirección principal del sitio se abra en tu idioma. Solo contiene el código del idioma, como pt-BR.",
     "shareLink": "Un enlace para compartir guarda la máquina después del signo #. Los navegadores no envían esa parte de un enlace a ningún servidor.",
     "analytics": {
       "title": "Lo que cuenta el sitio",

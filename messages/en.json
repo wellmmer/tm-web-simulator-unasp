@@ -241,9 +241,10 @@
   "privacy": {
     "pageTitle": "Privacy",
     "title": "Privacy",
-    "lead": "Computable has no accounts, sets no cookies and keeps no personal data about you.",
+    "lead": "Computable has no accounts and keeps no personal data about you. It sets one cookie, only to remember your language.",
     "browserTitle": "What stays in your browser",
-    "browser": "Your browser keeps your current machine and your choice of squared or night paper. They stay on your device. Computable never sends them anywhere.",
+    "browser": "Your browser keeps your current machine, your choice of squared or night paper, your language, and whether you saw the tour. They stay on your device.",
+    "language": "The language is also in a cookie named NEXT_LOCALE, for one year. The site sets it when you choose a language, or when you open a page in a language other than your browser's. Your browser sends it with each page request, so the site's main address opens your language. It holds only the language code, such as pt-BR.",
     "shareLink": "A share link holds the machine after the # sign. Browsers do not send that part of a link to any server.",
     "analytics": {
       "title": "What the site counts",
