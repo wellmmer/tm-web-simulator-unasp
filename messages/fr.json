@@ -81,10 +81,10 @@
     },
     "controls": {
       "reset": "Réinitialiser",
-      "stepBack": "Pas arrière",
+      "stepBack": "Un pas en arrière",
       "run": "Lancer",
       "pause": "Pause",
-      "step": "Pas",
+      "step": "Un pas",
       "spaceKey": "Espace",
       "speed": "Vitesse",
       "slower": "Plus lent",
@@ -176,8 +176,8 @@
       "title": "Raccourcis clavier",
       "close": "Fermer",
       "toggleRun": "Lancer ou mettre en pause",
-      "stepForward": "Pas",
-      "stepBack": "Pas arrière",
+      "stepForward": "Un pas",
+      "stepBack": "Un pas en arrière",
       "reset": "Réinitialiser",
       "faster": "Plus rapide",
       "slower": "Plus lent",
@@ -316,27 +316,27 @@
       "head": {
         "title": "La tête et son état",
         "text": "Le cercle rouge est la tête. Elle lit la case qu’il entoure. L’étiquette au-dessus montre l’état de la machine.",
-        "task": "Appuyez sur Pas et regardez la tête avancer d’une case."
+        "task": "Appuyez sur « Un pas » et regardez la tête avancer d’une case."
       },
       "sentence": {
         "title": "La phrase du pas",
         "text": "Cette phrase dit avec des mots ce que le dernier pas a fait.",
-        "task": "Appuyez sur Pas et lisez la nouvelle phrase."
+        "task": "Appuyez sur « Un pas » et lisez la nouvelle phrase."
       },
       "controls": {
         "title": "Les commandes",
-        "text": "Pas fait un pas, et Pas arrière l’annule. Lancer fait tourner la machine jusqu’à son arrêt. Réinitialiser recommence. Chaque bouton montre sa touche.",
+        "text": "« Un pas » fait un pas, et « Un pas en arrière » l’annule. Lancer fait tourner la machine jusqu’à son arrêt. Réinitialiser recommence. Chaque bouton montre sa touche.",
         "task": "Appuyez sur Lancer et regardez la machine travailler."
       },
       "rules": {
         "title": "La table des règles",
         "text": "Chaque ligne est une règle : dans cet état, en lisant ce symbole, écrire, se déplacer, puis passer à l’état suivant.",
-        "task": "Appuyez sur Pas et regardez quelle ligne s’allume."
+        "task": "Appuyez sur « Un pas » et regardez quelle ligne s’allume."
       },
       "diagram": {
         "title": "Le diagramme d’états",
         "text": "Les mêmes règles en cercles et en flèches. Chaque cercle est un état. La flèche de la dernière règle devient rouge.",
-        "task": "Appuyez sur Pas et regardez la flèche rouge."
+        "task": "Appuyez sur « Un pas » et regardez la flèche rouge."
       },
       "keys": {
         "title": "Clavier et exemples",
