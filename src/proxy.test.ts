@@ -12,6 +12,10 @@ describe('the language in the URL (spec 3, "Language on first visit")', () => {
     expect(visit('/', { 'accept-language': 'en-US,en;q=0.9' }).headers.get('location')).toBe('http://localhost/en');
   });
 
+  it('sends a Spanish browser from Mexico to /es', () => {
+    expect(visit('/', { 'accept-language': 'es-MX,es;q=0.9' }).headers.get('location')).toBe('http://localhost/es');
+  });
+
   it('sends a browser language the site does not have to English', () => {
     expect(visit('/', { 'accept-language': 'ja-JP' }).headers.get('location')).toBe('http://localhost/en');
   });
