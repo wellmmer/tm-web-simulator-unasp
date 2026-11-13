@@ -1,7 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import { shareUrl } from '@/share/share-link';
 import { examples } from '@/simulator/examples';
-import { pageUrlOnly, withoutMachine } from './page-url';
+import { pageRoute, pageUrlOnly, withoutMachine } from './page-url';
+
+describe('pageRoute', () => {
+  it('groups a page in every language under one route', () => {
+    expect(pageRoute('/en/simulator')).toBe('/[locale]/simulator');
+    expect(pageRoute('/pt-br/simulator')).toBe('/[locale]/simulator');
+    expect(pageRoute('/de/about')).toBe('/[locale]/about');
+  });
+
+  it('groups Home in every language', () => {
+    expect(pageRoute('/es')).toBe('/[locale]');
+    expect(pageRoute('/pt-br')).toBe('/[locale]');
+  });
+
+  it('leaves an address without a known language as it is', () => {
+    expect(pageRoute('/xx/simulator')).toBe('/xx/simulator');
+    expect(pageRoute('/')).toBe('/');
+  });
+});
 
 describe('pageUrlOnly', () => {
   it('keeps the address and the page, and drops the part after #', () => {
