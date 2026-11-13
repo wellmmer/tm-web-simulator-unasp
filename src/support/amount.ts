@@ -64,3 +64,9 @@ export function currencySymbol(currency: Currency, locale: string): { symbol: st
   const number = parts.findIndex((part) => part.type === 'integer');
   return { symbol: parts[sign]?.value ?? currency, before: sign < number };
 }
+
+/** Two amounts to type, for the hint of the "Other" field: the amount chosen first, and the same with cents. */
+export function amountExamples(currency: Currency, locale: string): { whole: string; cents: string } {
+  const { preset } = AMOUNTS[currency];
+  return { whole: String(preset), cents: new Intl.NumberFormat(locale, { minimumFractionDigits: 2 }).format(preset + 0.5) };
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { AMOUNTS, amountText, currencyOf, currencySymbol, formatAmount, parseAmount } from './amount';
+import { AMOUNTS, amountExamples, amountText, currencyOf, currencySymbol, formatAmount, parseAmount } from './amount';
 
 describe('the amounts', () => {
   it('offers $1, $3, $5 and $10, with $5 chosen first (spec 7)', () => {
@@ -106,5 +106,13 @@ describe('currencySymbol', () => {
     expect(currencySymbol('USD', 'en')).toEqual({ symbol: '$', before: true });
     expect(currencySymbol('BRL', 'pt-BR')).toEqual({ symbol: 'R$', before: true });
     expect(currencySymbol('USD', 'de')).toEqual({ symbol: '$', before: false });
+  });
+});
+
+describe('amountExamples', () => {
+  it('gives two amounts to type, without the sign: the amount chosen first, and the same with cents', () => {
+    expect(amountExamples('USD', 'en')).toEqual({ whole: '5', cents: '5.50' });
+    expect(amountExamples('BRL', 'pt-BR')).toEqual({ whole: '25', cents: '25,50' });
+    expect(amountExamples('USD', 'de')).toEqual({ whole: '5', cents: '5,50' });
   });
 });

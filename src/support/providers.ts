@@ -1,5 +1,5 @@
 import type { SupportHandles } from '@/config/support';
-import { amountText, isBrazilian } from './amount';
+import { amountText, isBrazilian, type Currency } from './amount';
 import { isValidPixPayee } from './pix';
 
 export type ProviderId = 'pix' | 'paypal' | 'kofi' | 'revolut' | 'wise' | 'github';
@@ -50,13 +50,14 @@ export function supportOptions(locale: string, handles: SupportHandles): Support
 }
 
 /**
- * The link to pay `amount` US dollars. Only PayPal.me takes the amount in the link (checked:
- * PayPal's PayPal.Me help page, "PayPal.Me/DiaRusso/25AUD"). Pix shows a QR code instead.
+ * The link to pay `amount` in `currency`. Only PayPal.me takes the amount in the link: the amount,
+ * then the currency code (checked: PayPal's PayPal.Me help page shows "PayPal.Me/DiaRusso/25AUD").
+ * Pix shows a QR code instead.
  */
-export function providerLink(id: Exclude<ProviderId, 'pix'>, handles: SupportHandles, amount: number): ProviderLink {
+export function providerLink(id: Exclude<ProviderId, 'pix'>, handles: SupportHandles, amount: number, currency: Currency): ProviderLink {
   switch (id) {
     case 'paypal':
-      return { href: `https://paypal.me/${encodeURIComponent(handles.paypal.trim())}/${amountText(amount)}USD`, carriesAmount: true };
+      return { href: `https://paypal.me/${encodeURIComponent(handles.paypal.trim())}/${amountText(amount)}${currency}`, carriesAmount: true };
     case 'kofi':
       return { href: `https://ko-fi.com/${encodeURIComponent(handles.kofi.trim())}`, carriesAmount: false };
     case 'revolut':

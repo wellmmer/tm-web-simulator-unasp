@@ -58,7 +58,7 @@ describe('SupportView (spec 7)', () => {
     const field = screen.getByRole('textbox', { name: 'Other amount, in US dollars' });
     fireEvent.change(field, { target: { value: '0.50' } });
     expect(field.getAttribute('aria-invalid')).toBe('true');
-    expect(screen.getByText('Type an amount from $1 to $10,000, with up to 2 decimals, like 7 or 7.50.')).toBeTruthy();
+    expect(screen.getByText('Type an amount from $1 to $10,000, with up to 2 decimals and no thousands separator, like 5 or 5.50.')).toBeTruthy();
     expect(screen.queryByRole('link', { name: /with PayPal/ })).toBeNull();
     // A disabled button, so screen readers say that it is unavailable.
     expect(screen.getByRole('button', { name: 'Pay with PayPal' })).toHaveProperty('disabled', true);
@@ -78,6 +78,46 @@ describe('SupportView (spec 7)', () => {
       ['Open Wise', 'https://wise.com/pay/me/devname'],
       ['Open GitHub Sponsors', 'https://github.com/sponsors/devname'],
     ]);
+  });
+
+  it('shows reais in Brazilian Portuguese, R$ 25 first, and both PayPal and Pix carry the amount', () => {
+    renderWithIntl(<SupportView handles={ALL} />, 'pt-BR');
+    const amounts = within(screen.getByRole('group', { name: 'Amount, in Brazilian reais' })).getAllByRole('radio');
+    expect(amounts.map((radio) => radio.closest('label')?.textContent)).toEqual(['R$\u00a05', 'R$\u00a010', 'R$\u00a025', 'R$\u00a050', 'Other']);
+    expect(screen.getByRole('radio', { name: 'R$\u00a025' })).toHaveProperty('checked', true);
+    expect(screen.getByRole('link', { name: 'Pay R$\u00a025 with PayPal' }).getAttribute('href')).toBe('https://paypal.me/devname/25BRL');
+    expect(screen.getByRole('textbox', { name: 'Pix code' })).toHaveProperty('value', pixCode(ALL.pix, 25));
+    // getByText turns the no-break space after R$ into a plain space.
+    expect(screen.getByText('The code holds R$ 25. Scan it or copy it, then confirm the payment in your bank app.')).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('radio', { name: 'R$\u00a050' }));
+    expect(screen.getByRole('link', { name: 'Pay R$\u00a050 with PayPal' }).getAttribute('href')).toBe('https://paypal.me/devname/50BRL');
+    expect(screen.getByRole('textbox', { name: 'Pix code' })).toHaveProperty('value', pixCode(ALL.pix, 50));
+  });
+
+  it('takes another amount in reais from R$ 5 to R$ 50.000, with a decimal comma', () => {
+    renderWithIntl(<SupportView handles={ALL} />, 'pt-BR');
+    fireEvent.click(screen.getByRole('radio', { name: 'Other' }));
+    const field = screen.getByRole('textbox', { name: 'Other amount, in Brazilian reais' });
+    fireEvent.change(field, { target: { value: '4,99' } });
+    expect(field.getAttribute('aria-invalid')).toBe('true');
+    expect(
+      screen.getByText('Type an amount from R$ 5 to R$ 50.000, with up to 2 decimals and no thousands separator, like 25 or 25,50.'),
+    ).toBeTruthy();
+    // Without a valid amount, the Pix code holds none, and the donor types it in the bank app.
+    expect(screen.getByRole('textbox', { name: 'Pix code' })).toHaveProperty('value', pixCode(ALL.pix));
+    expect(screen.getByText('Pix moves Brazilian reais. Scan the code or copy it, then type the amount in your bank app.')).toBeTruthy();
+
+    fireEvent.change(field, { target: { value: 'R$ 30,50' } });
+    expect(screen.getByRole('link', { name: 'Pay R$\u00a030,50 with PayPal' }).getAttribute('href')).toBe('https://paypal.me/devname/30.50BRL');
+    expect(screen.getByRole('textbox', { name: 'Pix code' })).toHaveProperty('value', pixCode(ALL.pix, 30.5));
+  });
+
+  it('keeps US dollars in the other languages, so Pix holds no amount there', () => {
+    renderWithIntl(<SupportView handles={ALL} />, 'de');
+    expect(screen.getByRole('radio', { name: '5\u00a0$' })).toHaveProperty('checked', true);
+    expect(screen.getByRole('link', { name: 'Pay 5\u00a0$ with PayPal' }).getAttribute('href')).toBe('https://paypal.me/devname/5USD');
+    expect(screen.getByRole('textbox', { name: 'Pix code' })).toHaveProperty('value', pixCode(ALL.pix));
   });
 
   it('copies the Pix code, and shows it in a field to copy by hand', async () => {
