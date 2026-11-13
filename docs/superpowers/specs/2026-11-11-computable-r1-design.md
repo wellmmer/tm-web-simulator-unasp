@@ -37,8 +37,8 @@ Each release has its own spec, plan and build, and goes live on its own.
 
 | Topic | Decision |
 | --- | --- |
-| Name | Computable (from the paper's title). The repo keeps its name. |
-| Repo | Same repo, `wellmmer/tm-web-simulator-unasp`. Tag the 2016 version `v1.0-tcc-2016`, then build at the root. |
+| Name | Computable (from the paper's title). On 2026-11-13 Wellmmer renamed the repo to `computable`. |
+| Repo | Same repo, first `wellmmer/tm-web-simulator-unasp`, now `wellmmer/computable`. Tag the 2016 version `v1.0-tcc-2016`, then build at the root. |
 | Textbook PDFs | Remove the Hopcroft and Sipser PDFs from all of git history (`git filter-repo`), with a backup bundle first. Your TCC paper stays. |
 | Stack | One Next.js app with TypeScript, Tailwind, next-intl, MDX, React Flow, Motion and Zustand. |
 | Engines | Turing machine, Enigma and Bombe logic live in `src/engines/` as plain TypeScript with no React. |
@@ -55,6 +55,11 @@ Each release has its own spec, plan and build, and goes live on its own.
 | Donations | One page plus a link in the menu and footer. Amount from $1, $5 preselected. PayPal, PIX, Revolut, Wise, Ko-fi, GitHub Sponsors. Links only: no payment data passes through the app. |
 | License | MIT for the code (file `LICENSE`). CC BY 4.0 for lesson texts and other written content, stated in the README and in the lesson folder. |
 | Payment handles | All handles live in one file, `src/config/support.ts`. The Support page hides any provider whose handle is empty, so the page can ship before every handle is known. |
+| Analytics (2026-11-12) | Vercel Web Analytics, which sets no cookies. GoatCounter is the fallback if Vercel's free limits do not fit. The choice is final in plan R1c-3, after its limits are checked. |
+| Vercel plan (2026-11-12) | Wellmmer's plan is Hobby, which is free. Plan R1c-3 checks that Hobby allows this site, which has a donation page. |
+| R1c plans (2026-11-12) | R1c-1: the menu, the footer, the theme switch, and Home, About, Support and Privacy, in English. R1c-2: pt-BR, es, fr and de, the language bar, and the tour. R1c-3: Vercel, analytics, Lighthouse, and the design checks. |
+| Pix amounts (2026-11-13) | The pt-BR Support page shows amounts in reais: R$5, R$10, R$25 (preselected), R$50 and Other. The Pix QR code and the copy-paste code carry the chosen amount. The other languages keep US dollars. |
+| Hobby and donations (2026-11-13) | Launch on Vercel Hobby with the Support page and its donation links. Vercel's fair-use page, archived on 2026-10-31, says "Asking for Donations does not fall under commercial usage." The live page no longer has that section, so a small risk stays. Wellmmer accepted it. |
 | Design skills | `impeccable` is installed for this repo only (local scope). The taste-skill inspector and `/impeccable audit` run before launch. |
 
 ## 4. R1 scope
