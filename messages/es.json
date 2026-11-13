@@ -292,5 +292,8 @@
     "copyFailed": "Tu navegador no permitió copiar. Copia el código del campo.",
     "thanks": "Gracias. Cada café se convierte en más lecciones y máquinas.",
     "noData": "Computable nunca ve tu pago. Cada enlace abre la página del propio servicio."
+  },
+  "tour": {
+    "button": "Recorrido"
   }
 }

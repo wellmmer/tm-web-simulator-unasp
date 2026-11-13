@@ -197,7 +197,7 @@
       "simulator": "Simulator",
       "enigma": "Enigma",
       "bombe": "Bombe",
-      "support": "Den Dev unterstützen",
+      "support": "Dev unterstützen",
       "soon": "bald",
       "comingSoon": "kommt bald"
     },
@@ -257,7 +257,7 @@
     "questions": "Fragen? <link>Eröffne ein Issue auf GitHub</link>."
   },
   "support": {
-    "pageTitle": "Den Dev unterstützen",
+    "pageTitle": "Dev unterstützen",
     "title": "Spendiere dem Dev einen Kaffee",
     "lead": "Computable ist kostenlos, ohne Werbung und ohne Konten. Wenn es dir beim Lernen geholfen hat, hilft mir ein Kaffee, weiterzubauen.",
     "notReady": "Die Zahlungslinks sind noch nicht fertig. Danke, dass du helfen möchtest.",
@@ -292,5 +292,8 @@
     "copyFailed": "Dein Browser hat das Kopieren nicht erlaubt. Kopiere den Code aus dem Feld.",
     "thanks": "Danke. Jeder Kaffee wird zu mehr Lektionen und Maschinen.",
     "noData": "Computable sieht deine Zahlung nie. Jeder Link öffnet die Seite des Dienstes selbst."
+  },
+  "tour": {
+    "button": "Tour"
   }
 }

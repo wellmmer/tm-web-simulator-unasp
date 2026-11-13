@@ -1,23 +1,29 @@
 // @vitest-environment jsdom
-import { cleanup, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, screen, within } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderWithIntl } from '@/test/intl';
+import { tourStore } from '@/tour/tour';
 import { SiteHeader } from './SiteHeader';
 
-const navigation = vi.hoisted(() => ({ pathname: '/simulator' }));
+const navigation = vi.hoisted(() => ({ pathname: '/simulator', push: vi.fn() }));
 
-// The real Link and usePathname need the Next.js router, which screen tests do not have.
+// The real Link, usePathname and useRouter need the Next.js router, which screen tests do not have.
 vi.mock('@/i18n/navigation', () => ({
   usePathname: () => navigation.pathname,
-  Link: ({ href, children, ...props }: { href: string; children: ReactNode }) => (
-    <a href={href} {...props}>
+  useRouter: () => ({ push: navigation.push }),
+  Link: ({ href, locale, children, ...props }: { href: string; locale?: string; children: ReactNode }) => (
+    <a href={locale === undefined ? href : `/${locale}${href}`} {...props}>
       {children}
     </a>
   ),
 }));
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  navigation.push.mockClear();
+  tourStore.getState().close();
+});
 
 describe('SiteHeader', () => {
   it('marks the current page, links Home and Support, and holds the theme switch', () => {
@@ -51,5 +57,28 @@ describe('SiteHeader', () => {
     expect(support.getAttribute('aria-current')).toBe('page');
     expect(support.querySelector('svg')?.getAttribute('class')).toContain('text-pencil');
     expect(within(screen.getByRole('navigation', { name: 'Main menu' })).getByRole('link', { name: 'Simulator' }).getAttribute('aria-current')).toBeNull();
+  });
+
+  it('holds the language switcher and the Tour button (spec 4.2)', () => {
+    navigation.pathname = '/about';
+    renderWithIntl(<SiteHeader />);
+    expect(screen.getByRole('button', { name: 'Language: English' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Tour' })).toBeTruthy();
+  });
+
+  it('asks for the tour, and opens the simulator from another page', () => {
+    navigation.pathname = '/about';
+    renderWithIntl(<SiteHeader />);
+    fireEvent.click(screen.getByRole('button', { name: 'Tour' }));
+    expect(tourStore.getState().requested).toBe(true);
+    expect(navigation.push).toHaveBeenCalledWith('/simulator');
+  });
+
+  it('asks for the tour without leaving the simulator', () => {
+    navigation.pathname = '/simulator';
+    renderWithIntl(<SiteHeader />);
+    fireEvent.click(screen.getByRole('button', { name: 'Tour' }));
+    expect(tourStore.getState().requested).toBe(true);
+    expect(navigation.push).not.toHaveBeenCalled();
   });
 });
