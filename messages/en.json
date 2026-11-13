@@ -202,6 +202,7 @@
       "comingSoon": "coming soon"
     },
     "skip": "Skip to the page",
+    "languageSwitcher": "Language",
     "languageBar": {
       "label": "Language",
       "showing": "Showing in {language}. Switch to English?",
