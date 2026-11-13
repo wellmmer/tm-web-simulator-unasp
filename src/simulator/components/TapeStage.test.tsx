@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act, cleanup, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { machine } from '@/engines/turing/test-helpers';
 import { renderSimulator } from './test-utils';
@@ -37,5 +37,12 @@ describe('TapeStage', () => {
     act(() => store.getState().loadMachine(machine([], { accept: ['q0'], reject: ['q0'], input: '10' })));
     expect(screen.queryByTestId('head-state')).toBeNull();
     expect(screen.getAllByTestId('cell-symbol').slice(0, 2).map((c) => c.textContent)).toEqual(['1', '0']);
+  });
+
+  it('ignores clicks on the cells when the tape is not editable, as on Home', () => {
+    const { store } = renderSimulator(<TapeStage editable={false} />);
+    fireEvent.click(screen.getAllByTestId('cell-symbol')[20]);
+    expect(store.getState().tapeEdit).toBeNull();
+    expect(screen.getAllByTestId('cell-symbol')[20].parentElement?.className).not.toContain('cursor-text');
   });
 });

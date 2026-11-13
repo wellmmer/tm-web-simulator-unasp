@@ -6,8 +6,11 @@
   },
   "home": {
     "title": "Computable",
-    "lead": "Turing's 1936 machine, running live in your browser. The new app is being built.",
-    "openSimulator": "Open the simulator"
+    "lead": "Computable is a place to learn the Turing machine by running one, step by step.",
+    "openSimulator": "Open the simulator",
+    "caption": "This is Turing's first machine, from his 1936 paper. It prints 0 1 0 1 … on every other cell and never stops.",
+    "pause": "Pause",
+    "play": "Play"
   },
   "simulator": {
     "page": {
@@ -182,5 +185,105 @@
       "off": "Shortcuts are off while you type in a text field.",
       "startTapeEdit": "Edit the tape"
     }
+  },
+  "shell": {
+    "theme": {
+      "label": "Night paper"
+    },
+    "menu": {
+      "label": "Main menu",
+      "wordmark": "Computable",
+      "learn": "Learn",
+      "simulator": "Simulator",
+      "enigma": "Enigma",
+      "bombe": "Bombe",
+      "support": "Support the dev",
+      "soon": "soon",
+      "comingSoon": "coming soon"
+    },
+    "skip": "Skip to the page",
+    "footer": {
+      "label": "Site",
+      "tagline": "Learn the Turing machine by running one.",
+      "about": "About",
+      "privacy": "Privacy",
+      "source": "Source code",
+      "license": "Code under the MIT license. Texts under CC BY 4.0."
+    }
+  },
+  "about": {
+    "pageTitle": "About",
+    "title": "About Computable",
+    "lead": "Computable began in 2016 as a capstone project for a degree in Computer Science at UNASP: a Turing machine simulator for the web.",
+    "rebuilt": "In 2026 the author rebuilt it from scratch as Computable. The simulator still opens the machines saved by the 2016 app.",
+    "record": "The 2016 project",
+    "projectLabel": "Title",
+    "project": "Simulador de Máquina de Turing, Uma Aplicação Web para o Ensino",
+    "projectEnglish": "(A Turing machine simulator: a web app for teaching)",
+    "schoolLabel": "School",
+    "school": "UNASP, Computer Science",
+    "yearLabel": "Year",
+    "year": "2016",
+    "authorLabel": "Author",
+    "author": "Wellmmer Lucas de Oliveira Pinto",
+    "advisorLabel": "Advisor",
+    "advisor": "Prof. Laercio Martins Carpes",
+    "paper": "Read the 2016 paper (PDF, in Portuguese)",
+    "tag": "See the 2016 app's code at the git tag <code>v1.0-tcc-2016</code>"
+  },
+  "privacy": {
+    "pageTitle": "Privacy",
+    "title": "Privacy",
+    "lead": "Computable has no accounts, sets no cookies and keeps no personal data about you.",
+    "browserTitle": "What stays in your browser",
+    "browser": "Your browser keeps your current machine and your choice of squared or night paper. They stay on your device. Computable never sends them anywhere.",
+    "shareLink": "A share link holds the machine after the # sign. Browsers do not send that part of a link to any server.",
+    "analytics": {
+      "title": "What the site counts",
+      "summary": "To learn which pages help people, the site counts visits with {service}. It sets no cookies.",
+      "counted": "For each page view it records the time, the page, the page you came from, your country, region and city, your browser, your system and the kind of device.",
+      "visitor": "It tells visits apart with a code made from the request, and throws the code away after 24 hours. It does not tie the visits to you or to your IP address.",
+      "source": "How {service} handles privacy"
+    },
+    "donationsTitle": "Donations",
+    "donations": "The Support page only links to payment services, such as PayPal and Ko-fi. You pay on their pages, under their privacy rules. No payment data passes through Computable.",
+    "questions": "Questions? <link>Open an issue on GitHub</link>."
+  },
+  "support": {
+    "pageTitle": "Support the dev",
+    "title": "Buy the dev a coffee",
+    "lead": "Computable is free, with no ads and no accounts. If it helped you learn, a coffee helps me keep building it.",
+    "notReady": "The payment links are not ready yet. Thank you for wanting to help.",
+    "notReadyShare": "Until then, sharing Computable with a friend or a class helps too.",
+    "amount": "Amount, in US dollars",
+    "preset": "${amount}",
+    "other": "Other",
+    "otherField": "Other amount, in US dollars",
+    "otherHint": "Type an amount from $1 to $10,000, with up to 2 decimals, like 7 or 7.50.",
+    "payWith": "Pay with",
+    "provider": {
+      "pix": "Pix",
+      "paypal": "PayPal",
+      "kofi": "Ko-fi",
+      "revolut": "Revolut",
+      "wise": "Wise",
+      "github": "GitHub Sponsors"
+    },
+    "pay": "Pay ${amount} with {provider}",
+    "payNoAmount": "Pay with {provider}",
+    "open": "Open {provider}",
+    "carries": "The link fills in ${amount}.",
+    "typeIt": "Type ${amount} on the next page.",
+    "typeAny": "Type the amount on the next page.",
+    "more": "More ways to pay",
+    "pixHint": "Pix moves Brazilian reais. Scan the code or copy it, then type the amount in your bank app.",
+    "pixKey": "Pix key: {key}",
+    "pixQr": "Pix QR code",
+    "pixCode": "Pix code",
+    "copyPix": "Copy the Pix code",
+    "copied": "Copied.",
+    "copyFailed": "Your browser did not allow copying. Copy the code from the field.",
+    "thanks": "Thank you. Every coffee turns into more lessons and machines.",
+    "noData": "Computable never sees your payment. Each link opens the provider's own page."
   }
 }

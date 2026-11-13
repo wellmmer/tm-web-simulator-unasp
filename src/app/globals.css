@@ -16,6 +16,7 @@
   --muted: #4a5570;
   --blank-ink: #848fa5;
   --row-now: #fbe3e0;
+  --coffee: #7a4a2a;
   color-scheme: light;
 }
 
@@ -31,6 +32,7 @@
     --muted: #9aa6bf;
     --blank-ink: #6b7894;
     --row-now: #3a2233;
+    --coffee: #d69a6a;
     color-scheme: dark;
   }
 }
@@ -46,6 +48,7 @@
   --muted: #9aa6bf;
   --blank-ink: #6b7894;
   --row-now: #3a2233;
+  --coffee: #d69a6a;
   color-scheme: dark;
 }
 
@@ -59,6 +62,7 @@
   --color-muted: var(--muted);
   --color-blank-ink: var(--blank-ink);
   --color-row-now: var(--row-now);
+  --color-coffee: var(--coffee);
   /* --font-math draws Turing's Fraktur state letters (𝔟, 𝔠, 𝔢, 𝔨) in every text style. */
   --font-display: var(--font-spectral), var(--font-math), Georgia, serif;
   --font-sans: var(--font-plex-sans), var(--font-math), system-ui, sans-serif;
@@ -85,4 +89,30 @@ body {
  */
 .state-diagram .react-flow__pane {
   touch-action: pan-x pan-y;
+}
+
+/*
+ * The theme switch shows a moon on squared paper and a sun on night paper. CSS picks the icon,
+ * so the icon is right before React loads.
+ */
+.on-night {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .on-paper {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .on-night {
+    display: block;
+  }
+}
+
+:root[data-theme="dark"] .on-paper {
+  display: none;
+}
+
+:root[data-theme="dark"] .on-night {
+  display: block;
 }

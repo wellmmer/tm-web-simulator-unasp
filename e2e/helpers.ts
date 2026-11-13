@@ -46,3 +46,17 @@ export function statesCutOff(page: Page, state?: string) {
       .filter((circle) => circle.left < box.left || circle.right > box.right || circle.top < box.top || circle.bottom > box.bottom).length;
   }, state ?? null);
 }
+
+/** The pages from plan R1c-1, with the heading each one shows. */
+export const PAGES = [
+  { name: 'home', path: '/en', heading: 'Computable' },
+  { name: 'about', path: '/en/about', heading: 'About Computable' },
+  { name: 'support', path: '/en/support', heading: 'Buy the dev a coffee' },
+  { name: 'privacy', path: '/en/privacy', heading: 'Privacy' },
+] as const;
+
+/** Opens a page and waits until React has hydrated it: the theme switch gets aria-pressed only then. */
+export async function openPage(page: Page, path: string) {
+  await page.goto(path);
+  await expect(page.getByRole('button', { name: 'Night paper' })).toHaveAttribute('aria-pressed', /^(true|false)$/);
+}

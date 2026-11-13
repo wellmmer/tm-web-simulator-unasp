@@ -40,6 +40,7 @@ const pairs: Array<[string, string, number]> = [
   ['on-pencil', 'pencil', 4.5],
   ['paper', 'ink', 4.5],
   ['blank-ink', 'cell', 3],
+  ['coffee', 'cell', 3],
 ];
 
 const themes = {

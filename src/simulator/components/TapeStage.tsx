@@ -15,8 +15,9 @@ const CELLS_EACH_SIDE = 15;
 /**
  * The tape on the stage, with the red pencil head and its state tag (spec 5.1). While the visitor
  * edits the tape (spec 5.4), the tape shows the input, the cursor sits in the middle, and the head is hidden.
+ * Home shows a tape that only runs: `editable={false}` turns off the click on a cell.
  */
-export function TapeStage() {
+export function TapeStage({ editable = true }: { editable?: boolean }) {
   const t = useTranslations('simulator.tape');
   const store = useSimulatorStore();
   const run = useSimulator((s) => s.run);
@@ -42,7 +43,7 @@ export function TapeStage() {
   };
 
   return (
-    <section aria-label={t('label')} onClick={onClick} className="relative mt-6 h-[170px] overflow-hidden">
+    <section aria-label={t('label')} onClick={editable ? onClick : undefined} className="relative mt-6 h-[170px] overflow-hidden">
       {tapeEdit !== null && <TapeEditor cell={tapeEdit.cell} />}
       {run !== null && tapeEdit === null && (
         <>
@@ -68,7 +69,12 @@ export function TapeStage() {
           const symbol = tape.read(cell);
           const cursor = tapeEdit?.cell === cell;
           return (
-            <li key={cell} data-cell={cell} className="absolute flex w-[58px] cursor-text flex-col items-center" style={{ left: cell * CELL_PX }}>
+            <li
+              key={cell}
+              data-cell={cell}
+              className={`absolute flex w-[58px] flex-col items-center ${editable ? 'cursor-text' : ''}`}
+              style={{ left: cell * CELL_PX }}
+            >
               <span
                 data-testid="cell-symbol"
                 data-cursor={cursor || undefined}
