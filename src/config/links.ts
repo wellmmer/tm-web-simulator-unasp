@@ -11,3 +11,11 @@ export const TCC_TAG_URL = `${REPO_URL}/tree/v1.0-tcc-2016`;
 export const TCC_PAPER_URL = `${REPO_URL}/blob/master/docs/tcc/paper/${encodeURIComponent(
   'TCC - Simulador de Máquina de Turing, Uma Aplicação Web para o Ensino.pdf',
 )}`;
+
+/**
+ * GitHub's page to edit a language file. For a visitor who cannot write to the repo, GitHub forks it
+ * and opens a pull request (checked: GitHub Docs, "Editing files").
+ */
+export function translationEditUrl(locale: string): string {
+  return `${REPO_URL}/edit/master/messages/${locale}.json`;
+}

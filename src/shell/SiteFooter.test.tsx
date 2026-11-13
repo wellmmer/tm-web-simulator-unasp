@@ -28,4 +28,22 @@ describe('SiteFooter', () => {
     ]);
     expect(screen.getByText('Code under the MIT license. Texts under CC BY 4.0.')).toBeTruthy();
   });
+
+  it('asks for help with the translation on pages that an AI translated (spec 3)', () => {
+    for (const locale of ['es', 'fr', 'de'] as const) {
+      renderWithIntl(<SiteFooter />, locale);
+      expect(screen.getByRole('link', { name: 'Help improve the translation' }).getAttribute('href')).toBe(
+        `https://github.com/wellmmer/tm-web-simulator-unasp/edit/master/messages/${locale}.json`,
+      );
+      cleanup();
+    }
+  });
+
+  it('says nothing about translation in English and in the checked Brazilian Portuguese', () => {
+    for (const locale of ['en', 'pt-BR'] as const) {
+      renderWithIntl(<SiteFooter />, locale);
+      expect(screen.queryByRole('link', { name: 'Help improve the translation' })).toBeNull();
+      cleanup();
+    }
+  });
 });
